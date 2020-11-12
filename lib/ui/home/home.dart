@@ -1,0 +1,78 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:youmusic_mobile/ui/home/tabs/tab_album.dart';
+import 'package:youmusic_mobile/ui/home/tabs/tab_all.dart';
+import 'package:youmusic_mobile/ui/home/tabs/tab_artist.dart';
+import 'package:youmusic_mobile/ui/home/tabs/tab_home.dart';
+import 'package:youmusic_mobile/ui/provider.dart';
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<HomeProvider>(
+        create: (_) => HomeProvider(),
+        child: Consumer<HomeProvider>(
+          builder: (context, provider, child) {
+            return Scaffold(
+              backgroundColor: Colors.black87,
+              appBar: AppBar(
+                title: Text(
+                  "YouMusic",
+                  style: TextStyle(color: Colors.pink),
+                ),
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+              body:Scaffold(
+                backgroundColor: Colors.black87,
+                body: IndexedStack(
+                  index: provider.activeTab,
+                  children: <Widget>[
+                    HomeTabPage(),
+                    AlbumTabPage(),
+                    ArtistTabPage(),
+                    AllTabPage()
+                  ],
+                ),
+                bottomNavigationBar: Container(
+                  height: 72,
+                  color: Color(0xFF2B2B2B),
+                ),
+              ),
+              bottomNavigationBar: Container(
+                child: Padding(
+                  padding: EdgeInsets.only(),
+                  child: BottomNavigationBar(
+                    currentIndex: provider.activeTab,
+                    type: BottomNavigationBarType.fixed,
+                    backgroundColor: Colors.black,
+                    unselectedItemColor: Colors.grey[600],
+                    onTap: provider.setActiveTab,
+                    items: const <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.home),
+                        label: 'Home',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.album),
+                        label: 'Album',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.person),
+                        label: 'Artist',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.music_note),
+                        label: 'All',
+                      ),
+                    ],
+                    selectedItemColor: Colors.pink,
+                  ),
+                ),
+              ),
+            );
+          },
+        ));
+  }
+}
