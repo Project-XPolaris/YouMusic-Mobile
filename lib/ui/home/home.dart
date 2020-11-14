@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:youmusic_mobile/ui/home/tabs/tab_album.dart';
-import 'package:youmusic_mobile/ui/home/tabs/tab_all.dart';
-import 'package:youmusic_mobile/ui/home/tabs/tab_artist.dart';
-import 'package:youmusic_mobile/ui/home/tabs/tab_home.dart';
-import 'package:youmusic_mobile/ui/provider.dart';
+
+import '../provider.dart';
+import 'tabs/album/tab_album.dart';
+import 'tabs/all/tab_all.dart';
+import 'tabs/artist/tab_artist.dart';
+import 'tabs/home/tab_home.dart';
+
 
 class HomePage extends StatelessWidget {
   @override

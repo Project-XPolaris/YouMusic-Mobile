@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/takayamaaren/AndroidStudioProjects/youmusic_mobile/lib/ui/home/home.dart';
+
+import 'ui/home/home.dart';
 
 void main() {
   runApp(MyApp());
