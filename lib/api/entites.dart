@@ -1,3 +1,5 @@
+import 'package:youmusic_mobile/config.dart';
+
 class Music {
   int id;
   String path;
@@ -19,6 +21,25 @@ class Music {
       });
     }
   }
+  getAlbumName(String defaultName){
+    if (album != null){
+      return album.name;
+    }
+    return defaultName;
+  }
+
+  getArtistString(String defaultName){
+    if (artist != null && artist.length > 0){
+      return artist.map((e) => e.name).join("/");
+    }
+    return defaultName;
+  }
+
+  getCoverUrl() {
+    if (album != null) {
+      return album.getCoverUrl();
+    }
+  }
 }
 
 class Album {
@@ -35,6 +56,9 @@ class Album {
     if (json.containsKey("artist")){
        artist = List<Artist>.from(json['artist'].map((it) => Artist.fromJson(it)).toList());
     }
+  }
+  getCoverUrl() {
+    return "${ApplicationConfig.apiUrl}$cover";
   }
 }
 

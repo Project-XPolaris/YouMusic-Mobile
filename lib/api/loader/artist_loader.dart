@@ -4,7 +4,7 @@ import 'package:youmusic_mobile/utils/loader.dart';
 
 class ArtistLoader extends ApiDataLoader<Artist> {
   @override
-  Future<ListResponseWrap<Artist>> fetchData() {
-    return ApiClient().fetchArtist();
+  Future<ListResponseWrap<Artist>> fetchData(Map<String,String> params) {
+    return ApiClient().fetchArtist(params);
   }
 }

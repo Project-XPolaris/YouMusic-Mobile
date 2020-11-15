@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:youmusic_mobile/ui/home/play_bar.dart';
 
 import '../provider.dart';
 import 'tabs/album/tab_album.dart';
@@ -37,10 +38,7 @@ class HomePage extends StatelessWidget {
                     AllTabPage()
                   ],
                 ),
-                bottomNavigationBar: Container(
-                  height: 72,
-                  color: Color(0xFF2B2B2B),
-                ),
+                bottomNavigationBar: PlayBar(),
               ),
               bottomNavigationBar: Container(
                 child: Padding(

@@ -8,4 +8,9 @@ class MusicTabProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
+  loadMore() async {
+    if (await loader.loadMore()){
+      notifyListeners();
+    }
+  }
 }

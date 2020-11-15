@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/components/item_artist.dart';
 import 'package:youmusic_mobile/ui/components/item_music.dart';
@@ -13,45 +14,62 @@ class HomeTabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HomeTabProvider>(
         create: (_) => HomeTabProvider(),
-        child: Consumer<HomeTabProvider>(builder: (context, provider, child) {
-          provider.loadData();
-          return Container(
-              child: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16,bottom: 16),
-                  child: Text("Hey there 👋",style: TextStyle(color:Colors.pink,fontSize: 32),),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16,bottom: 24),
-                  child: SearchBox(),
-                ),
-                buildRow(provider,"💿 Album",provider.albumLoader.list.map((e) {
-                  return AlbumItem(
-                    album: e,
-                  );
-                }).toList()),
-                Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: buildRow(provider,"🎸 Artist",provider.artistLoader.list.map((e) {
-                    return ArtistItem(
-                      artist: e,
-                    );
-                  }).toList()),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: buildRow(provider,"🎶 Music",provider.musicLoader.list.map((e) {
-                    return MusicItem(
-                      music: e,
-                    );
-                  }).toList()),
-                ),
-              ],
-            ),
-          ));
+        child: Consumer<PlayProvider>(builder: (context, playProvider, child) {
+          return Consumer<HomeTabProvider>(builder: (context, provider, child) {
+            provider.loadData();
+            return Container(
+                child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 16),
+                    child: Text(
+                      "Hey there 👋",
+                      style: TextStyle(color: Colors.pink, fontSize: 32),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 24),
+                    child: SearchBox(),
+                  ),
+                  buildRow(
+                      provider,
+                      "💿 Album",
+                      provider.albumLoader.list.map((e) {
+                        return AlbumItem(
+                          album: e,
+                        );
+                      }).toList()),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24),
+                    child: buildRow(
+                        provider,
+                        "🎸 Artist",
+                        provider.artistLoader.list.map((e) {
+                          return ArtistItem(
+                            artist: e,
+                          );
+                        }).toList()),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24),
+                    child: buildRow(
+                        provider,
+                        "🎶 Music",
+                        provider.musicLoader.list.map((e) {
+                          return MusicItem(
+                            music: e,
+                            onTap: (music) {
+                              playProvider.loadMusic(music);
+                            },
+                          );
+                        }).toList()),
+                  ),
+                ],
+              ),
+            ));
+          });
         }));
   }
 
