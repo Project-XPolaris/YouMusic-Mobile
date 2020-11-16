@@ -3,26 +3,32 @@ import 'package:youmusic_mobile/api/entites.dart';
 
 class ArtistItem extends StatelessWidget {
   final Artist artist;
-
-  const ArtistItem({Key key, this.artist}) : super(key: key);
+  final Function(Artist) onTap;
+  const ArtistItem({Key key, this.artist, this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
 
       child: Column(
         children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-
-              child: Center(
-                child: Icon(Icons.person, size: 48),
+          GestureDetector(
+            onTap: (){
+              if (onTap != null){
+                onTap(artist);
+              }
+            },
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Container(
+                child: Center(
+                  child: Icon(Icons.person, size: 48),
+                ),
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                    color: Colors.white70,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
               ),
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                  color: Colors.white70,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
             ),
           ),
           Expanded(

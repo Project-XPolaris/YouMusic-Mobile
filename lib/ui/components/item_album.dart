@@ -4,8 +4,8 @@ import 'package:youmusic_mobile/config.dart';
 
 class AlbumItem extends StatelessWidget {
   final Album album;
-
-  const AlbumItem({Key key, this.album}) : super(key: key);
+  final Function(Album) onTap;
+  const AlbumItem({Key key, this.album, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,27 +19,34 @@ class AlbumItem extends StatelessWidget {
           AspectRatio(
               aspectRatio: 1,
 
-              child: Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                    color: Colors.white70,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(8.0))
-                ),
-                child: Image(
-                  image: NetworkImage(ApplicationConfig.apiUrl + album.cover),
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace stackTrace) {
-                    return Container(
-                      child: Center(
-                        child: Icon(
-                          Icons.music_note,
-                          size: 48,
+              child: GestureDetector(
+                onTap: (){
+                  if (onTap != null) {
+                    onTap(album);
+                  }
+                },
+                child: Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                      color: Colors.white70,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))
+                  ),
+                  child: Image(
+                    image: NetworkImage(ApplicationConfig.apiUrl + album.cover),
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace stackTrace) {
+                      return Container(
+                        child: Center(
+                          child: Icon(
+                            Icons.music_note,
+                            size: 48,
+                          ),
                         ),
-                      ),
 
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               )),
           Expanded(

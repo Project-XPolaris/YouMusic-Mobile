@@ -32,5 +32,11 @@ class ApiClient {
     ListResponseWrap<Music> responseBody = ListResponseWrap.fromJson(response.data, (data) => Music.fromJson(data));
     return responseBody;
   }
+
+  Future<Album> fetchAlbumById(String id) async {
+    var response = await _dio.get("/album/$id");
+    Album album = Album.fromJson(response.data);
+    return album;
+  }
   ApiClient._internal();
 }

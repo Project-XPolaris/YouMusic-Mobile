@@ -47,6 +47,7 @@ class Album {
   String name;
   String cover;
   List<Artist> artist;
+  List<Music> music;
   Album({this.id, this.name, this.cover});
 
   Album.fromJson(Map<String, dynamic> json) {
@@ -56,9 +57,19 @@ class Album {
     if (json.containsKey("artist")){
        artist = List<Artist>.from(json['artist'].map((it) => Artist.fromJson(it)).toList());
     }
+    if (json.containsKey("music")){
+      music = List<Music>.from(json['music'].map((it) => Music.fromJson(it)).toList());
+    }
   }
   getCoverUrl() {
     return "${ApplicationConfig.apiUrl}$cover";
+  }
+
+  getArtist(String defaultValue){
+    if (artist == null || artist.length == 0){
+      return defaultValue;
+    }
+    return artist.map((e) => e.name).join("/");
   }
 }
 

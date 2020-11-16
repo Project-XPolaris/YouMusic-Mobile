@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:youmusic_mobile/ui/album/album.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/home/tabs/album/provider.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
@@ -22,7 +23,15 @@ class AlbumTabPage extends StatelessWidget {
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
                 children: provider.loader.list.map((e) {
-                  return AlbumItem(album: e);
+                  return AlbumItem(
+                    album: e,
+                    onTap: (album) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AlbumPage(id: album.id,)),
+                      );
+                    },
+                  );
                 }).toList(),
               ),
             ),
