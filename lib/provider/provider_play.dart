@@ -34,15 +34,44 @@ class PlayProvider extends ChangeNotifier {
           audio,
         ]),
         loopMode: LoopMode.playlist,
-        showNotification: true, notificationSettings: NotificationSettings(
-            customPlayPauseAction: (AssetsAudioPlayer player) {
-      if (playStatus == PlayStatus.Pause) {
-        resumePlay();
-      } else if (playStatus == PlayStatus.Play) {
-        pausePlay();
-      }
-      notifyListeners();
-    }));
+        showNotification: true,
+        notificationSettings:
+            NotificationSettings(customPlayPauseAction: customPlayPauseAction));
+    playStatus = PlayStatus.Play;
+    notifyListeners();
+  }
+
+  customPlayPauseAction(AssetsAudioPlayer player) {
+    if (playStatus == PlayStatus.Pause) {
+      resumePlay();
+    } else if (playStatus == PlayStatus.Play) {
+      pausePlay();
+    }
+    notifyListeners();
+  }
+
+  loadAlbumPlaylist(List<Music> musicList, Album album) {
+    currentMusic = musicList.first;
+    currentMusic.album = album;
+    currentMusic.artist = album.artist;
+    var audios = musicList.map((music) {
+      var audio =
+      Audio.network("${ApplicationConfig.apiUrl}/file/audio/${music.id}",
+          metas: Metas(
+            title: music.title,
+            artist: album.getArtist("Unknown"),
+            album: album.name,
+            image: MetasImage.network(
+                album.getCoverUrl()), //can be MetasImage.network
+          ));
+      return audio;
+    }).toList();
+
+    playerService.assetsAudioPlayer.open(Playlist(audios: audios),
+        loopMode: LoopMode.playlist,
+        showNotification: true,
+        notificationSettings:
+            NotificationSettings(customPlayPauseAction: customPlayPauseAction));
     playStatus = PlayStatus.Play;
     notifyListeners();
   }

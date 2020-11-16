@@ -1,22 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:youmusic_mobile/config.dart';
 
-class ArtistPage extends StatelessWidget {
+class ArtistPage extends StatefulWidget {
+  @override
+  _ArtistPageState createState() => _ArtistPageState();
+}
+
+class _ArtistPageState extends State<ArtistPage> {
+  var headAlpha = 0;
   @override
   Widget build(BuildContext context) {
+    ScrollController _controller = new ScrollController();
+    _controller.addListener(() {
+      var maxScroll = _controller.position.maxScrollExtent;
+      var pixel = _controller.position.pixels;
+      if (pixel + 25 <= 255){
+        setState(() {
+          headAlpha = pixel.toInt() + 25;
+        });
+      }
+      print(pixel);
+    });
+
     return Stack(
       children: [
         Container(
           color: Colors.white,
           height: 360,
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Text("Oasis",style: TextStyle(color: Colors.black,fontSize: 48,fontWeight: FontWeight.w700),),
-            ),
-          ),
+          width: double.infinity,
+          // child: Center(
+          //   child: Padding(
+          //     padding: EdgeInsets.all(16),
+          //   ),
+          // ),
+
         ),
         Container(
-          color: Colors.black12,
+          color: Colors.black.withAlpha(headAlpha),
           height: 360,
         ),
         Container(
@@ -30,7 +50,9 @@ class ArtistPage extends StatelessWidget {
                   Colors.black
                 ], // red to yellow
               ),
-            )
+            ),
+          child: Stack(
+          ),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -41,12 +63,15 @@ class ArtistPage extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.only(left: 16,right: 16),
             child: ListView(
+              controller: _controller,
               children: [
-                Container(
-                  height: 240,
-                ),
-                Container(
 
+                Container(
+                  height: 220,
+                ),
+                Text("Artist",style: TextStyle(color: Colors.white,fontSize: 32),textAlign: TextAlign.center,),
+                Container(
+                    height: 1024,
                 )
               ],
             ),
