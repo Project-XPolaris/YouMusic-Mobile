@@ -27,7 +27,7 @@ class ArtistTabPage extends StatelessWidget {
                     return ArtistItem(artist: e,onTap: (album) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ArtistPage()),
+                        MaterialPageRoute(builder: (context) => ArtistPage(id: e.id,)),
                       );
                     },);
                   }).toList(),

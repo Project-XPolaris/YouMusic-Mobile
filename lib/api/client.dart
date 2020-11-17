@@ -38,5 +38,11 @@ class ApiClient {
     Album album = Album.fromJson(response.data);
     return album;
   }
+
+  Future<Artist> fetchArtistById(String id) async {
+    var response = await _dio.get("/artist/$id");
+    Artist artist = Artist.fromJson(response.data);
+    return artist;
+  }
   ApiClient._internal();
 }

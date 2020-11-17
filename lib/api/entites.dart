@@ -48,7 +48,7 @@ class Album {
   String cover;
   List<Artist> artist;
   List<Music> music;
-  Album({this.id, this.name, this.cover});
+  Album({this.id, this.name, this.cover,this.music,this.artist});
 
   Album.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -76,12 +76,18 @@ class Album {
 class Artist {
   int id;
   String name;
-
+  String avatar;
   Artist({this.id, this.name});
 
   Artist.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    avatar = json['avatar'];
+  }
+  getAvatarUrl(){
+    if (avatar != null){
+      return ApplicationConfig.apiUrl + avatar;
+    }
   }
 }
 

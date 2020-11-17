@@ -36,7 +36,7 @@ class MusicItem extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(8.0))
                   ),
                   child: Image(
-                    image: NetworkImage(cover),
+                    image: NetworkImage(music.getCoverUrl()),
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace stackTrace) {
                       return Container(

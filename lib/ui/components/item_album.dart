@@ -33,7 +33,7 @@ class AlbumItem extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(8.0))
                   ),
                   child: Image(
-                    image: NetworkImage(ApplicationConfig.apiUrl + album.cover),
+                    image: NetworkImage(album.getCoverUrl()),
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace stackTrace) {
                       return Container(
