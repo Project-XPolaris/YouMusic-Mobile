@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:youmusic_mobile/api/client.dart';
 import 'package:youmusic_mobile/api/entites.dart';
+import 'package:youmusic_mobile/api/loader/album_loader.dart';
+import 'package:youmusic_mobile/api/loader/music_loader.dart';
 
 class ArtistProvider extends ChangeNotifier{
   final int id;
   ArtistProvider(this.id);
   Artist artist;
-  List<Music> musicList;
-  List<Album> albumList;
+  MusicLoader musicLoader = new MusicLoader();
+  AlbumLoader albumLoader = new AlbumLoader();
   Future<void> loadData() async {
+    if (artist != null){
+      return;
+    }
     artist = await ApiClient().fetchArtistById(id.toString());
+    await loadMusic();
+    await loadAlbum();
     notifyListeners();
   }
   Future<void> loadMusic() async {
-    if (musicList != null){
+    if (artist == null){
       return;
     }
-    var response = await ApiClient().fetchMusicList({"pageSize":"5","artist":"${artist.id}"});
-    musicList = response.data;
-    notifyListeners();
+    await musicLoader.loadData(extraFilter: {"artist":artist.id.toString()});
   }
+
   Future<void> loadAlbum() async {
-    if (albumList != null){
+    if (artist == null){
       return;
     }
-    var response = await ApiClient().fetchAlbum({"pageSize":"5","artist":"${artist.id}"});
-    albumList = response.data;
-    notifyListeners();
+    await albumLoader.loadData(extraFilter: {"artist":artist.id.toString()});
   }
 }

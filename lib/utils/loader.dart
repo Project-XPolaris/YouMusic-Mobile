@@ -11,27 +11,34 @@ abstract class ApiDataLoader<T> {
     "page":"1",
     "pageSize":"20"
   };
-  Future<bool> loadData() async{
+  Future<bool> loadData({Map<String,String> extraFilter}) async{
     if (!firstLoad || isLoading || !hasMore){
       return false;
     }
     firstLoad = false;
     isLoading = true;
-    var response = await fetchData(queryParams);
+    Map<String,String> params = new Map.from(queryParams);
+    if (extraFilter != null) {
+      params.addAll(extraFilter);
+    }
+    var response = await fetchData(params);
     list = response.data;
     hasMore = list.length < response.count;
     isLoading = false;
     return true;
   }
 
-  Future<bool> loadMore() async{
+  Future<bool> loadMore({Map<String,String> extraFilter}) async{
 
     if (isLoading || !hasMore){
       return false;
     }
-    print("==================");
     isLoading = true;
     queryParams["page"] = (page + 1).toString();
+    Map<String,String> params = new Map.from(queryParams);
+    if (extraFilter != null) {
+      params.addAll(extraFilter);
+    }
     var response = await fetchData(queryParams);
     list.addAll(response.data);
     print(list.length);
