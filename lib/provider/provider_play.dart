@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:youmusic_mobile/api/client.dart';
 import 'package:youmusic_mobile/api/entites.dart';
 import 'package:youmusic_mobile/config.dart';
 import 'package:youmusic_mobile/player.dart';
@@ -7,19 +8,10 @@ import 'package:youmusic_mobile/player.dart';
 enum PlayStatus { Play, Pause }
 
 class PlayProvider extends ChangeNotifier {
-  Music currentMusic;
-  PlayStatus playStatus = PlayStatus.Pause;
-  PlayerService playerService = PlayerService();
-
-  PlayProvider() {
-    AssetsAudioPlayer.setupNotificationsOpenAction((notification) {
-      print("====================");
-      return true; //true : handled, does not notify others listeners
-    });
-  }
+  final assetsAudioPlayer = AssetsAudioPlayer.withId("music");
+  Playlist playlist = Playlist(audios: []);
 
   loadMusic(Music music) {
-    currentMusic = music;
     var audio =
         Audio.network("${ApplicationConfig.apiUrl}/file/audio/${music.id}",
             metas: Metas(
@@ -29,68 +21,60 @@ class PlayProvider extends ChangeNotifier {
               image: MetasImage.network(
                   music.getCoverUrl()), //can be MetasImage.network
             ));
-    playerService.assetsAudioPlayer.open(
-        Playlist(audios: [
-          audio,
-        ]),
-        loopMode: LoopMode.playlist,
-        showNotification: true,
-        notificationSettings:
-            NotificationSettings(customPlayPauseAction: customPlayPauseAction));
-    playStatus = PlayStatus.Play;
-    notifyListeners();
-  }
-
-  customPlayPauseAction(AssetsAudioPlayer player) {
-    if (playStatus == PlayStatus.Pause) {
-      resumePlay();
-    } else if (playStatus == PlayStatus.Play) {
-      pausePlay();
-    }
-    notifyListeners();
+    assetsAudioPlayer.open(
+      Playlist(audios: [
+        audio,
+      ]),
+      loopMode: LoopMode.playlist,
+      showNotification: true,
+    );
   }
 
   loadAlbumPlaylist(List<Music> musicList, Album album) {
-    currentMusic = musicList.first;
-    currentMusic.album = album;
-    currentMusic.artist = album.artist;
     var audios = musicList.map((music) {
       var audio =
-      Audio.network("${ApplicationConfig.apiUrl}/file/audio/${music.id}",
-          metas: Metas(
-            title: music.title,
-            artist: album.getArtist("Unknown"),
-            album: album.name,
-            image: MetasImage.network(
-                album.getCoverUrl()), //can be MetasImage.network
-          ));
+          Audio.network("${ApplicationConfig.apiUrl}/file/audio/${music.id}",
+              metas: Metas(
+                title: music.title,
+                artist: album.getArtist("Unknown"),
+                album: album.name,
+                image: MetasImage.network(
+                    album.getCoverUrl()), //can be MetasImage.network
+              ));
       return audio;
     }).toList();
-
-    playerService.assetsAudioPlayer.open(Playlist(audios: audios),
-        loopMode: LoopMode.playlist,
-        showNotification: true,
-        notificationSettings:
-            NotificationSettings(customPlayPauseAction: customPlayPauseAction));
-    playStatus = PlayStatus.Play;
-    notifyListeners();
+    playPlaylist(audios);
   }
 
-  setCurrentPlay(Music music) {
-    currentMusic = music;
-    notifyListeners();
+  playPlaylist(List<Audio> audios, {bool append = false}) {
+    print("add ${audios.length} to playlist");
+    if (append) {
+      assetsAudioPlayer.playlist.addAll(audios);
+    } else {
+      assetsAudioPlayer.open(Playlist(audios: audios),
+          showNotification: true, loopMode: LoopMode.playlist);
+    }
   }
 
-  resumePlay() {
-    playerService.assetsAudioPlayer.play();
-    playStatus = PlayStatus.Play;
-    notifyListeners();
+  createAudioListFromMusicList(List<Music> musicList) {
+    var audios = musicList.map((music) {
+      var audio =
+          Audio.network("${ApplicationConfig.apiUrl}/file/audio/${music.id}",
+              metas: Metas(
+                title: music.title,
+                artist: music.getArtistString("Unknown"),
+                album: music.getAlbumName("Unknown"),
+                image: MetasImage.network(
+                    music.getCoverUrl()), //can be MetasImage.network
+              ));
+      return audio;
+    }).toList();
+    return audios;
   }
 
-  pausePlay() {
-    playerService.assetsAudioPlayer.pause();
-    print("paused");
-    playStatus = PlayStatus.Pause;
-    notifyListeners();
+  addAlbumToPlaylist(int albumId) async {
+    ListResponseWrap<Music> response = await ApiClient()
+        .fetchMusicList({"pageSize": "100", "album": albumId.toString()});
+    playPlaylist(createAudioListFromMusicList(response.data), append: true);
   }
 }

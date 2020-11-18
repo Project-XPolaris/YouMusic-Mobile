@@ -15,30 +15,28 @@ class PlayBar extends StatelessWidget {
         color: Color(0xFF2B2B2B),
         child: Padding(
           padding: const EdgeInsets.only(right: 16),
-          child: provider.currentMusic == null
-              ? buildEmptyView()
-              : buildMusicView(context, provider),
+          child: buildMusicView(context, provider),
         ),
       );
     });
   }
 
-  Container buildEmptyView() {
-    return Container(
-      child: Center(
-        child: Text(
-          "Nothing to play",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
 
   Widget buildMusicView(BuildContext context, PlayProvider playProvider) {
     return StreamBuilder(
-        stream: playProvider.playerService.assetsAudioPlayer.current,
+        stream: playProvider.assetsAudioPlayer.current,
         builder: (context, asyncSnapshot) {
           Playing current = asyncSnapshot.data;
+          if (current == null){
+            return Container(
+              child: Center(
+                child: Text(
+                  "Nothing to play",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            );
+          }
           return Row(
             children: [
               GestureDetector(
@@ -79,7 +77,7 @@ class PlayBar extends StatelessWidget {
               ),
               StreamBuilder(
                   stream:
-                      playProvider.playerService.assetsAudioPlayer.isPlaying,
+                      playProvider.assetsAudioPlayer.isPlaying,
                   builder: (context, asyncSnapshot) {
                     final bool isPlaying = asyncSnapshot.data;
                     return Container(
@@ -91,7 +89,7 @@ class PlayBar extends StatelessWidget {
                             color: Colors.white,
                           ),
                           onPressed: () async {
-                            playProvider.playerService.assetsAudioPlayer
+                            playProvider.assetsAudioPlayer
                                 .playOrPause();
                           },
                         ),

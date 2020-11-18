@@ -23,7 +23,7 @@ class PlaylistModal extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 16,left: 16,right: 16),
                 child: ListView(
-                  children: provider.playerService.assetsAudioPlayer.playlist.audios.map((e) => InkWell(
+                  children: provider.assetsAudioPlayer.playlist.audios.map((e) => InkWell(
                     splashColor: Colors.pink,
                     focusColor: Colors.pink,
                     onTap: (){},

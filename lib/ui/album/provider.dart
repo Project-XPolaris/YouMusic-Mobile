@@ -1,8 +1,6 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:youmusic_mobile/api/client.dart';
 import 'package:youmusic_mobile/api/entites.dart';
-import 'package:youmusic_mobile/player.dart';
 
 class AlbumProvider extends ChangeNotifier{
   final int id;

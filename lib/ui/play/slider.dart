@@ -16,11 +16,11 @@ class _PlaySliderState extends State<PlaySlider> {
     return Consumer<PlayProvider>(builder: (context, provider, child) {
       return Container(
         child: StreamBuilder(
-            stream: provider.playerService.assetsAudioPlayer.currentPosition,
+            stream: provider.assetsAudioPlayer.currentPosition,
             builder: (context, asyncSnapshot) {
               Duration currentPlayPosition = asyncSnapshot.data;
               Duration totalDuration = provider
-                  .playerService.assetsAudioPlayer.current.value.audio.duration;
+                  .assetsAudioPlayer.current.value.audio.duration;
               return SliderTheme(
                 data: SliderThemeData(
                   thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
@@ -38,7 +38,7 @@ class _PlaySliderState extends State<PlaySlider> {
                   },
                   onChangeEnd: (value){
                     print(value);
-                    provider.playerService.assetsAudioPlayer.seek(Duration(seconds: value.toInt()));
+                    provider.assetsAudioPlayer.seek(Duration(seconds: value.toInt()));
                     setState(() {
                       currentValue = -1;
                     });
