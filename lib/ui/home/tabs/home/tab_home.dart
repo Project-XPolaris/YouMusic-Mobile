@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
@@ -8,6 +9,10 @@ import 'package:youmusic_mobile/ui/components/item_artist.dart';
 import 'package:youmusic_mobile/ui/components/item_music.dart';
 import 'package:youmusic_mobile/ui/components/widget_search.dart';
 import 'package:youmusic_mobile/ui/home/tabs/home/provider.dart';
+import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
+import 'package:youmusic_mobile/ui/meta-navigation/artist.dart';
+import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
+import 'package:youmusic_mobile/ui/meta-navigation/view.dart';
 
 class HomeTabPage extends StatelessWidget {
   @override
@@ -37,8 +42,19 @@ class HomeTabPage extends StatelessWidget {
                       provider,
                       "💿 Album",
                       provider.albumLoader.list.map((e) {
-                        return AlbumItem(
-                          album: e,
+                        return Padding(
+                          padding: EdgeInsets.only(right: 16),
+                          child: AlbumItem(
+                            album: e,
+                            onLongPress: (album) {
+                              HapticFeedback.selectionClick();
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => AlbumMetaInfo(
+                                        album: album,
+                                      ));
+                            },
+                          ),
                         );
                       }).toList()),
                   Padding(
@@ -47,8 +63,18 @@ class HomeTabPage extends StatelessWidget {
                         provider,
                         "🎸 Artist",
                         provider.artistLoader.list.map((e) {
-                          return ArtistItem(
-                            artist: e,
+                          return Padding(
+                            padding: EdgeInsets.only(right: 16),
+                            child: ArtistItem(
+                                artist: e,
+                                onLongPress: (artist) {
+                                  HapticFeedback.selectionClick();
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) => ArtistMetaInfo(
+                                            artist: artist,
+                                          ));
+                                }),
                           );
                         }).toList()),
                   ),
@@ -58,11 +84,21 @@ class HomeTabPage extends StatelessWidget {
                         provider,
                         "🎶 Music",
                         provider.musicLoader.list.map((e) {
-                          return MusicItem(
-                            music: e,
-                            onTap: (music) {
-                              playProvider.loadMusic(music);
-                            },
+                          return Padding(
+                            padding: EdgeInsets.only(right: 16),
+                            child: MusicItem(
+                                music: e,
+                                onTap: (music) {
+                                  playProvider.loadMusic(music);
+                                },
+                                onLongPress: (music) {
+                                  HapticFeedback.selectionClick();
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) => MusicMetaInfo(
+                                            music: music,
+                                          ));
+                                }),
                           );
                         }).toList()),
                   ),
@@ -87,12 +123,8 @@ class HomeTabPage extends StatelessWidget {
           child: Container(
             height: 160,
             width: double.infinity,
-            child: GridView.count(
-              childAspectRatio: 13 / 9,
+            child: ListView(
               scrollDirection: Axis.horizontal,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              crossAxisCount: 1,
               children: items,
             ),
           ),

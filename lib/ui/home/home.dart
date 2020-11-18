@@ -26,6 +26,7 @@ class HomePage extends StatelessWidget {
                 ),
                 backgroundColor: Colors.transparent,
                 elevation: 0,
+
               ),
               body:Scaffold(
                 backgroundColor: Colors.black87,

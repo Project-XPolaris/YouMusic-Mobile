@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class PlayBar extends StatelessWidget {
           padding: const EdgeInsets.only(right: 16),
           child: provider.currentMusic == null
               ? buildEmptyView()
-              : buildMusicView(context,provider),
+              : buildMusicView(context, provider),
         ),
       );
     });
@@ -26,97 +27,79 @@ class PlayBar extends StatelessWidget {
     return Container(
       child: Center(
         child: Text(
-          "nothing to play",
+          "Nothing to play",
           style: TextStyle(color: Colors.white),
         ),
       ),
     );
   }
 
-  getPlayIcon(PlayStatus status){
-    switch(status){
-      case PlayStatus.Play:
-        return Icons.pause;
-      case PlayStatus.Pause:
-        return Icons.play_arrow;
-    }
-  }
-  Row buildMusicView(BuildContext context,PlayProvider playProvider) {
-    String cover = "";
-    if (playProvider.currentMusic.album != null){
-      cover = ApplicationConfig.apiUrl + playProvider.currentMusic.album.cover;
-    }
-    String artist = "unknown";
-    if (playProvider.currentMusic.artist != null && playProvider.currentMusic.artist.length != 0){
-      artist = playProvider.currentMusic.artist.map((e) => e.name).join("/");
-    }
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PlayPage()),
-            );
-          },
-          child:AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              child: Image.network(cover),
-            ),
-          ) ,
-        ),
-        Expanded(
-          child: Container(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      playProvider.currentMusic.title,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                      softWrap: false,
-                    ),
-                    Text(
-                      artist,
-                      style: TextStyle(color: Colors.white70),
-                      softWrap: false,
-                    )
-                  ]),
-            ),
-          ),
-        ),
-        Container(
-          child: Center(
-            child: IconButton(
-              icon: Icon(
-                getPlayIcon(playProvider.playStatus),
-                size: 28,
-                color: Colors.white,
+  Widget buildMusicView(BuildContext context, PlayProvider playProvider) {
+    return StreamBuilder(
+        stream: playProvider.playerService.assetsAudioPlayer.current,
+        builder: (context, asyncSnapshot) {
+          Playing current = asyncSnapshot.data;
+          return Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PlayPage()),
+                  );
+                },
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    child: Image.network(current.audio.audio.metas.image.path),
+                  ),
+                ),
               ),
-              onPressed: () async {
-                // print("hit!!!!!!!!!!!");
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => PlayPage()),
-                // );
-                if (playProvider.playStatus == PlayStatus.Play) {
-                  print("will pause");
-                  playProvider.pausePlay();
-                  return;
-                }
-                if (playProvider.playStatus == PlayStatus.Pause) {
-                  print("wiil play");
-                  playProvider.resumePlay();
-                  return;
-                }
-              },
-            ),
-          ),
-        )
-      ],
-    );
+              Expanded(
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 8),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            current.audio.audio.metas.title,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            softWrap: false,
+                          ),
+                          Text(
+                            current.audio.audio.metas.artist,
+                            style: TextStyle(color: Colors.white70),
+                            softWrap: false,
+                          )
+                        ]),
+                  ),
+                ),
+              ),
+              StreamBuilder(
+                  stream:
+                      playProvider.playerService.assetsAudioPlayer.isPlaying,
+                  builder: (context, asyncSnapshot) {
+                    final bool isPlaying = asyncSnapshot.data;
+                    return Container(
+                      child: Center(
+                        child: IconButton(
+                          icon: Icon(
+                            isPlaying ? Icons.pause : Icons.play_arrow,
+                            size: 28,
+                            color: Colors.white,
+                          ),
+                          onPressed: () async {
+                            playProvider.playerService.assetsAudioPlayer
+                                .playOrPause();
+                          },
+                        ),
+                      ),
+                    );
+                  })
+            ],
+          );
+        });
   }
 }

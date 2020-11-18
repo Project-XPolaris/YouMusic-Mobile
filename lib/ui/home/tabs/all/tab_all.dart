@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/components/item_music.dart';
 import 'package:youmusic_mobile/ui/home/tabs/all/provider.dart';
+import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
 
 class AllTabPage extends StatelessWidget {
@@ -28,11 +30,18 @@ class AllTabPage extends StatelessWidget {
                     mainAxisSpacing: 8,
                     children: provider.loader.list.map((e) {
                       return MusicItem(
-                        music: e,
-                        onTap: (music) {
-                          playProvider.loadMusic(music);
-                        },
-                      );
+                          music: e,
+                          onTap: (music) {
+                            playProvider.loadMusic(music);
+                          },
+                          onLongPress: (music) {
+                            HapticFeedback.selectionClick();
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => MusicMetaInfo(
+                                      music: music,
+                                    ));
+                          });
                     }).toList(),
                   ),
                 ),

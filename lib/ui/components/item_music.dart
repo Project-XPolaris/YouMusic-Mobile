@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:youmusic_mobile/api/entites.dart';
-import 'package:youmusic_mobile/config.dart';
 
 class MusicItem extends StatelessWidget {
   final Music music;
   final Function(Music) onTap;
-  const MusicItem({Key key, this.music, this.onTap}) : super(key: key);
+  final Function(Music) onLongPress;
+
+  const MusicItem({Key key, this.music, this.onTap, this.onLongPress}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    String cover;
-    if (music.album != null){
-      cover = ApplicationConfig.apiUrl + music.album.cover;
-    }
-
-    String artist = "unknown";
-    if (music.artist != null && music.artist.length != 0){
-      artist = music.artist.map((e) => e.name).join("/");
-    }
     return GestureDetector(
       onTap: (){
         if (onTap != null){
           onTap(music);
         }
       },
+      onLongPress: (){
+        if (onLongPress != null){
+          onLongPress(music);
+        }
+      },
       child: Container(
+        width: 110,
+        height: 200,
         child: Column(
           children: [
             AspectRatio(
@@ -61,7 +60,7 @@ class MusicItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(music.title,style: TextStyle(color: Colors.white),softWrap: false,),
-                      Text(artist,style: TextStyle(color: Colors.white54),softWrap: false,)
+                      Text(music.getArtistString("Unknown"),style: TextStyle(color: Colors.white54),softWrap: false,)
                     ],
                   ),
                 ),

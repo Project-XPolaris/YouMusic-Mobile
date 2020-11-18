@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/ui/album/album.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/home/tabs/album/provider.dart';
+import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
 
 class AlbumTabPage extends StatelessWidget {
@@ -30,6 +32,14 @@ class AlbumTabPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(builder: (context) => AlbumPage(id: album.id,)),
                       );
+                    },
+                    onLongPress: (album) {
+                      HapticFeedback.selectionClick();
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) => AlbumMetaInfo(
+                            album: album,
+                          ));
                     },
                   );
                 }).toList(),

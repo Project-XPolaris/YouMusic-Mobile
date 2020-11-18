@@ -4,18 +4,25 @@ import 'package:youmusic_mobile/api/entites.dart';
 class ArtistItem extends StatelessWidget {
   final Artist artist;
   final Function(Artist) onTap;
-
-  const ArtistItem({Key key, this.artist, this.onTap}) : super(key: key);
+  final Function(Artist) onLongPress;
+  const ArtistItem({Key key, this.artist, this.onTap, this.onLongPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 110,
+      height: 200,
       child: Column(
         children: [
           GestureDetector(
             onTap: () {
               if (onTap != null) {
                 onTap(artist);
+              }
+            },
+            onLongPress: (){
+              if (onLongPress != null){
+                onLongPress(artist);
               }
             },
             child: Container(
