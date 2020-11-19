@@ -6,6 +6,7 @@ import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/artist/provider.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/home/album-list/album_list.dart';
+import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 
 class ArtistPage extends StatefulWidget {
@@ -239,7 +240,9 @@ class _ArtistPageState extends State<ArtistPage> {
                   ),
                 ),
               ),
-            ));
+            ),
+              bottomNavigationBar: PlayBar(),
+            );
           });
         }));
   }

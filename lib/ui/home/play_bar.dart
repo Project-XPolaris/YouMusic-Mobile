@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/config.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/play/play.dart';
+import 'package:youmusic_mobile/ui/playlist/playlist.dart';
 
 class PlayBar extends StatelessWidget {
   @override
@@ -95,7 +96,16 @@ class PlayBar extends StatelessWidget {
                         ),
                       ),
                     );
-                  })
+                  }),
+              IconButton(
+                icon: Icon(Icons.playlist_play, color: Colors.white),
+                iconSize: 28,
+                onPressed: (){
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) => PlaylistModal());
+                },
+              ),
             ],
           );
         });

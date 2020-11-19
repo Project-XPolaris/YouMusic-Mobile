@@ -9,7 +9,6 @@ enum PlayStatus { Play, Pause }
 
 class PlayProvider extends ChangeNotifier {
   final assetsAudioPlayer = AssetsAudioPlayer.withId("music");
-  Playlist playlist = Playlist(audios: []);
 
   loadMusic(Music music) {
     var audio =
@@ -47,9 +46,10 @@ class PlayProvider extends ChangeNotifier {
   }
 
   playPlaylist(List<Audio> audios, {bool append = false}) {
-    print("add ${audios.length} to playlist");
     if (append) {
-      assetsAudioPlayer.playlist.addAll(audios);
+      audios.forEach((element) {
+        assetsAudioPlayer.playlist.add(element);
+      });
     } else {
       assetsAudioPlayer.open(Playlist(audios: audios),
           showNotification: true, loopMode: LoopMode.playlist);

@@ -1,26 +1,18 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/play/slider.dart';
 import 'package:youmusic_mobile/ui/playlist/playlist.dart';
+import 'package:youmusic_mobile/utils/icons.dart';
 import 'package:youmusic_mobile/utils/time.dart';
 
 class PlayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    getLoopIcon(LoopMode mode) {
-      if(mode == LoopMode.playlist){
-        return Icons.loop;
-      }
-      if (mode == LoopMode.single){
-        return Icons.repeat_one_outlined;
-      }
-      if (mode == LoopMode.none){
-        return Icons.repeat;
-      }
-    }
+
 
     return Consumer<PlayProvider>(builder: (context, provider, child) {
       return Scaffold(
@@ -36,14 +28,15 @@ class PlayPage extends StatelessWidget {
             return Builder(
               builder: (buildContext){
                 return Padding(
-                  padding: EdgeInsets.only(top: 32, left: 36, right: 36),
+                  padding: EdgeInsets.only(top: 16, left: 36, right: 36),
                   child: Column(
                     children: [
                       Container(
+                        width: 360,
+                        height: 360,
                         child: Image.network(current.audio.audio.metas.image.path),
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
-                            color: Colors.white70,
                             shape: BoxShape.rectangle,
                             borderRadius: BorderRadius.all(Radius.circular(16.0))),
                       ),
@@ -54,33 +47,44 @@ class PlayPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
+                            Container(
+                              height: 48,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    current.audio.audio.metas.title,
+                                    style: TextStyle(
+                                        color: Colors.pinkAccent,
+                                        fontSize: 28,),
+                                    softWrap: false,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 32,
                               child: Text(
-                                current.audio.audio.metas.title,
+                                current.audio.audio.metas.artist,
                                 style: TextStyle(
-                                    color: Colors.pinkAccent,
-                                    fontSize: 28,
+                                    color: Colors.white,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w300),
                                 softWrap: false,
                               ),
                             ),
-                            Text(
-                              current.audio.audio.metas.artist,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                              softWrap: false,
-                            ),
-                            Text(
-                              current.audio.audio.metas.album,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                              softWrap: false,
+                            Container(
+                              height: 32,
+                              child: Text(
+                                current.audio.audio.metas.album,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w300),
+                                softWrap: false,
+                              ),
                             )
+
                           ],
                         ),
                       ),
@@ -128,7 +132,6 @@ class PlayPage extends StatelessWidget {
                                   stream: provider.assetsAudioPlayer.loopMode,
                                   builder:(context, asyncSnapshot){
                                     LoopMode loopMode = asyncSnapshot.data;
-                                    print(loopMode);
                                     return IconButton(
                                       icon: Icon(getLoopIcon(loopMode),
                                           color: Colors.white),

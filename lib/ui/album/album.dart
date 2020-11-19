@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album/provider.dart';
+import 'package:youmusic_mobile/ui/home/play_bar.dart';
 
 class AlbumPage extends StatelessWidget {
   final int id;
@@ -129,6 +130,7 @@ class AlbumPage extends StatelessWidget {
                   );
                 },
               ),
+              bottomNavigationBar: PlayBar(),
             );
           });
         })

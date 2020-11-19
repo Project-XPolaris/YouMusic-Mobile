@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/components/item_album_list.dart';
 import 'package:youmusic_mobile/ui/home/album-list/provider.dart';
+import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
 
 class AlbumListPage extends StatelessWidget {
@@ -37,6 +38,7 @@ class AlbumListPage extends StatelessWidget {
                   }).toList(),
                 ),
               ),
+              bottomNavigationBar: PlayBar(),
             );
           });
         }));
