@@ -32,7 +32,7 @@ class AllTabPage extends StatelessWidget {
                       return MusicItem(
                           music: e,
                           onTap: (music) {
-                            playProvider.loadMusic(music);
+                            playProvider.playMusic(music);
                           },
                           onLongPress: (music) {
                             HapticFeedback.selectionClick();

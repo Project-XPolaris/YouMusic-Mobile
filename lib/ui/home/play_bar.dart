@@ -38,6 +38,7 @@ class PlayBar extends StatelessWidget {
               ),
             );
           }
+          playProvider.onCurrentChange(current);
           return Row(
             children: [
               GestureDetector(
@@ -50,7 +51,7 @@ class PlayBar extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Container(
-                    child: Image.network(current.audio.audio.metas.image.path),
+                    child: Image.network(current.audio.audio.metas.image.path,fit: BoxFit.cover,),
                   ),
                 ),
               ),
@@ -85,7 +86,7 @@ class PlayBar extends StatelessWidget {
                       child: Center(
                         child: IconButton(
                           icon: Icon(
-                            isPlaying ? Icons.pause : Icons.play_arrow,
+                            (isPlaying ?? false) ? Icons.pause : Icons.play_arrow,
                             size: 28,
                             color: Colors.white,
                           ),

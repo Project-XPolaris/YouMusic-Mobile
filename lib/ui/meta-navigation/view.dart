@@ -21,28 +21,37 @@ class MetaNavigation extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.network(cover),
+                  Image.network(cover,fit: BoxFit.cover, width: 64,height: 64,),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title ?? "",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16),
-                        ),
-                        Text(
-                          title2 ?? "",
-                          style: TextStyle(color: Colors.white70, fontSize: 14),
-                        ),
-                        Text(
-                          title3 ?? "",
-                          style: TextStyle(color: Colors.white70, fontSize: 14),
-                        )
-                      ],
+                    child: Container(
+                      width: 260,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title ?? "",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
+                            softWrap: false,
+                            overflow: TextOverflow.fade,
+                          ),
+                          Text(
+                            title2 ?? "",
+                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                            softWrap: false,
+                            overflow: TextOverflow.fade,
+                          ),
+                          Text(
+                            title3 ?? "",
+                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                            softWrap: false,
+                            overflow: TextOverflow.fade,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -96,9 +105,14 @@ class MetaItem extends StatelessWidget {
             ,
             Padding(
               padding: EdgeInsets.only(left: 16),
-              child: Text(
-                title,
-                style: TextStyle(color: Colors.white, fontSize: 14),
+              child: Container(
+                width: 260,
+                child: Text(
+                  title,
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  softWrap: false,
+                  overflow: TextOverflow.clip,
+                ),
               ),
             )
           ],

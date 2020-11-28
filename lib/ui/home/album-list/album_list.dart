@@ -31,9 +31,13 @@ class AlbumListPage extends StatelessWidget {
                 child: ListView(
                   controller: _controller,
                   children:provider.loader.list.map((album) {
-                    return Container(
-                      margin: EdgeInsets.only(bottom: 16),
-                      child: AlbumListItem(album: album,),
+                    return ListTile(
+                      title: Text(album.name,style: TextStyle(color: Colors.white),),
+                      subtitle: Text(album.getArtist("Unknown"),style: TextStyle(color: Colors.white54,fontSize: 12)),
+                      leading: AspectRatio(
+                        aspectRatio: 1,
+                        child: Image.network(album.getCoverUrl(),fit: BoxFit.cover,),
+                      ),
                     );
                   }).toList(),
                 ),

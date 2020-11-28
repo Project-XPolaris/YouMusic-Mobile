@@ -6,17 +6,19 @@ class MusicItem extends StatelessWidget {
   final Function(Music) onTap;
   final Function(Music) onLongPress;
 
-  const MusicItem({Key key, this.music, this.onTap, this.onLongPress}) : super(key: key);
+  const MusicItem({Key key, this.music, this.onTap, this.onLongPress})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        if (onTap != null){
+      onTap: () {
+        if (onTap != null) {
           onTap(music);
         }
       },
-      onLongPress: (){
-        if (onLongPress != null){
+      onLongPress: () {
+        if (onLongPress != null) {
           onLongPress(music);
         }
       },
@@ -32,23 +34,20 @@ class MusicItem extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.white70,
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))
-                  ),
-                  child: Image(
-                    image: NetworkImage(music.getCoverUrl()),
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace stackTrace) {
-                      return Container(
-                        child: Center(
-                          child: Icon(
-                            Icons.music_note,
-                            size: 48,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: music.getCoverUrl() != null
+                      ? Image(
+                          image: NetworkImage(music.getCoverUrl()),
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          child: Center(
+                            child: Icon(
+                              Icons.music_note,
+                              size: 48,
+                            ),
                           ),
                         ),
-
-                      );
-                    },
-                  ),
                 )),
             Expanded(
               child: Padding(
@@ -59,8 +58,16 @@ class MusicItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(music.title,style: TextStyle(color: Colors.white),softWrap: false,),
-                      Text(music.getArtistString("Unknown"),style: TextStyle(color: Colors.white54),softWrap: false,)
+                      Text(
+                        music.title,
+                        style: TextStyle(color: Colors.white),
+                        softWrap: false,
+                      ),
+                      Text(
+                        music.getArtistString("Unknown"),
+                        style: TextStyle(color: Colors.white54),
+                        softWrap: false,
+                      )
                     ],
                   ),
                 ),

@@ -31,9 +31,13 @@ class MusicListPage extends StatelessWidget {
                     child: ListView(
                       controller: _controller,
                       children:provider.loader.list.map((music) {
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 16),
-                          child: MusicListItem(music: music,),
+                        return ListTile(
+                          title: Text(music.title + " - " + music.getArtistString(""),style: TextStyle(color: Colors.white),),
+                          subtitle: Text(music.getAlbumName("Unknown"),style: TextStyle(color: Colors.white54,fontSize: 12)),
+                          leading: AspectRatio(
+                            aspectRatio: 1,
+                            child: Image.network(music.getCoverUrl(),fit: BoxFit.cover,),
+                          ),
                         );
                       }).toList(),
                     ),

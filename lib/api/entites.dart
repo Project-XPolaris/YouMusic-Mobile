@@ -62,7 +62,9 @@ class Album {
     }
   }
   getCoverUrl() {
-    return "${ApplicationConfig.apiUrl}$cover";
+    if (cover != null){
+      return "${ApplicationConfig.apiUrl}$cover";
+    }
   }
 
   getArtist(String defaultValue){

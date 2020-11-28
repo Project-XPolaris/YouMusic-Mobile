@@ -52,6 +52,13 @@ class AlbumMetaInfo extends StatelessWidget {
             );
           }),
           MetaItem(
+              title: "Play",
+              icon: Icons.play_arrow,
+              onTap: () {
+                Navigator.pop(context);
+                provider.playAlbum(album.id);
+              }),
+          MetaItem(
               title: "Add to playlist",
               icon: Icons.playlist_add,
               onTap: () {

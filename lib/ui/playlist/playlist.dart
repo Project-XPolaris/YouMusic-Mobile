@@ -63,22 +63,21 @@ class PlaylistModal extends StatelessWidget {
                           return Dismissible(
                             key: UniqueKey(),
                             onDismissed: (data){
-                              provider.assetsAudioPlayer.playlist.removeAtIndex(index);
+                              provider.removeFromPlayList(index, audio.metas.id);
                             },
-                            child: InkWell(
-                              onTap: () {
+                            child: ListTile(
+                              title: Text(audio.metas.title,style: TextStyle(color: Colors.white),softWrap: false,),
+                              subtitle: Text(audio.metas.album,style: TextStyle(color: Colors.white54,fontSize: 12)),
+                              leading: AspectRatio(
+                                aspectRatio: 1,
+                                child: Image.network(audio.metas.image.path,fit: BoxFit.cover,),
+                              ),
+                              dense: true,
+                              selected: currentIndex == index,
+                              selectedTileColor: Colors.pink,
+                              onTap: (){
                                 provider.assetsAudioPlayer.playlistPlayAtIndex(index);
                               },
-                              child: Container(
-                                height: 48,
-                                child: Row(
-                                  children: [
-                                    Text(audio.metas.title,
-                                        style: TextStyle(
-                                            color: currentIndex == index?Colors.pink:Colors.white, fontSize: 16))
-                                  ],
-                                ),
-                              ),
                             ),
                           );
                         },

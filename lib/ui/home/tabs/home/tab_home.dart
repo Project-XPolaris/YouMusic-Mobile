@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
+import 'package:youmusic_mobile/ui/album/album.dart';
+import 'package:youmusic_mobile/ui/artist/artist.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/components/item_artist.dart';
 import 'package:youmusic_mobile/ui/components/item_music.dart';
@@ -46,6 +48,15 @@ class HomeTabPage extends StatelessWidget {
                           padding: EdgeInsets.only(right: 16),
                           child: AlbumItem(
                             album: e,
+                            onTap: (album) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AlbumPage(
+                                      id: e.id,
+                                    )),
+                              );
+                            },
                             onLongPress: (album) {
                               HapticFeedback.selectionClick();
                               showModalBottomSheet(
@@ -67,6 +78,15 @@ class HomeTabPage extends StatelessWidget {
                             padding: EdgeInsets.only(right: 16),
                             child: ArtistItem(
                                 artist: e,
+                                onTap: (music) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ArtistPage(
+                                          id: e.id,
+                                        )),
+                                  );
+                                },
                                 onLongPress: (artist) {
                                   HapticFeedback.selectionClick();
                                   showModalBottomSheet(
@@ -89,7 +109,7 @@ class HomeTabPage extends StatelessWidget {
                             child: MusicItem(
                                 music: e,
                                 onTap: (music) {
-                                  playProvider.loadMusic(music);
+                                  playProvider.playMusic(music);
                                 },
                                 onLongPress: (music) {
                                   HapticFeedback.selectionClick();

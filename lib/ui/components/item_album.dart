@@ -38,19 +38,16 @@ class AlbumItem extends StatelessWidget {
                       color: Colors.white70,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  child: Image(
+                  child: album.cover != null ?Image(
                     image: NetworkImage(album.getCoverUrl()),
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace stackTrace) {
-                      return Container(
-                        child: Center(
-                          child: Icon(
-                            Icons.music_note,
-                            size: 48,
-                          ),
-                        ),
-                      );
-                    },
+                    fit: BoxFit.cover,
+                  ):Container(
+                    child: Center(
+                      child: Icon(
+                        Icons.music_note,
+                        size: 48,
+                      ),
+                    ),
                   ),
                 )),
           ),
