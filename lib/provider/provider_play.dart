@@ -46,26 +46,26 @@ class PlayProvider extends ChangeNotifier {
 
   init() async {
     prefs = await SharedPreferences.getInstance();
-    List<String> savePlaylist = prefs.getStringList("savePlaylist") ?? [];
-    int currentIndex = prefs.getInt("currentIndex") ?? 0;
-    if (savePlaylist.length == 0) {
-      return;
-    }
-    var musicListResponse = await ApiClient().fetchMusicList({
-      "ids": savePlaylist.join(","),
-      "pageSize": savePlaylist.length.toString()
-    });
-    _addToPlaylist(_createAudioListFromMusicList(musicListResponse.data),
-        append: true, notice: true);
-    if (currentIndex != 0) {
-      assetsAudioPlayer.playlistPlayAtIndex(currentIndex);
-    }
+    // List<String> savePlaylist = prefs.getStringList("savePlaylist") ?? [];
+    // int currentIndex = prefs.getInt("currentIndex") ?? 0;
+    // if (savePlaylist.length == 0) {
+    //   return;
+    // }
+    // var musicListResponse = await ApiClient().fetchMusicList({
+    //   "ids": savePlaylist.join(","),
+    //   "pageSize": savePlaylist.length.toString()
+    // });
+    // _addToPlaylist(_createAudioListFromMusicList(musicListResponse.data),
+    //     append: true, notice: true);
+    // if (currentIndex != 0) {
+    //   assetsAudioPlayer.playlistPlayAtIndex(currentIndex);
+    // }
   }
 
   _createAudioListFromMusicList(List<Music> musicList) {
     var audios = musicList.map((music) {
       var audio =
-          Audio.network("${ApplicationConfig.apiUrl}/file/audio/${music.id}",
+          Audio.network("${ApplicationConfig().serviceUrl}/file/audio/${music.id}",
               metas: Metas(
                 id: music.id.toString(),
                 title: music.title,

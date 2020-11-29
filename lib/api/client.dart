@@ -8,7 +8,7 @@ class ApiClient {
   factory ApiClient() {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest:(RequestOptions options) async {
-        options.baseUrl = ApplicationConfig.apiUrl;
+        options.baseUrl = ApplicationConfig().serviceUrl;
         return options; //continue
       },
     ));

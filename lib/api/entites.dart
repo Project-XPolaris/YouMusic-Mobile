@@ -63,7 +63,7 @@ class Album {
   }
   getCoverUrl() {
     if (cover != null){
-      return "${ApplicationConfig.apiUrl}$cover";
+      return "${ApplicationConfig().serviceUrl}$cover";
     }
   }
 
@@ -88,7 +88,7 @@ class Artist {
   }
   getAvatarUrl(){
     if (avatar != null){
-      return ApplicationConfig.apiUrl + avatar;
+      return ApplicationConfig().serviceUrl + avatar;
     }
   }
 }

@@ -21,8 +21,6 @@ class PlayBar extends StatelessWidget {
       );
     });
   }
-
-
   Widget buildMusicView(BuildContext context, PlayProvider playProvider) {
     return StreamBuilder(
         stream: playProvider.assetsAudioPlayer.current,
