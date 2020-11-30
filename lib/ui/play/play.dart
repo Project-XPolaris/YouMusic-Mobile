@@ -113,7 +113,7 @@ class PlayPage extends StatelessWidget {
                                       builder: (context, asyncSnapshot) {
                                         final Playing playing = asyncSnapshot.data;
                                         return Text(
-                                          formatDuration(playing.audio.duration),
+                                          formatDuration(playing.audio.audio.metas.extra["duration"]),
                                           style: TextStyle(color: Colors.white),
                                         );
                                       }),

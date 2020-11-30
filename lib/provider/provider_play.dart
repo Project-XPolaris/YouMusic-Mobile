@@ -71,6 +71,9 @@ class PlayProvider extends ChangeNotifier {
                 title: music.title,
                 artist: music.getArtistString("Unknown"),
                 album: music.getAlbumName("Unknown"),
+                extra: {
+                  "duration":Duration(seconds: music.duration.toInt())
+                },
                 image: MetasImage.network(
                     music.getCoverUrl()), //can be MetasImage.network
               ));

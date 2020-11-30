@@ -22,11 +22,12 @@ class _PlaySliderState extends State<PlaySlider> {
 
               }
               Duration currentPlayPosition = asyncSnapshot.data ?? Duration();
+              // print(currentPlayPosition);
               Duration totalDuration = provider
-                  .assetsAudioPlayer.current.value.audio.duration;
-              print(provider
-                  .assetsAudioPlayer.current.value.audio.duration);
-              print(currentValue < 0?currentPlayPosition.inSeconds.toDouble():currentValue);
+                  .assetsAudioPlayer.current.value.audio.audio.metas.extra["duration"];
+              // print(provider
+              //     .assetsAudioPlayer.current.value.audio.audio.metas.extra["duration"]);
+              // print(currentValue < 0?currentPlayPosition.inSeconds.toDouble():currentValue);
               return SliderTheme(
                 data: SliderThemeData(
                   thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
@@ -43,7 +44,7 @@ class _PlaySliderState extends State<PlaySlider> {
                     });
                   },
                   onChangeEnd: (value){
-                    print(value);
+                    print("jump to ${value}");
                     provider.assetsAudioPlayer.seek(Duration(seconds: value.toInt()));
                     setState(() {
                       currentValue = -1;

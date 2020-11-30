@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:youmusic_mobile/api/entites.dart';
-import 'package:youmusic_mobile/config.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/artist/provider.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
@@ -26,17 +24,6 @@ class _ArtistPageState extends State<ArtistPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScrollController _controller = new ScrollController();
-    _controller.addListener(() {
-      var maxScroll = _controller.position.maxScrollExtent;
-      var pixel = _controller.position.pixels;
-      if (pixel + 25 <= 255) {
-        setState(() {
-          headAlpha = pixel.toInt() + 25;
-        });
-      }
-      print(pixel);
-    });
     return ChangeNotifierProvider<ArtistProvider>(
         create: (_) => ArtistProvider(id),
         child: Consumer<ArtistProvider>(builder: (context, provider, child) {
@@ -67,10 +54,13 @@ class _ArtistPageState extends State<ArtistPage> {
                             children: [
                               Container(
                                 width: double.infinity,
-                                child: Image.network(
-                                  provider.artist?.getAvatarUrl() ?? "",
-                                  fit: BoxFit.cover,
-                                  scale: 2,
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child:Image.network(
+                                    provider.artist?.getAvatarUrl() ?? "",
+                                    fit: BoxFit.cover,
+                                    scale: 2,
+                                  ) ,
                                 ),
                               ),
                               Container(

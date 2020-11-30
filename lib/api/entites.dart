@@ -5,14 +5,16 @@ class Music {
   String path;
   String title;
   Album album;
+  double duration;
   List<Artist> artist;
 
-  Music({this.id, this.path, this.title, this.album, this.artist});
+  Music({this.id, this.path, this.title, this.album, this.artist, this.duration});
 
   Music.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     path = json['path'];
     title = json['title'];
+    duration = json['duration'];
     album = json['album'] != null ? new Album.fromJson(json['album']) : null;
     if (json['artist'] != null) {
       artist = new List<Artist>();
