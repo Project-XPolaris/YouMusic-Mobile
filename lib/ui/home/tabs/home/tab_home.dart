@@ -109,7 +109,7 @@ class HomeTabPage extends StatelessWidget {
                             child: MusicItem(
                                 music: e,
                                 onTap: (music) {
-                                  playProvider.playMusic(music);
+                                  playProvider.playMusic(music,autoPlay: true);
                                 },
                                 onLongPress: (music) {
                                   HapticFeedback.selectionClick();

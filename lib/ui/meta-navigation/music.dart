@@ -17,7 +17,7 @@ class MusicMetaInfo extends StatelessWidget {
     return Consumer<PlayProvider>(builder: (context, provider, child) {
       List<Widget> items = [MetaItem(title: "Play",icon: Icons.play_arrow,onTap:(){
         Navigator.pop(context);
-        provider.playMusic(music);
+        provider.playMusic(music,autoPlay: true);
       }),MetaItem(title: "Add to play",icon: Icons.playlist_add,onTap:(){
         Navigator.pop(context);
         provider.addMusicToPlayList(music);

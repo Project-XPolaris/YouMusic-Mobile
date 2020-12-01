@@ -105,7 +105,7 @@ class AlbumPage extends StatelessWidget {
                                       color: Colors.white54, fontSize: 12)),
                               onTap: () {
                                 music.album = provider.album;
-                                playProvider.playMusic(music);
+                                playProvider.playMusic(music,autoPlay: true);
                               },
                               onLongPress: () {
                                 music.album = provider.album;

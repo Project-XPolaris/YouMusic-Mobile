@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:youmusic_mobile/api/entites.dart';
+import 'package:youmusic_mobile/ui/album-list/album_list.dart';
 import 'package:youmusic_mobile/ui/artist/artist.dart';
-import 'package:youmusic_mobile/ui/home/album-list/album_list.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/view.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 

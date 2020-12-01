@@ -95,12 +95,16 @@ class PlayProvider extends ChangeNotifier {
     _addToPlaylist(_createAudioListFromMusicList(response.data),
         append: false,
         insert: assetsAudioPlayer.current.value?.playlist?.currentIndex ?? 0);
+    assetsAudioPlayer.play();
   }
 
-  playMusic(Music music) {
+  playMusic(Music music,{autoPlay:false}) {
     _addToPlaylist(_createAudioListFromMusicList([music]),
         append: false,
         insert: assetsAudioPlayer.current.value?.playlist?.currentIndex ?? 0);
+    if (autoPlay){
+      assetsAudioPlayer.play();
+    }
   }
 
   addMusicToPlayList(Music music) {
