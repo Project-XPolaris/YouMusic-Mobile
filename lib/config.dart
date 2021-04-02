@@ -1,10 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApplicationConfig {
-  static final apiUrl = "http://192.168.31.193:3000";
   static final ApplicationConfig _singleton = ApplicationConfig._internal();
   String serviceUrl;
-
+  String token;
   factory ApplicationConfig() {
     return _singleton;
   }

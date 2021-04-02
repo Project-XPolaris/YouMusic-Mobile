@@ -1,100 +1,235 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youmusic_mobile/ui/home/home.dart';
+import 'package:youmusic_mobile/utils/login_history.dart';
 
-class InitPage extends StatelessWidget {
+import '../../config.dart';
+
+class InitPage extends StatefulWidget {
   final Function onRefresh;
 
   const InitPage({Key key, this.onRefresh}) : super(key: key);
+
+  @override
+  _InitPageState createState() => _InitPageState();
+}
+
+class _InitPageState extends State<InitPage> {
+  String inputUrl = "";
+  String inputUsername = "";
+  String inputPassword = "";
+  String loginMode = "history";
+
+  Future<bool> _init() async {
+    await LoginHistoryManager().refreshHistory();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _apiUrlInputController = TextEditingController();
-    _onFinishClick()async{
-      print(_apiUrlInputController.text);
-      var pref = await SharedPreferences.getInstance();
-      pref.setString("apiUrl", _apiUrlInputController.text);
-      onRefresh();
+    _onFinishClick() async {
+      ApplicationConfig().serviceUrl = inputUrl;
+      LoginHistoryManager().add(LoginHistory(
+        apiUrl: inputUrl,
+        username: "public"
+      ));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     }
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-
-            children: [
-              Container(
-                margin: EdgeInsets.only(),
-                child: Text(
-                  "YouMusic",
-                  style: TextStyle(color: Colors.pink, fontSize: 48),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 72),
-                child: Text(
-                  "from ProjectXPolaris",
-                  style: TextStyle(color: Colors.white54, fontSize: 12),
-                ),
-              ),
-              Text(
-                "在首次使用时需要一定的配置",
-                style: TextStyle(color: Colors.white54, fontSize: 16),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 32),
-                child: TextField(
-                  controller: _apiUrlInputController,
-                  style: TextStyle(color:Colors.white),
-                  cursorColor: Colors.white,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white
-                        )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white
-                          )
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white
-                          )
-                      ),
-                      focusColor: Colors.white,
-                      hintStyle: TextStyle(color: Colors.white),
-                      hintText: '服务端地址'),
-                ),
-              ),
-              Expanded(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _onFinishClick();
+        },
+        backgroundColor: Colors.pink,
+        child: Icon(Icons.chevron_right),
+      ),
+      body: FutureBuilder(
+          future: _init(),
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            if (snapshot.hasData) {
+              return Container(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 32),
-                  child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        FlatButton(
-                          onPressed: _onFinishClick,
-                          child: Text(
-                            "完成",
-                            style: TextStyle(color: Colors.pink),
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(),
+                        child: Text(
+                          "YouMusic",
+                          style: TextStyle(
+                            color: Colors.pink,
+                            fontSize: 48,
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 72),
+                        child: Text(
+                          "from ProjectXPolaris",
+                          style: TextStyle(color: Colors.white54, fontSize: 12),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  loginMode = "history";
+                                });
+                              },
+                              child: Text(
+                                "LoginHistory",
+                                style: TextStyle(
+                                    color: loginMode == "history"
+                                        ? Colors.white
+                                        : Colors.white54,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w300),
+                              )),
+                          TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  loginMode = "new";
+                                });
+                              },
+                              child: Text(
+                                "New Login",
+                                style: TextStyle(
+                                  color: loginMode == "new"
+                                      ? Colors.white
+                                      : Colors.white54,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ))
+                        ],
+                      ),
+                      Expanded(
+                          child: Padding(
+                        padding: EdgeInsets.only(
+                          top: 16,
+                        ),
+                        child: loginMode == "new"
+                            ? Column(
+                                children: [
+                                  TextField(
+                                    style: TextStyle(color: Colors.white),
+                                    cursorColor: Colors.white,
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white)),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white)),
+                                        focusColor: Colors.white,
+                                        hintStyle:
+                                            TextStyle(color: Colors.white),
+                                        hintText: 'Service URL'),
+                                    onChanged: (text) {
+                                      setState(() {
+                                        inputUrl = text;
+                                      });
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: TextField(
+                                      style: TextStyle(color: Colors.white),
+                                      cursorColor: Colors.white,
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          focusColor: Colors.white,
+                                          hintStyle:
+                                          TextStyle(color: Colors.white),
+                                          hintText: 'Username'),
+                                      onChanged: (text) {
+                                        setState(() {
+                                          inputUsername = text;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: TextField(
+                                      style: TextStyle(color: Colors.white),
+                                      cursorColor: Colors.white,
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          focusColor: Colors.white,
+                                          hintStyle:
+                                          TextStyle(color: Colors.white),
+                                          hintText: 'Password'),
+                                      onChanged: (text) {
+                                        setState(() {
+                                          inputPassword = text;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : ListView(
+                                children:
+                                    LoginHistoryManager().list.map((history) {
+                                  return Container(
+                                    margin: EdgeInsets.only(bottom: 8),
+                                    child: ListTile(
+                                      onTap: () {
+                                        var config = ApplicationConfig();
+                                        config.token = history.token;
+                                        config.serviceUrl = history.apiUrl;
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomePage()));
+                                      },
+                                      leading: CircleAvatar(
+                                        backgroundColor: Colors.pink,
+                                        child: Icon(Icons.person,color: Colors.white,),
+                                      ),
+                                      title: Text(history.username,style: TextStyle(color: Colors.white),),
+                                      subtitle: Text(history.apiUrl,style: TextStyle(color: Colors.white70),),
+
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                      )),
+                    ],
                   ),
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              );
+            }
+            return Container();
+          }),
     );
   }
 }
