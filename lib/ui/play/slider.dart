@@ -24,7 +24,7 @@ class _PlaySliderState extends State<PlaySlider> {
               Duration currentPlayPosition = asyncSnapshot.data ?? Duration();
               // print(currentPlayPosition);
               Duration totalDuration = provider
-                  .assetsAudioPlayer.current.value.audio.audio.metas.extra["duration"];
+                  .assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.extra["duration"];
               // print(provider
               //     .assetsAudioPlayer.current.value.audio.audio.metas.extra["duration"]);
               // print(currentValue < 0?currentPlayPosition.inSeconds.toDouble():currentValue);

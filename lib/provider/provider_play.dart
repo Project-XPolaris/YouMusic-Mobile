@@ -94,14 +94,14 @@ class PlayProvider extends ChangeNotifier {
         .fetchMusicList({"pageSize": "100", "album": albumId.toString()});
     _addToPlaylist(_createAudioListFromMusicList(response.data),
         append: false,
-        insert: assetsAudioPlayer.current.value?.playlist?.currentIndex ?? 0);
+        insert: assetsAudioPlayer.current.valueWrapper?.value?.playlist?.currentIndex ?? 0);
     assetsAudioPlayer.play();
   }
 
   playMusic(Music music,{autoPlay:false}) {
     _addToPlaylist(_createAudioListFromMusicList([music]),
         append: false,
-        insert: assetsAudioPlayer.current.value?.playlist?.currentIndex ?? 0);
+        insert: assetsAudioPlayer.current.valueWrapper?.value?.playlist?.currentIndex ?? 0);
     if (autoPlay){
       assetsAudioPlayer.play();
     }

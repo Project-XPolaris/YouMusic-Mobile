@@ -7,9 +7,9 @@ class ApiClient {
   static Dio _dio = new Dio();
   factory ApiClient() {
     _dio.interceptors.add(InterceptorsWrapper(
-      onRequest:(RequestOptions options) async {
+      onRequest:(RequestOptions options, RequestInterceptorHandler handler) async {
         options.baseUrl = ApplicationConfig().serviceUrl;
-        return options; //continue
+        handler.next(options);
       },
     ));
     return _instance;
