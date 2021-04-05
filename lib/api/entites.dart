@@ -95,6 +95,14 @@ class Artist {
   }
 }
 
+class ServiceInfo {
+  String authUrl;
+  String name;
+  ServiceInfo.fromJson(Map<String, dynamic> json) {
+    authUrl = json['authUrl'];
+    name = json['name'];
+  }
+}
 class ListResponseWrap<T> {
   int count;
   List<T> data;

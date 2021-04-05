@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:youmusic_mobile/api/entites.dart';
 import 'package:youmusic_mobile/config.dart';
@@ -38,9 +39,18 @@ class AlbumItem extends StatelessWidget {
                       color: Colors.white70,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  child: album.cover != null ?Image(
-                    image: NetworkImage(album.getCoverUrl()),
-                    fit: BoxFit.cover,
+                  child: album.cover != null ?CachedNetworkImage(
+                    imageUrl: album.getCoverUrl(),
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.music_note_rounded),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ):Container(
                     child: Center(
                       child: Icon(

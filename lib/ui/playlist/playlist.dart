@@ -59,25 +59,30 @@ class PlaylistModal extends StatelessWidget {
                         itemCount: provider.assetsAudioPlayer.playlist.audios.length,
                         itemBuilder: (context,index){
                           Audio audio = provider.assetsAudioPlayer.playlist.audios[index];
-                          int currentIndex = current.playlist.currentIndex;
+                          int currentIndex = 0;
+                          print(currentIndex == index);
+                          if (current != null) {
+                            currentIndex = current.index;
+                          }
                           return Dismissible(
                             key: UniqueKey(),
                             onDismissed: (data){
                               provider.removeFromPlayList(index, audio.metas.id);
                             },
-                            child: ListTile(
-                              title: Text(audio.metas.title,style: TextStyle(color: Colors.white),softWrap: false,),
-                              subtitle: Text(audio.metas.album,style: TextStyle(color: Colors.white54,fontSize: 12)),
-                              leading: AspectRatio(
-                                aspectRatio: 1,
-                                child: Image.network(audio.metas.image.path,fit: BoxFit.cover,),
+                            child: Container(
+                              color: currentIndex == index?Colors.pink:null,
+                              child: ListTile(
+                                title: Text(audio.metas.title,style: TextStyle(color: Colors.white),softWrap: false,),
+                                subtitle: Text(audio.metas.album,style: TextStyle(color: Colors.white54,fontSize: 12)),
+                                leading: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Image.network(audio.metas.image.path,fit: BoxFit.cover,),
+                                ),
+                                dense: true,
+                                onTap: (){
+                                  provider.assetsAudioPlayer.playlistPlayAtIndex(index);
+                                },
                               ),
-                              dense: true,
-                              selected: currentIndex == index,
-                              selectedTileColor: Colors.pink,
-                              onTap: (){
-                                provider.assetsAudioPlayer.playlistPlayAtIndex(index);
-                              },
                             ),
                           );
                         },

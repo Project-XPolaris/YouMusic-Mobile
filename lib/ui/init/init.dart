@@ -1,14 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youmusic_mobile/api/client.dart';
 import 'package:youmusic_mobile/ui/home/home.dart';
 import 'package:youmusic_mobile/utils/login_history.dart';
 
 import '../../config.dart';
 
 class InitPage extends StatefulWidget {
-  final Function onRefresh;
-
-  const InitPage({Key key, this.onRefresh}) : super(key: key);
+  const InitPage() : super();
 
   @override
   _InitPageState createState() => _InitPageState();
@@ -28,13 +28,35 @@ class _InitPageState extends State<InitPage> {
   @override
   Widget build(BuildContext context) {
     _onFinishClick() async {
-      ApplicationConfig().serviceUrl = inputUrl;
-      LoginHistoryManager().add(LoginHistory(
-        apiUrl: inputUrl,
-        username: "public"
-      ));
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+      SharedPreferences sharedPreferences =
+      await SharedPreferences.getInstance();
+      sharedPreferences.setString("apiUrl", inputUrl);
+      await ApplicationConfig().loadConfig();
+      var info = await ApiClient().fetchInfo();
+      if (inputUsername.isEmpty && inputPassword.isEmpty) {
+        // without login
+        ApplicationConfig().token = "";
+        LoginHistoryManager()
+            .add(LoginHistory(apiUrl: inputUrl, username: "public", token: ""));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+        return;
+      }
+      // login with account
+      Dio dio = new Dio();
+      var response = await dio.post(info.authUrl, data: {
+        "username": inputUsername,
+        "password": inputPassword,
+      });
+      if (response.data["success"]) {
+        ApplicationConfig().token = response.data["token"];
+        LoginHistoryManager().add(LoginHistory(
+            apiUrl: inputUrl,
+            username: inputUsername,
+            token: response.data["token"]));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      }
     }
 
     return Scaffold(

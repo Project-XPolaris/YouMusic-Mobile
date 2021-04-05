@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youmusic_mobile/index.dart';
@@ -41,24 +42,21 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.white
+    ));
     return FutureBuilder(
       future: getSP(),
       builder: (BuildContext context, AsyncSnapshot<bool> data) {
         if (data.hasData) {
-          var view = data.data
-              ? InitPage(onRefresh: () {
-                  setState(() {
-                    refreshToken = UniqueKey();
-                  });
-                })
-              : IndexPage();
-
           return MaterialApp(
             title: 'YouMusic',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               // This is the theme of your application.
-              //
+              appBarTheme: AppBarTheme(
+                brightness: Brightness.dark
+              ),
               // Try running your application with "flutter run". You'll see the
               // application has a blue toolbar. Then, without quitting the app, try
               // changing the primarySwatch below to Colors.green and then invoke
@@ -66,13 +64,12 @@ class MyAppState extends State<MyApp> {
               // or simply save your changes to "hot reload" in a Flutter IDE).
               // Notice that the counter didn't reset back to zero; the application
               // is not restarted.
-              primarySwatch: Colors.blue,
               // This makes the visual density adapt to the platform that you run
               // the app on. For desktop platforms, the controls will be smaller and
               // closer together (more dense) than on mobile platforms.
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: view,
+            home: InitPage(),
           );
         }
         return Container();

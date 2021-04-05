@@ -27,10 +27,8 @@ class PlayProvider extends ChangeNotifier {
   _addToPlaylist(List<Audio> audios,
       {bool append = false, int insert = 0, bool notice = true}) async {
     if (assetsAudioPlayer.playlist == null) {
-      assetsAudioPlayer.open(
-          Playlist(audios: audios),
-          showNotification: notice, autoStart: false
-      );
+      assetsAudioPlayer.open(Playlist(audios: audios),
+          showNotification: notice, autoStart: false);
     } else {
       if (append) {
         audios.forEach((element) {
@@ -64,19 +62,17 @@ class PlayProvider extends ChangeNotifier {
 
   _createAudioListFromMusicList(List<Music> musicList) {
     var audios = musicList.map((music) {
-      var audio =
-          Audio.network("${ApplicationConfig().serviceUrl}/file/audio/${music.id}",
-              metas: Metas(
-                id: music.id.toString(),
-                title: music.title,
-                artist: music.getArtistString("Unknown"),
-                album: music.getAlbumName("Unknown"),
-                extra: {
-                  "duration":Duration(seconds: music.duration.toInt())
-                },
-                image: MetasImage.network(
-                    music.getCoverUrl()), //can be MetasImage.network
-              ));
+      var audio = Audio.network(
+          "${ApplicationConfig().serviceUrl}/file/audio/${music.id}",
+          metas: Metas(
+            id: music.id.toString(),
+            title: music.title,
+            artist: music.getArtistString("Unknown"),
+            album: music.getAlbumName("Unknown"),
+            extra: {"duration": Duration(seconds: music.duration.toInt())},
+            image: MetasImage.network(
+                music.getCoverUrl()), //can be MetasImage.network
+          ));
       return audio;
     }).toList();
     return audios;
@@ -86,29 +82,47 @@ class PlayProvider extends ChangeNotifier {
     ListResponseWrap<Music> response = await ApiClient()
         .fetchMusicList({"pageSize": "100", "album": albumId.toString()});
     List<Audio> audios = _createAudioListFromMusicList(response.data);
-    _addToPlaylist(audios, append: true);
+    if (assetsAudioPlayer.playlist == null) {
+      assetsAudioPlayer.open(Playlist(audios: audios),
+          showNotification: true, autoStart: false);
+      return;
+    }
+    int playIndex = assetsAudioPlayer.current.valueWrapper.value.index;
+    Audio currentPlayAudio = assetsAudioPlayer.playlist.audios[playIndex];
+    int existIndex = audios.indexWhere((element) => element.metas.id == currentPlayAudio.metas.id);
+    if (existIndex == -1) {
+      audios.reversed.forEach((audio) {
+        assetsAudioPlayer.playlist.insert(playIndex + 1, audio);
+      });
+    }
   }
 
   playAlbum(int albumId) async {
     ListResponseWrap<Music> response = await ApiClient()
         .fetchMusicList({"pageSize": "100", "album": albumId.toString()});
-    _addToPlaylist(_createAudioListFromMusicList(response.data),
-        append: false,
-        insert: assetsAudioPlayer.current.valueWrapper?.value?.playlist?.currentIndex ?? 0);
-    assetsAudioPlayer.play();
+    List<Audio> audios = _createAudioListFromMusicList(response.data);
+    assetsAudioPlayer.open(Playlist(audios: audios),
+        showNotification: true, autoStart: false);
   }
 
-  playMusic(Music music,{autoPlay:false}) {
+  playMusic(Music music, {autoPlay: false}) {
+    int index = assetsAudioPlayer
+        .current.valueWrapper?.value?.playlist?.currentIndex ?? 0;
+    assetsAudioPlayer.playlist.audios.removeWhere((element) => element.metas.id == music.id.toString());
     _addToPlaylist(_createAudioListFromMusicList([music]),
         append: false,
-        insert: assetsAudioPlayer.current.valueWrapper?.value?.playlist?.currentIndex ?? 0);
-    if (autoPlay){
+        insert: index + 1 ??
+            0);
+    if (autoPlay) {
+      assetsAudioPlayer.playlistPlayAtIndex(index + 1);
       assetsAudioPlayer.play();
     }
   }
 
   addMusicToPlayList(Music music) {
-    _addToPlaylist(_createAudioListFromMusicList([music]), append: true);
+    int playIndex = assetsAudioPlayer.current.valueWrapper.value.index;
+    assetsAudioPlayer.playlist.audios.removeWhere((element) => element.metas.id == music.id.toString());
+    _addToPlaylist(_createAudioListFromMusicList([music]), append: false,insert: playIndex + 1);
   }
 
   removeFromPlayList(int index, String id) {

@@ -25,6 +25,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(color: Colors.pink),
                 ),
                 backgroundColor: Colors.transparent,
+
                 elevation: 0,
                 // actions: [
                 //   PopupMenuButton(

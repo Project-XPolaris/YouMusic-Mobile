@@ -28,6 +28,7 @@ class AlbumPage extends StatelessWidget {
               body: FutureBuilder(
                 future: provider.loadData(),
                 builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                  print("build ====================");
                   return Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: ListView(
@@ -37,20 +38,25 @@ class AlbumPage extends StatelessWidget {
                               left: 64, right: 64, top: 16),
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: Container(
-                                width: 120,
-                                height: 120,
-                                child: Image.network(
-                                  provider.album.getCoverUrl(),
-                                  width: 120,
-                                  fit: BoxFit.cover,
-                                )),
+                            child: provider.album != null
+                                ? Container(
+                                    width: 120,
+                                    height: 120,
+                                    child: Image.network(
+                                      provider.album.getCoverUrl(),
+                                      width: 120,
+                                      fit: BoxFit.cover,
+                                    ))
+                                : Container(
+                                    width: 120,
+                                    height: 120,
+                                  ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 32),
                           child: Text(
-                            provider.album.name,
+                            provider.album?.name ?? "unknown",
                             style: TextStyle(color: Colors.pink, fontSize: 22),
                             textAlign: TextAlign.center,
                           ),
@@ -58,7 +64,7 @@ class AlbumPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 8, bottom: 64),
                           child: Text(
-                            provider.album.getArtist("Unknown"),
+                            provider.album?.getArtist("Unknown") ?? "Unknown",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -81,7 +87,7 @@ class AlbumPage extends StatelessWidget {
                               ),
                               IconButton(
                                 icon: Icon(
-                                  Icons.playlist_add,
+                                  Icons.play_arrow,
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
@@ -91,7 +97,7 @@ class AlbumPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        ...provider.album.music.map((music) {
+                        ...(provider.album?.music ?? []).map((music) {
                           return ListTile(
                               minVerticalPadding: 16,
                               title: Text(
@@ -105,7 +111,7 @@ class AlbumPage extends StatelessWidget {
                                       color: Colors.white54, fontSize: 12)),
                               onTap: () {
                                 music.album = provider.album;
-                                playProvider.playMusic(music,autoPlay: true);
+                                playProvider.playMusic(music, autoPlay: true);
                               },
                               onLongPress: () {
                                 music.album = provider.album;

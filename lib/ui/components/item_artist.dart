@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:youmusic_mobile/api/entites.dart';
 
@@ -42,9 +43,18 @@ class ArtistItem extends StatelessWidget {
                       size: 48,
                     ),
                   ),
-                ):Image(
-                  image: NetworkImage(artist.getAvatarUrl()),
-                  fit: BoxFit.cover,
+                ):CachedNetworkImage(
+                  imageUrl: artist.getAvatarUrl(),
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  progressIndicatorBuilder: (context, url, downloadProgress) => Icon(Icons.music_note_rounded),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),

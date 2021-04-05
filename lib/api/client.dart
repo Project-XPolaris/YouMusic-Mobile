@@ -9,6 +9,12 @@ class ApiClient {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest:(RequestOptions options, RequestInterceptorHandler handler) async {
         options.baseUrl = ApplicationConfig().serviceUrl;
+        String token = ApplicationConfig().token;
+        if (token != null && token.isNotEmpty) {
+          options.headers = {
+            "Authorization": "Bearer $token"
+          };
+        }
         handler.next(options);
       },
     ));
@@ -43,6 +49,11 @@ class ApiClient {
     var response = await _dio.get("/artist/$id");
     Artist artist = Artist.fromJson(response.data);
     return artist;
+  }
+
+  Future<ServiceInfo> fetchInfo() async {
+    var response = await _dio.get("/app/info");
+    return ServiceInfo.fromJson(response.data);
   }
   ApiClient._internal();
 }
