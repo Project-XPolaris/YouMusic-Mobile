@@ -138,7 +138,7 @@ class _InitPageState extends State<InitPage> {
                           top: 16,
                         ),
                         child: loginMode == "new"
-                            ? Column(
+                            ? ListView(
                                 children: [
                                   TextField(
                                     style: TextStyle(color: Colors.white),
@@ -193,6 +193,9 @@ class _InitPageState extends State<InitPage> {
                                     padding: const EdgeInsets.only(top: 16),
                                     child: TextField(
                                       style: TextStyle(color: Colors.white),
+                                      enableSuggestions: false,
+                                      autocorrect: false,
+                                      obscureText: true,
                                       cursorColor: Colors.white,
                                       decoration: InputDecoration(
                                           border: OutlineInputBorder(
