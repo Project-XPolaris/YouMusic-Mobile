@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album-list/album_list.dart';
 import 'package:youmusic_mobile/ui/artist/provider.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
+import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
+import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 
 class ArtistPage extends StatefulWidget {
@@ -56,11 +59,11 @@ class _ArtistPageState extends State<ArtistPage> {
                                 width: double.infinity,
                                 child: AspectRatio(
                                   aspectRatio: 1,
-                                  child:Image.network(
+                                  child: Image.network(
                                     provider.artist?.getAvatarUrl() ?? "",
                                     fit: BoxFit.cover,
                                     scale: 2,
-                                  ) ,
+                                  ),
                                 ),
                               ),
                               Container(
@@ -127,24 +130,40 @@ class _ArtistPageState extends State<ArtistPage> {
                                 children: (provider.musicLoader.list ?? [])
                                     .map((music) {
                                   return ListTile(
-                                    leading: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Image.network(music.getCoverUrl(),fit: BoxFit.cover,width: 64,height: 64,),
-                                    ),
-                                    title: Text(
-                                      music.title,
-                                      style: TextStyle(color: Colors.white),
-                                      softWrap: false,
-                                    ),
-                                    subtitle: Text(
-                                      music.getAlbumName("Unknown"),
-                                      style: TextStyle(
-                                        color: Colors.white54,
-                                        fontSize: 12,
+                                      leading: AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Image.network(
+                                          music.getCoverUrl(),
+                                          fit: BoxFit.cover,
+                                          width: 64,
+                                          height: 64,
+                                        ),
                                       ),
-                                      softWrap: false,
-                                    ),
-                                  );
+                                      title: Text(
+                                        music.title,
+                                        style: TextStyle(color: Colors.white),
+                                        softWrap: false,
+                                      ),
+                                      subtitle: Text(
+                                        music.getAlbumName("Unknown"),
+                                        style: TextStyle(
+                                          color: Colors.white54,
+                                          fontSize: 12,
+                                        ),
+                                        softWrap: false,
+                                      ),
+                                      onTap: () {
+                                        playProvider.playMusic(music,
+                                            autoPlay: true);
+                                      },
+                                      onLongPress: () {
+                                        HapticFeedback.selectionClick();
+                                        showModalBottomSheet(
+                                            context: context,
+                                            builder: (context) => MusicMetaInfo(
+                                                  music: music,
+                                                ));
+                                      });
                                 }).toList(),
                               ),
                             ),
@@ -198,6 +217,19 @@ class _ArtistPageState extends State<ArtistPage> {
                                         children: provider.albumLoader.list
                                             .map((album) {
                                           return AlbumItem(
+                                            onTap: (contextAlbum) {
+                                              playProvider
+                                                  .playAlbum(contextAlbum.id);
+                                            },
+                                            onLongPress: (album) {
+                                              HapticFeedback.selectionClick();
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlbumMetaInfo(
+                                                        album: album,
+                                                      ));
+                                            },
                                             album: album,
                                           );
                                         }).toList(),

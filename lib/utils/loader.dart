@@ -11,8 +11,8 @@ abstract class ApiDataLoader<T> {
     "page":"1",
     "pageSize":"20"
   };
-  Future<bool> loadData({Map<String,String> extraFilter}) async{
-    if (!firstLoad || isLoading || !hasMore){
+  Future<bool> loadData({Map<String,String> extraFilter,bool force = false}) async{
+    if (!force && ( !firstLoad || isLoading || !hasMore )){
       return false;
     }
     firstLoad = false;

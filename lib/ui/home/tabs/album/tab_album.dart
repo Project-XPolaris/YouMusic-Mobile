@@ -16,33 +16,39 @@ class AlbumTabPage extends StatelessWidget {
           var controller = createLoadMoreController(() => provider.loadMore());
           provider.loadData();
           return Container(
-            child: Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: GridView.count(
-                controller: controller,
-                childAspectRatio: 9 / 13,
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                children: provider.loader.list.map((e) {
-                  return AlbumItem(
-                    album: e,
-                    onTap: (album) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AlbumPage(id: album.id,)),
-                      );
-                    },
-                    onLongPress: (album) {
-                      HapticFeedback.selectionClick();
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) => AlbumMetaInfo(
-                            album: album,
-                          ));
-                    },
-                  );
-                }).toList(),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await provider.loadData(force: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                child: GridView.count(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  controller: controller,
+                  childAspectRatio: 9 / 13,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  children: provider.loader.list.map((e) {
+                    return AlbumItem(
+                      album: e,
+                      onTap: (album) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AlbumPage(id: album.id,)),
+                        );
+                      },
+                      onLongPress: (album) {
+                        HapticFeedback.selectionClick();
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) => AlbumMetaInfo(
+                              album: album,
+                            ));
+                      },
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           );

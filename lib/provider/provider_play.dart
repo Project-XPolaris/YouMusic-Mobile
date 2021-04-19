@@ -18,7 +18,6 @@ class PlayProvider extends ChangeNotifier {
 
   onCurrentChange(Playing data) {
     if (data.playlist != null) {
-      print("save playlist");
       prefs.setStringList(
           "savePlaylist", data.playlist.audios.map((e) => e.metas.id).toList());
     }
@@ -27,8 +26,7 @@ class PlayProvider extends ChangeNotifier {
   _addToPlaylist(List<Audio> audios,
       {bool append = false, int insert = 0, bool notice = true}) async {
     if (assetsAudioPlayer.playlist == null) {
-      assetsAudioPlayer.open(Playlist(audios: audios),
-          showNotification: notice, autoStart: false);
+      assetsAudioPlayer.open(Playlist(audios: audios), showNotification: notice, autoStart: false);
     } else {
       if (append) {
         audios.forEach((element) {
@@ -89,7 +87,8 @@ class PlayProvider extends ChangeNotifier {
     }
     int playIndex = assetsAudioPlayer.current.valueWrapper.value.index;
     Audio currentPlayAudio = assetsAudioPlayer.playlist.audios[playIndex];
-    int existIndex = audios.indexWhere((element) => element.metas.id == currentPlayAudio.metas.id);
+    int existIndex = audios
+        .indexWhere((element) => element.metas.id == currentPlayAudio.metas.id);
     if (existIndex == -1) {
       audios.reversed.forEach((audio) {
         assetsAudioPlayer.playlist.insert(playIndex + 1, audio);
@@ -106,14 +105,16 @@ class PlayProvider extends ChangeNotifier {
   }
 
   playMusic(Music music, {autoPlay: false}) {
-    int index = assetsAudioPlayer
-        .current.valueWrapper?.value?.playlist?.currentIndex ?? 0;
-    assetsAudioPlayer.playlist.audios.removeWhere((element) => element.metas.id == music.id.toString());
+    int index =
+        assetsAudioPlayer.current.valueWrapper?.value?.playlist?.currentIndex ??
+            0;
+    if (assetsAudioPlayer.playlist != null) {
+      assetsAudioPlayer.playlist.audios
+          .removeWhere((element) => element.metas.id == music.id.toString());
+    }
     _addToPlaylist(_createAudioListFromMusicList([music]),
-        append: false,
-        insert: index + 1 ??
-            0);
-    if (autoPlay) {
+        append: false, insert: index + 1 ?? 0);
+    if (assetsAudioPlayer.playlist.audios.length > 1 && autoPlay) {
       assetsAudioPlayer.playlistPlayAtIndex(index + 1);
       assetsAudioPlayer.play();
     }
@@ -121,8 +122,10 @@ class PlayProvider extends ChangeNotifier {
 
   addMusicToPlayList(Music music) {
     int playIndex = assetsAudioPlayer.current.valueWrapper.value.index;
-    assetsAudioPlayer.playlist.audios.removeWhere((element) => element.metas.id == music.id.toString());
-    _addToPlaylist(_createAudioListFromMusicList([music]), append: false,insert: playIndex + 1);
+    assetsAudioPlayer.playlist.audios
+        .removeWhere((element) => element.metas.id == music.id.toString());
+    _addToPlaylist(_createAudioListFromMusicList([music]),
+        append: false, insert: playIndex + 1);
   }
 
   removeFromPlayList(int index, String id) {

@@ -28,7 +28,6 @@ class AlbumPage extends StatelessWidget {
               body: FutureBuilder(
                 future: provider.loadData(),
                 builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-                  print("build ====================");
                   return Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: ListView(
