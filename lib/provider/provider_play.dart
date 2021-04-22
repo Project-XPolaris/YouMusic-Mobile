@@ -11,16 +11,13 @@ enum PlayStatus { Play, Pause }
 class PlayProvider extends ChangeNotifier {
   final assetsAudioPlayer = AssetsAudioPlayer.withId("music");
   SharedPreferences prefs;
-
+  bool firstLoad = true;
   PlayProvider() {
     init();
   }
 
   onCurrentChange(Playing data) {
-    if (data.playlist != null) {
-      prefs.setStringList(
-          "savePlaylist", data.playlist.audios.map((e) => e.metas.id).toList());
-    }
+    saveHistory();
   }
 
   _addToPlaylist(List<Audio> audios,
@@ -94,6 +91,7 @@ class PlayProvider extends ChangeNotifier {
         assetsAudioPlayer.playlist.insert(playIndex + 1, audio);
       });
     }
+    saveHistory();
   }
 
   playAlbum(int albumId) async {
@@ -102,6 +100,7 @@ class PlayProvider extends ChangeNotifier {
     List<Audio> audios = _createAudioListFromMusicList(response.data);
     assetsAudioPlayer.open(Playlist(audios: audios),
         showNotification: true, autoStart: false);
+    saveHistory();
   }
 
   playMusic(Music music, {autoPlay: false}) {
@@ -118,6 +117,7 @@ class PlayProvider extends ChangeNotifier {
       assetsAudioPlayer.playlistPlayAtIndex(index + 1);
       assetsAudioPlayer.play();
     }
+    saveHistory();
   }
 
   addMusicToPlayList(Music music) {
@@ -136,5 +136,36 @@ class PlayProvider extends ChangeNotifier {
             .where((element) => element.metas.id != id)
             .map((e) => e.metas.id)
             .toList());
+  }
+  saveHistory () async {
+    print("save");
+
+    if (assetsAudioPlayer.playlist == null) {
+      return;
+    }
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var ids = assetsAudioPlayer.playlist.audios.map((e) => e.metas.id).toList();
+    sharedPreferences.setStringList("${ApplicationConfig().username}_savePlayList", ids);
+    var index = assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.id;
+    sharedPreferences.setString("${ApplicationConfig().username}_playId", assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.id);
+  }
+  loadHistory() async {
+    if (!firstLoad) {
+      return;
+    }
+    firstLoad = false;
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var ids = sharedPreferences.getStringList("${ApplicationConfig().username}_savePlayList");
+    if (ids == null) {
+      return;
+    }
+    var response = await ApiClient().fetchMusicList({"ids":ids.join(",")});
+    List<Audio> audios = _createAudioListFromMusicList(response.data);
+    _addToPlaylist(audios);
+    String playId = sharedPreferences.getString("${ApplicationConfig().username}_playId");
+    var index = audios.indexWhere((element) => element.metas.id == playId);
+    // if (index != -1) {
+    //   assetsAudioPlayer.playlistPlayAtIndex(index);
+    // }
   }
 }

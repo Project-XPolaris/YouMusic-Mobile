@@ -9,12 +9,10 @@ import 'package:youmusic_mobile/ui/artist/artist.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/components/item_artist.dart';
 import 'package:youmusic_mobile/ui/components/item_music.dart';
-import 'package:youmusic_mobile/ui/components/widget_search.dart';
 import 'package:youmusic_mobile/ui/home/tabs/home/provider.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/artist.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
-import 'package:youmusic_mobile/ui/meta-navigation/view.dart';
 
 class HomeTabPage extends StatelessWidget {
   @override
@@ -40,10 +38,6 @@ class HomeTabPage extends StatelessWidget {
                         "Hey there 👋",
                         style: TextStyle(color: Colors.pink, fontSize: 32),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16, bottom: 24),
-                      child: SearchBox(),
                     ),
                     buildRow(
                         provider,

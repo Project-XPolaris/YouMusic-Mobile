@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
-import 'package:youmusic_mobile/ui/setting/setting.dart';
 
 import '../provider.dart';
 import 'tabs/album/tab_album.dart';
@@ -25,71 +24,26 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(color: Colors.pink),
                 ),
                 backgroundColor: Colors.transparent,
-
                 elevation: 0,
-                // actions: [
-                //   PopupMenuButton(
-                //     color: Color(0xFF2B2B2B),
-                //     // initialValue: choices[_selection],
-                //     itemBuilder: (BuildContext context) {
-                //       return [
-                //         PopupMenuItem<String>(
-                //           value: "1",
-                //           child: Row(
-                //             children: <Widget>[
-                //               Icon(Icons.settings, color: Colors.white),
-                //               Padding(
-                //                 padding: EdgeInsets.only(left: 8),
-                //                 child: Text(
-                //                   'Setting',
-                //                   style: TextStyle(color: Colors.white),
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         )
-                //       ];
-                //     },
-                //   )
-                // ],
               ),
-              drawer: Drawer(
-                child: Container(
-                  color: Colors.black,
-                  child: ListView(
-                    // Important: Remove any padding from the ListView.
-                    padding: EdgeInsets.zero,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 16, top: 72, bottom: 16),
-                        child: Text(
-                          'YouMusic',
-                          style: TextStyle(color: Colors.pink, fontSize: 28),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.settings,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          'Setting',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SettingPage()
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // drawer: Drawer(
+              //   child: Container(
+              //     color: Colors.black,
+              //     child: ListView(
+              //       // Important: Remove any padding from the ListView.
+              //       padding: EdgeInsets.zero,
+              //       children: <Widget>[
+              //         Container(
+              //           margin: EdgeInsets.only(left: 16, top: 72, bottom: 16),
+              //           child: Text(
+              //             'YouMusic',
+              //             style: TextStyle(color: Colors.pink, fontSize: 28),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               body: Scaffold(
                 backgroundColor: Colors.black87,
                 body: IndexedStack(

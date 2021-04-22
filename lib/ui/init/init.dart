@@ -28,6 +28,13 @@ class _InitPageState extends State<InitPage> {
   @override
   Widget build(BuildContext context) {
     _onFinishClick() async {
+      var uri = Uri.parse(inputUrl);
+      if (!uri.hasScheme) {
+        inputUrl  = "http://" + inputUrl;
+      }
+      if (!uri.hasPort) {
+        inputUrl += ":3000";
+      }
       SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
       sharedPreferences.setString("apiUrl", inputUrl);
@@ -36,8 +43,8 @@ class _InitPageState extends State<InitPage> {
       if (inputUsername.isEmpty && inputPassword.isEmpty) {
         // without login
         ApplicationConfig().token = "";
-        LoginHistoryManager()
-            .add(LoginHistory(apiUrl: inputUrl, username: "public", token: ""));
+        ApplicationConfig().username = "public";
+        LoginHistoryManager().add(LoginHistory(apiUrl: inputUrl, username: "public", token: ""));
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
         return;
@@ -50,6 +57,7 @@ class _InitPageState extends State<InitPage> {
       });
       if (response.data["success"]) {
         ApplicationConfig().token = response.data["token"];
+        ApplicationConfig().username = inputUsername;
         LoginHistoryManager().add(LoginHistory(
             apiUrl: inputUrl,
             username: inputUsername,
@@ -230,6 +238,7 @@ class _InitPageState extends State<InitPage> {
                                         var config = ApplicationConfig();
                                         config.token = history.token;
                                         config.serviceUrl = history.apiUrl;
+                                        config.username = history.username;
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
