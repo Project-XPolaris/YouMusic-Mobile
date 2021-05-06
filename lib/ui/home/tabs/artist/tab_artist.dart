@@ -28,7 +28,7 @@ class ArtistTabPage extends StatelessWidget {
                   children: provider.loader.list.map((e) {
                     return ArtistItem(
                         artist: e,
-                        onTap: (album) {
+                        onTap: (artist) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -11,8 +11,8 @@ import 'package:youmusic_mobile/utils/listview.dart';
 
 class AlbumListPage extends StatelessWidget {
   final Map<String, String> extraFilter;
-
-  const AlbumListPage({Key key, this.extraFilter}) : super(key: key);
+  final String title;
+  const AlbumListPage({Key key, this.extraFilter,this.title = "Album List"}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class AlbumListPage extends StatelessWidget {
             return Scaffold(
               backgroundColor: Colors.black,
               appBar: AppBar(
-                title: Text("Album List", style: TextStyle(color: Colors.white),),
+                title: Text(title, style: TextStyle(color: Colors.white),),
                 backgroundColor: Colors.transparent,
               ),
               body: Padding(

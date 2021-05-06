@@ -9,10 +9,12 @@ import 'package:youmusic_mobile/ui/artist/artist.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/components/item_artist.dart';
 import 'package:youmusic_mobile/ui/components/item_music.dart';
+import 'package:youmusic_mobile/ui/components/widget_search.dart';
 import 'package:youmusic_mobile/ui/home/tabs/home/provider.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/artist.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
+import 'package:youmusic_mobile/ui/search/index.dart';
 
 class HomeTabPage extends StatelessWidget {
   @override
@@ -39,8 +41,20 @@ class HomeTabPage extends StatelessWidget {
                         style: TextStyle(color: Colors.pink, fontSize: 32),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, bottom: 24),
+                      child: GestureDetector(
+                        child: SearchBox(),
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchPage()),
+                          );
+                        },
+                      ),
+                    ),
                     buildRow(
-                        provider,
                         "💿 Album",
                         provider.albumLoader.list.map((e) {
                           return Padding(
@@ -70,7 +84,6 @@ class HomeTabPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 24),
                       child: buildRow(
-                          provider,
                           "🎸 Artist",
                           provider.artistLoader.list.map((e) {
                             return Padding(
@@ -100,7 +113,6 @@ class HomeTabPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 24),
                       child: buildRow(
-                          provider,
                           "🎶 Music",
                           provider.musicLoader.list.map((e) {
                             return Padding(
@@ -129,7 +141,7 @@ class HomeTabPage extends StatelessWidget {
         }));
   }
 
-  Column buildRow(HomeTabProvider provider, String title, List<Widget> items) {
+  Column buildRow(String title, List<Widget> items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [

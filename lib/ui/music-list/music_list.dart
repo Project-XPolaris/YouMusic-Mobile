@@ -10,8 +10,8 @@ import 'package:youmusic_mobile/utils/listview.dart';
 
 class MusicListPage extends StatelessWidget {
   final Map<String, String> extraFilter;
-
-  const MusicListPage({Key key, this.extraFilter}) : super(key: key);
+  final String title;
+  const MusicListPage({Key key, this.extraFilter,this.title = "Music List"}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class MusicListPage extends StatelessWidget {
               backgroundColor: Colors.black,
               appBar: AppBar(
                 title: Text(
-                  "Music List",
+                  title,
                   style: TextStyle(color: Colors.white),
                 ),
                 backgroundColor: Colors.transparent,
