@@ -61,7 +61,8 @@ class MusicItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                )),
+                )
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(4),

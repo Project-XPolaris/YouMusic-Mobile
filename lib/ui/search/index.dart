@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album-list/album_list.dart';
 import 'package:youmusic_mobile/ui/album/album.dart';
+import 'package:youmusic_mobile/ui/artist-list/artist_list.dart';
 import 'package:youmusic_mobile/ui/artist/artist.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
@@ -247,6 +248,23 @@ class _SearchPageState extends State<SearchPage> {
                                   "Artist",
                                   style: TextStyle(color: Colors.white70),
                                 ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ArtistListPage(
+                                              extraFilter: {
+                                                "search": searchKey
+                                              },
+                                              title: "Result in $searchKey",
+                                            )),
+                                      );
+                                    },
+                                    child: Text(
+                                      "More",
+                                      style: TextStyle(color: Colors.pink),
+                                    ))
                               ],
                             ),
                           ),

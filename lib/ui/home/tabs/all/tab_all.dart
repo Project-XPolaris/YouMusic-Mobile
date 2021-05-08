@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
-import 'package:youmusic_mobile/ui/components/item_music.dart';
+import 'package:youmusic_mobile/ui/components/cache_image.dart';
 import 'package:youmusic_mobile/ui/home/tabs/all/provider.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
@@ -22,26 +22,31 @@ class AllTabPage extends StatelessWidget {
               child: Container(
                 child: Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
-                  child: GridView.count(
+                  child: ListView(
                     controller: controller,
-                    childAspectRatio: 9 / 13,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    children: provider.loader.list.map((e) {
-                      return MusicItem(
-                          music: e,
-                          onTap: (music) {
-                            playProvider.playMusic(music, autoPlay: true);
-                          },
-                          onLongPress: (music) {
-                            HapticFeedback.selectionClick();
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) => MusicMetaInfo(
-                                      music: music,
-                                    ));
-                          });
+                    children: provider.loader.list.map((music) {
+                      return ListTile(
+                        leading: Container(
+                          width: 64,
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: CacheImage(url:music.getCoverUrl(),failedIcon: Icons.music_note,),
+                          ),
+                        ),
+                        title: Text(music.title,style: TextStyle(color: Colors.white),),
+                        subtitle: Text(music.getArtistString("unknown"),style: TextStyle(color: Colors.white70)),
+                        onTap: () {
+                          playProvider.playMusic(music,autoPlay: true);
+                        },
+                        onLongPress: () {
+                          HapticFeedback.selectionClick();
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) => MusicMetaInfo(
+                                music: music,
+                              ));
+                        },
+                      );
                     }).toList(),
                   ),
                 ),

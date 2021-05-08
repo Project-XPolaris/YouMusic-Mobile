@@ -5,15 +5,28 @@ import 'package:youmusic_mobile/api/client.dart';
 import 'package:youmusic_mobile/api/entites.dart';
 import 'package:youmusic_mobile/config.dart';
 import 'package:youmusic_mobile/player.dart';
+import 'package:youmusic_mobile/utils/lyric.dart';
 
 enum PlayStatus { Play, Pause }
 
 class PlayProvider extends ChangeNotifier {
   final assetsAudioPlayer = AssetsAudioPlayer.withId("music");
+  LyricsManager lyricsManager;
+  String lyricId = "0";
   SharedPreferences prefs;
   bool firstLoad = true;
+
   PlayProvider() {
     init();
+  }
+
+  loadLyrics(String id ) async {
+    lyricsManager = null;
+    lyricId = id;
+    notifyListeners();
+    String rawLyrics = await ApiClient().fetchLyrics(id);
+    lyricsManager = new LyricsManager.fromText(rawLyrics);
+    notifyListeners();
   }
 
   onCurrentChange(Playing data) {
@@ -23,7 +36,8 @@ class PlayProvider extends ChangeNotifier {
   _addToPlaylist(List<Audio> audios,
       {bool append = false, int insert = 0, bool notice = true}) async {
     if (assetsAudioPlayer.playlist == null) {
-      assetsAudioPlayer.open(Playlist(audios: audios), showNotification: notice, autoStart: false);
+      assetsAudioPlayer.open(Playlist(audios: audios),
+          showNotification: notice, autoStart: false);
     } else {
       if (append) {
         audios.forEach((element) {
@@ -137,7 +151,8 @@ class PlayProvider extends ChangeNotifier {
             .map((e) => e.metas.id)
             .toList());
   }
-  saveHistory () async {
+
+  saveHistory() async {
     print("save");
 
     if (assetsAudioPlayer.playlist == null) {
@@ -145,24 +160,30 @@ class PlayProvider extends ChangeNotifier {
     }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var ids = assetsAudioPlayer.playlist.audios.map((e) => e.metas.id).toList();
-    sharedPreferences.setStringList("${ApplicationConfig().username}_savePlayList", ids);
-    var index = assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.id;
-    sharedPreferences.setString("${ApplicationConfig().username}_playId", assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.id);
+    sharedPreferences.setStringList(
+        "${ApplicationConfig().username}_savePlayList", ids);
+    var index =
+        assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.id;
+    sharedPreferences.setString("${ApplicationConfig().username}_playId",
+        assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.id);
   }
+
   loadHistory() async {
     if (!firstLoad) {
       return;
     }
     firstLoad = false;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var ids = sharedPreferences.getStringList("${ApplicationConfig().username}_savePlayList");
+    var ids = sharedPreferences
+        .getStringList("${ApplicationConfig().username}_savePlayList");
     if (ids == null) {
       return;
     }
-    var response = await ApiClient().fetchMusicList({"ids":ids.join(",")});
+    var response = await ApiClient().fetchMusicList({"ids": ids.join(",")});
     List<Audio> audios = _createAudioListFromMusicList(response.data);
     _addToPlaylist(audios);
-    String playId = sharedPreferences.getString("${ApplicationConfig().username}_playId");
+    String playId =
+        sharedPreferences.getString("${ApplicationConfig().username}_playId");
     var index = audios.indexWhere((element) => element.metas.id == playId);
     // if (index != -1) {
     //   assetsAudioPlayer.playlistPlayAtIndex(index);

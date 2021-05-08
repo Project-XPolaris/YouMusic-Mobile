@@ -39,6 +39,11 @@ class ApiClient {
     return responseBody;
   }
 
+  Future<String> fetchLyrics(String musicId) async {
+    var response = await _dio.get("/file/lrc/$musicId");
+    return response.data;
+  }
+
   Future<Album> fetchAlbumById(String id) async {
     var response = await _dio.get("/album/$id");
     Album album = Album.fromJson(response.data);
