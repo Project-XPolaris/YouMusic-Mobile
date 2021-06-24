@@ -3,8 +3,8 @@ import 'package:youmusic_mobile/api/loader/artist_loader.dart';
 
 class ArtistTabProvider extends ChangeNotifier{
   ArtistLoader loader = ArtistLoader();
-  loadData() async {
-    if (await loader.loadData()){
+  loadData({force = false}) async {
+    if (await loader.loadData(force: force)){
       notifyListeners();
     }
   }

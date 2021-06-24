@@ -17,6 +17,8 @@ abstract class ApiDataLoader<T> {
     }
     firstLoad = false;
     isLoading = true;
+    queryParams["page"] = "1";
+    queryParams["pageSize"] = "20";
     Map<String,String> params = new Map.from(queryParams);
     if (extraFilter != null) {
       params.addAll(extraFilter);
@@ -29,7 +31,6 @@ abstract class ApiDataLoader<T> {
   }
 
   Future<bool> loadMore({Map<String,String> extraFilter}) async{
-
     if (isLoading || !hasMore){
       return false;
     }
@@ -41,10 +42,7 @@ abstract class ApiDataLoader<T> {
     }
     var response = await fetchData(queryParams);
     list.addAll(response.data);
-    print(list.length);
-    print(response.count);
     hasMore = list.length < response.count;
-    print(hasMore);
     page += 1;
     isLoading = false;
     return true;

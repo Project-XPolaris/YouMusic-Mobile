@@ -14,7 +14,7 @@ class Music {
     id = json['id'];
     path = json['path'];
     title = json['title'];
-    duration = json['duration'];
+    duration = json['duration'].toDouble();
     album = json['album'] != null ? new Album.fromJson(json['album']) : null;
     if (json['artist'] != null) {
       artist = new List<Artist>();
@@ -88,10 +88,11 @@ class Artist {
     name = json['name'];
     avatar = json['avatar'];
   }
-  getAvatarUrl(){
+  String getAvatarUrl(){
     if (avatar != null){
       return ApplicationConfig().serviceUrl + avatar;
     }
+    return null;
   }
 }
 

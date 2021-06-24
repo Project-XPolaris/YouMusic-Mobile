@@ -60,7 +60,6 @@ class PlaylistModal extends StatelessWidget {
                         itemBuilder: (context,index){
                           Audio audio = provider.assetsAudioPlayer.playlist.audios[index];
                           int currentIndex = 0;
-                          print(currentIndex == index);
                           if (current != null) {
                             currentIndex = current.index;
                           }

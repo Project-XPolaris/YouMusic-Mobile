@@ -99,163 +99,182 @@ class _InitPageState extends State<InitPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(bottom: 72),
+                        margin: EdgeInsets.only(bottom: 64),
                         child: Text(
                           "from ProjectXPolaris",
                           style: TextStyle(color: Colors.white54, fontSize: 12),
                         ),
                       ),
-                      Row(
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  loginMode = "history";
-                                });
-                              },
-                              child: Text(
-                                "LoginHistory",
-                                style: TextStyle(
-                                    color: loginMode == "history"
-                                        ? Colors.white
-                                        : Colors.white54,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.w300),
-                              )),
-                          TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  loginMode = "new";
-                                });
-                              },
-                              child: Text(
-                                "New Login",
-                                style: TextStyle(
-                                  color: loginMode == "new"
-                                      ? Colors.white
-                                      : Colors.white54,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              ))
-                        ],
-                      ),
-                      Expanded(
-                          child: Padding(
-                        padding: EdgeInsets.only(
-                          top: 16,
-                        ),
-                        child: loginMode == "new"
-                            ? ListView(
-                                children: [
-                                  TextField(
-                                    style: TextStyle(color: Colors.white),
-                                    cursorColor: Colors.white,
-                                    decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.white)),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.white)),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.white)),
-                                        focusColor: Colors.white,
-                                        hintStyle:
-                                            TextStyle(color: Colors.white),
-                                        hintText: 'Service URL'),
-                                    onChanged: (text) {
-                                      setState(() {
-                                        inputUrl = text;
-                                      });
-                                    },
+                      // Row(
+                      //   children: [
+                      //     TextButton(
+                      //         onPressed: () {
+                      //           setState(() {
+                      //             loginMode = "history";
+                      //           });
+                      //         },
+                      //         child: Text(
+                      //           "LoginHistory",
+                      //           style: TextStyle(
+                      //               color: loginMode == "history"
+                      //                   ? Colors.white
+                      //                   : Colors.white54,
+                      //               fontSize: 28,
+                      //               fontWeight: FontWeight.w300),
+                      //         )),
+                      //     TextButton(
+                      //         onPressed: () {
+                      //           setState(() {
+                      //             loginMode = "new";
+                      //           });
+                      //         },
+                      //         child: Text(
+                      //           "New Login",
+                      //           style: TextStyle(
+                      //             color: loginMode == "new"
+                      //                 ? Colors.white
+                      //                 : Colors.white54,
+                      //             fontSize: 28,
+                      //             fontWeight: FontWeight.w300,
+                      //           ),
+                      //         ))
+                      //   ],
+                      // ),
+                      Expanded(child: DefaultTabController(
+                        length: 2,
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 16),
+                              child: TabBar(
+                                indicatorColor: Colors.pink,
+                                tabs: [
+                                  Tab(
+                                    text: "History",
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16),
-                                    child: TextField(
-                                      style: TextStyle(color: Colors.white),
-                                      cursorColor: Colors.white,
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          focusColor: Colors.white,
-                                          hintStyle:
-                                          TextStyle(color: Colors.white),
-                                          hintText: 'Username'),
-                                      onChanged: (text) {
-                                        setState(() {
-                                          inputUsername = text;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16),
-                                    child: TextField(
-                                      style: TextStyle(color: Colors.white),
-                                      enableSuggestions: false,
-                                      autocorrect: false,
-                                      obscureText: true,
-                                      cursorColor: Colors.white,
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          focusColor: Colors.white,
-                                          hintStyle:
-                                          TextStyle(color: Colors.white),
-                                          hintText: 'Password'),
-                                      onChanged: (text) {
-                                        setState(() {
-                                          inputPassword = text;
-                                        });
-                                      },
-                                    ),
+                                  Tab(
+                                    text: "New login",
                                   ),
                                 ],
-                              )
-                            : ListView(
-                                children:
-                                    LoginHistoryManager().list.map((history) {
-                                  return Container(
-                                    margin: EdgeInsets.only(bottom: 8),
-                                    child: ListTile(
-                                      onTap: () {
-                                        var config = ApplicationConfig();
-                                        config.token = history.token;
-                                        config.serviceUrl = history.apiUrl;
-                                        config.username = history.username;
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HomePage()));
-                                      },
-                                      leading: CircleAvatar(
-                                        backgroundColor: Colors.pink,
-                                        child: Icon(Icons.person,color: Colors.white,),
-                                      ),
-                                      title: Text(history.username,style: TextStyle(color: Colors.white),),
-                                      subtitle: Text(history.apiUrl,style: TextStyle(color: Colors.white70),),
-
-                                    ),
-                                  );
-                                }).toList(),
                               ),
+                            ),
+                            Expanded(child: TabBarView(
+                              physics: BouncingScrollPhysics(),
+                              children: [
+                                ListView(
+                                  children:
+                                  LoginHistoryManager().list.map((history) {
+                                    return Container(
+                                      margin: EdgeInsets.only(bottom: 8),
+                                      child: ListTile(
+                                        onTap: () {
+                                          var config = ApplicationConfig();
+                                          config.token = history.token;
+                                          config.serviceUrl = history.apiUrl;
+                                          config.username = history.username;
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HomePage()));
+                                        },
+                                        leading: CircleAvatar(
+                                          backgroundColor: Colors.pink,
+                                          child: Icon(Icons.person,color: Colors.white,),
+                                        ),
+                                        title: Text(history.username,style: TextStyle(color: Colors.white),),
+                                        subtitle: Text(history.apiUrl,style: TextStyle(color: Colors.white70),),
+
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                                ListView(
+                                  children: [
+                                    TextField(
+                                      style: TextStyle(color: Colors.white),
+                                      cursorColor: Colors.white,
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white)),
+                                          focusColor: Colors.white,
+                                          hintStyle:
+                                          TextStyle(color: Colors.white),
+                                          hintText: 'Service URL'),
+                                      onChanged: (text) {
+                                        setState(() {
+                                          inputUrl = text;
+                                        });
+                                      },
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 16),
+                                      child: TextField(
+                                        style: TextStyle(color: Colors.white),
+                                        cursorColor: Colors.white,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white)),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white)),
+                                            enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white)),
+                                            focusColor: Colors.white,
+                                            hintStyle:
+                                            TextStyle(color: Colors.white),
+                                            hintText: 'Username'),
+                                        onChanged: (text) {
+                                          setState(() {
+                                            inputUsername = text;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 16),
+                                      child: TextField(
+                                        style: TextStyle(color: Colors.white),
+                                        enableSuggestions: false,
+                                        autocorrect: false,
+                                        obscureText: true,
+                                        cursorColor: Colors.white,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white)),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white)),
+                                            enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white)),
+                                            focusColor: Colors.white,
+                                            hintStyle:
+                                            TextStyle(color: Colors.white),
+                                            hintText: 'Password'),
+                                        onChanged: (text) {
+                                          setState(() {
+                                            inputPassword = text;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ))
+                          ],
+                        ),
                       )),
                     ],
                   ),

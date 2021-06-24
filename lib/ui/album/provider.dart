@@ -8,7 +8,6 @@ class AlbumProvider extends ChangeNotifier{
   Album album;
   Future<void> loadData() async {
     album = await ApiClient().fetchAlbumById(id.toString());
-    print(album);
     return;
   }
 }

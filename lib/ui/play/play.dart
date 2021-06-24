@@ -223,7 +223,6 @@ class _PlayPageState extends State<PlayPage> {
                                       builder: (context, asyncSnapshot) {
                                         final Duration duration =
                                             asyncSnapshot.data;
-                                        print(duration.inSeconds);
                                         return Text(
                                           formatDuration(duration),
                                           style: TextStyle(color: Colors.white),

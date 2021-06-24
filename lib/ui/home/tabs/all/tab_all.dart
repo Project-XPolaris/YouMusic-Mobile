@@ -18,8 +18,11 @@ class AllTabPage extends StatelessWidget {
             var controller =
                 createLoadMoreController(() => provider.loadMore());
             provider.loadData();
-            return Center(
-              child: Container(
+            return Container(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await provider.loadData(force: true);
+                },
                 child: Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: ListView(

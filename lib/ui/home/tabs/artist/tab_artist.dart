@@ -15,11 +15,15 @@ class ArtistTabPage extends StatelessWidget {
         child: Consumer<ArtistTabProvider>(builder: (context, provider, child) {
           provider.loadData();
           var controller = createLoadMoreController(() => provider.loadMore());
-          return Center(
-            child: Container(
+          return Container(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await provider.loadData(force: true);
+              },
               child: Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
                 child: GridView.count(
+                  physics: AlwaysScrollableScrollPhysics(),
                   controller: controller,
                   childAspectRatio: 9 / 13,
                   crossAxisCount: 3,

@@ -113,7 +113,7 @@ class PlayProvider extends ChangeNotifier {
         .fetchMusicList({"pageSize": "100", "album": albumId.toString()});
     List<Audio> audios = _createAudioListFromMusicList(response.data);
     assetsAudioPlayer.open(Playlist(audios: audios),
-        showNotification: true, autoStart: false);
+        showNotification: true, autoStart: true);
     saveHistory();
   }
 
@@ -153,8 +153,6 @@ class PlayProvider extends ChangeNotifier {
   }
 
   saveHistory() async {
-    print("save");
-
     if (assetsAudioPlayer.playlist == null) {
       return;
     }

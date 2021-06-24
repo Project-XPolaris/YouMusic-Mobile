@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
-import 'package:youmusic_mobile/ui/components/item_music_list.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/ui/music-list/provider.dart';
@@ -46,9 +46,12 @@ class MusicListPage extends StatelessWidget {
                               TextStyle(color: Colors.white54, fontSize: 12)),
                       leading: AspectRatio(
                         aspectRatio: 1,
-                        child: Image.network(
-                          music.getCoverUrl(),
+                        child: CachedNetworkImage(
                           fit: BoxFit.cover,
+                          imageUrl: music.getCoverUrl(),
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              CircularProgressIndicator(value: downloadProgress.progress),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
                         ),
                       ),
                       onTap: () {

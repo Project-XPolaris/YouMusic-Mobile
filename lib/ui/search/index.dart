@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -145,8 +146,20 @@ class _SearchPageState extends State<SearchPage> {
                               music.album?.name ?? "unknown",
                               style: TextStyle(color: Colors.white70),
                             ),
-                            leading: Image.network(
-                              music.album?.getCoverUrl(),
+                            leading: CachedNetworkImage(
+                              imageUrl: music.album?.getCoverUrl() ?? "",
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      Container(),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.pinkAccent,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.music_note,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                               width: 64,
                             ),
                             onLongPress: () {
@@ -253,12 +266,13 @@ class _SearchPageState extends State<SearchPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => ArtistListPage(
-                                              extraFilter: {
-                                                "search": searchKey
-                                              },
-                                              title: "Result in $searchKey",
-                                            )),
+                                            builder: (context) =>
+                                                ArtistListPage(
+                                                  extraFilter: {
+                                                    "search": searchKey
+                                                  },
+                                                  title: "Result in $searchKey",
+                                                )),
                                       );
                                     },
                                     child: Text(
@@ -278,10 +292,22 @@ class _SearchPageState extends State<SearchPage> {
                                 artist.name,
                                 style: TextStyle(color: Colors.white),
                               ),
-                              leading: Image.network(
-                                artist.getAvatarUrl(),
-                                width: 64,
-                              ),
+                              leading: artist.getAvatarUrl() != null
+                                  ? Image.network(
+                                      artist.getAvatarUrl(),
+                                      width: 64,
+                                    )
+                                  : Container(
+                                      color: Colors.pink,
+                                      width: 64,
+                                      height: 64,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
                               onTap: () {
                                 Navigator.push(
                                   context,

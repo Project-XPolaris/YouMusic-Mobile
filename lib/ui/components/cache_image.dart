@@ -21,15 +21,17 @@ class CacheImage extends StatelessWidget {
         ),
         progressIndicatorBuilder:
             (context, url, downloadProgress) =>
-            Icon(failedIcon),
+            Icon(failedIcon,color: Colors.white,),
         errorWidget: (context, url, error) =>
-            Icon(Icons.error),
+            Icon(Icons.error,color:Colors.white),
       );
     }
     return Container(
+      color: Colors.pinkAccent,
       child: Center(
         child: Icon(
           failedIcon,
+            color:Colors.white
         ),
       ),
     );
