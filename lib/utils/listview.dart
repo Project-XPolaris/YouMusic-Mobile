@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-createLoadMoreController(Function onLoadMore){
+ScrollController createLoadMoreController(Function onLoadMore){
   ScrollController _controller = new ScrollController();
   _controller.addListener(() {
     var maxScroll = _controller.position.maxScrollExtent;

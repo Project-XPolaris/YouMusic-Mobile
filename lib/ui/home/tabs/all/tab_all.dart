@@ -18,39 +18,50 @@ class AllTabPage extends StatelessWidget {
             var controller =
                 createLoadMoreController(() => provider.loadMore());
             provider.loadData();
-            return Container(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  await provider.loadData(force: true);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16),
-                  child: ListView(
-                    controller: controller,
-                    children: provider.loader.list.map((music) {
-                      return ListTile(
-                        leading: Container(
-                          width: 64,
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: CacheImage(url:music.getCoverUrl(),failedIcon: Icons.music_note,),
+            return Scaffold(
+              backgroundColor: Colors.black,
+              appBar: AppBar(
+                title: Text(
+                  "YouMusic",
+                  style: TextStyle(color: Colors.pink),
+                ),
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+              body: Container(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await provider.loadData(force: true);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: ListView(
+                      controller: controller,
+                      children: provider.loader.list.map((music) {
+                        return ListTile(
+                          leading: Container(
+                            width: 64,
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: CacheImage(url:music.getCoverUrl(),failedIcon: Icons.music_note,),
+                            ),
                           ),
-                        ),
-                        title: Text(music.title,style: TextStyle(color: Colors.white),),
-                        subtitle: Text(music.getArtistString("unknown"),style: TextStyle(color: Colors.white70)),
-                        onTap: () {
-                          playProvider.playMusic(music,autoPlay: true);
-                        },
-                        onLongPress: () {
-                          HapticFeedback.selectionClick();
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (context) => MusicMetaInfo(
-                                music: music,
-                              ));
-                        },
-                      );
-                    }).toList(),
+                          title: Text(music.title,style: TextStyle(color: Colors.white),),
+                          subtitle: Text(music.getArtistString("unknown"),style: TextStyle(color: Colors.white70)),
+                          onTap: () {
+                            playProvider.playMusic(music,autoPlay: true);
+                          },
+                          onLongPress: () {
+                            HapticFeedback.selectionClick();
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => MusicMetaInfo(
+                                  music: music,
+                                ));
+                          },
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
               ),

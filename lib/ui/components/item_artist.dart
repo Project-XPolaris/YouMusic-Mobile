@@ -33,7 +33,7 @@ class ArtistItem extends StatelessWidget {
               child: Container(
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                    color: Colors.white70,
+                    color: Colors.pink,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.all(Radius.circular(8.0))),
                 child: artist.getAvatarUrl() == null?Container(
@@ -41,6 +41,7 @@ class ArtistItem extends StatelessWidget {
                     child: Icon(
                       Icons.person,
                       size: 48,
+                      color: Colors.white,
                     ),
                   ),
                 ):CachedNetworkImage(

@@ -17,15 +17,7 @@ class HomePage extends StatelessWidget {
         child: Consumer<HomeProvider>(
           builder: (context, provider, child) {
             return Scaffold(
-              backgroundColor: Colors.black87,
-              appBar: AppBar(
-                title: Text(
-                  "YouMusic",
-                  style: TextStyle(color: Colors.pink),
-                ),
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-              ),
+              backgroundColor: Colors.black,
               // drawer: Drawer(
               //   child: Container(
               //     color: Colors.black,
