@@ -42,8 +42,8 @@ class LyricsManager {
       return lines.length - 1;
     }
     for (int i = 0; i < lines.length - 1; i++) {
-      if (lines[i].milliseconds <= time && lines[i + i].milliseconds > time ) {
-        return i;
+      if (lines[i].milliseconds > time) {
+        return i - 1;
       }
     }
   }

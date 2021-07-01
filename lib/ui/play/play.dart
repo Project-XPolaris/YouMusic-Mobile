@@ -70,7 +70,6 @@ class _PlayPageState extends State<PlayPage> {
                           final Duration duration = asyncSnapshot.data;
                           int curInMil = duration.inMilliseconds;
                           lyricCur = provider.lyricsManager.getIndex(curInMil);
-                          provider.lyricsManager.getIndex(curInMil);
                         }
                         List<Widget> lines = [];
                         for (int idx = 0;
