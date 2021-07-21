@@ -11,7 +11,7 @@ const AlbumOrderMapping = {
 
 class AlbumTabProvider extends ChangeNotifier {
   AlbumLoader loader = AlbumLoader();
-  AlbumFilter albumFilter = new AlbumFilter("id desc");
+  AlbumFilter albumFilter = new AlbumFilter(order:"id desc");
 
   _getExtraParam() {
     return {

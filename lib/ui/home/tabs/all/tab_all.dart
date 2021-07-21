@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/components/cache_image.dart';
+import 'package:youmusic_mobile/ui/components/music-filter.dart';
 import 'package:youmusic_mobile/ui/home/tabs/all/provider.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
@@ -18,6 +19,22 @@ class AllTabPage extends StatelessWidget {
             var controller =
                 createLoadMoreController(() => provider.loadMore());
             provider.loadData();
+            _onFilterButtonClick(){
+              showModalBottomSheet(
+                  context: context,
+                  builder: (ctx) {
+                    return MusicFilterView(
+                      filter: provider.musicFilter,
+                      onChange: (filter) {
+                        provider.musicFilter = filter;
+                        if (controller.positions.isNotEmpty){
+                          controller.jumpTo(0);
+                        }
+                        provider.loadData(force: true);
+                      },
+                    );
+                  });
+            }
             return Scaffold(
               backgroundColor: Colors.black,
               appBar: AppBar(
@@ -27,6 +44,9 @@ class AllTabPage extends StatelessWidget {
                 ),
                 backgroundColor: Colors.transparent,
                 elevation: 0,
+                actions: [
+                  IconButton(icon: Icon(Icons.sort), onPressed: _onFilterButtonClick)
+                ],
               ),
               body: Container(
                 child: RefreshIndicator(

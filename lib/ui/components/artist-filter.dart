@@ -4,26 +4,25 @@ const OrderFilterKeys = [
   "id asc", "id desc", "name asc", "name desc"
 ];
 
-class AlbumFilter {
+class ArtistFilter {
   String order;
-  AlbumFilter({this.order});
+  ArtistFilter({this.order});
 }
 
-class AlbumFilterView extends StatefulWidget {
-  final AlbumFilter filter;
-  final Function(AlbumFilter filter) onChange;
-  AlbumFilterView({this.filter,this.onChange});
+class ArtistFilterView extends StatefulWidget {
+  final ArtistFilter filter;
+  final Function(ArtistFilter filter) onChange;
+  ArtistFilterView({this.filter,this.onChange});
 
   @override
-  _AlbumFilterViewState createState() => _AlbumFilterViewState(order: filter.order);
+  _ArtistFilterViewState createState() => _ArtistFilterViewState(order: filter.order);
 }
 
-class _AlbumFilterViewState extends State<AlbumFilterView> {
+class _ArtistFilterViewState extends State<ArtistFilterView> {
   String order;
-  _AlbumFilterViewState({this.order});
+  _ArtistFilterViewState({this.order});
   @override
   Widget build(BuildContext context) {
-    print(widget.filter.order);
     return Container(
       color: Colors.black,
       child: Column(

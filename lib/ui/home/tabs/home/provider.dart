@@ -8,13 +8,13 @@ class HomeTabProvider extends ChangeNotifier{
   AlbumLoader albumLoader = AlbumLoader();
   MusicLoader musicLoader = MusicLoader();
   Future<void> loadData({force = false}) async {
-    if (await albumLoader.loadData(force: force)){
+    if (await albumLoader.loadData(force: force,extraFilter: {"order":"-id"})){
       notifyListeners();
     }
-    if (await artistLoader.loadData(force: force)){
+    if (await artistLoader.loadData(force: force,extraFilter: {"order":"-id"})){
       notifyListeners();
     }
-    if (await musicLoader.loadData(force: force)){
+    if (await musicLoader.loadData(force: force,extraFilter: {"order":"-id"})){
       notifyListeners();
     }
   }

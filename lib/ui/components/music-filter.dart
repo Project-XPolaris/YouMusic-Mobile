@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 
 const OrderFilterKeys = [
-  "id asc", "id desc", "name asc", "name desc"
+  "id asc", "id desc", "title asc", "title desc"
 ];
 
-class AlbumFilter {
+class MusicFilter {
   String order;
-  AlbumFilter({this.order});
+  MusicFilter({this.order});
 }
 
-class AlbumFilterView extends StatefulWidget {
-  final AlbumFilter filter;
-  final Function(AlbumFilter filter) onChange;
-  AlbumFilterView({this.filter,this.onChange});
+class MusicFilterView extends StatefulWidget {
+  final MusicFilter filter;
+  final Function(MusicFilter filter) onChange;
+  MusicFilterView({this.filter,this.onChange});
 
   @override
-  _AlbumFilterViewState createState() => _AlbumFilterViewState(order: filter.order);
+  _MusicFilterViewState createState() => _MusicFilterViewState(order: filter.order);
 }
 
-class _AlbumFilterViewState extends State<AlbumFilterView> {
+class _MusicFilterViewState extends State<MusicFilterView> {
   String order;
-  _AlbumFilterViewState({this.order});
+  _MusicFilterViewState({this.order});
   @override
   Widget build(BuildContext context) {
-    print(widget.filter.order);
     return Container(
       color: Colors.black,
       child: Column(

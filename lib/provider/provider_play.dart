@@ -96,7 +96,7 @@ class PlayProvider extends ChangeNotifier {
           showNotification: true, autoStart: false);
       return;
     }
-    int playIndex = assetsAudioPlayer.current.valueWrapper.value.index;
+    int playIndex = assetsAudioPlayer.current.value.index;
     Audio currentPlayAudio = assetsAudioPlayer.playlist.audios[playIndex];
     int existIndex = audios
         .indexWhere((element) => element.metas.id == currentPlayAudio.metas.id);
@@ -119,7 +119,7 @@ class PlayProvider extends ChangeNotifier {
 
   playMusic(Music music, {autoPlay: false}) {
     int index =
-        assetsAudioPlayer.current.valueWrapper?.value?.playlist?.currentIndex ??
+        assetsAudioPlayer.current?.value?.playlist?.currentIndex ??
             0;
     if (assetsAudioPlayer.playlist != null) {
       assetsAudioPlayer.playlist.audios
@@ -135,7 +135,7 @@ class PlayProvider extends ChangeNotifier {
   }
 
   addMusicToPlayList(Music music) {
-    int playIndex = assetsAudioPlayer.current.valueWrapper.value.index;
+    int playIndex = assetsAudioPlayer.current.value.index;
     assetsAudioPlayer.playlist.audios
         .removeWhere((element) => element.metas.id == music.id.toString());
     _addToPlaylist(_createAudioListFromMusicList([music]),
@@ -161,9 +161,9 @@ class PlayProvider extends ChangeNotifier {
     sharedPreferences.setStringList(
         "${ApplicationConfig().username}_savePlayList", ids);
     var index =
-        assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.id;
+        assetsAudioPlayer.current.value.audio.audio.metas.id;
     sharedPreferences.setString("${ApplicationConfig().username}_playId",
-        assetsAudioPlayer.current.valueWrapper.value.audio.audio.metas.id);
+        assetsAudioPlayer.current.value.audio.audio.metas.id);
   }
 
   loadHistory() async {

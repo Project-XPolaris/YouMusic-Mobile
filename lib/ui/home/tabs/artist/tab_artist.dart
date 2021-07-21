@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/ui/artist/artist.dart';
+import 'package:youmusic_mobile/ui/components/artist-filter.dart';
 import 'package:youmusic_mobile/ui/components/item_artist.dart';
 import 'package:youmusic_mobile/ui/home/tabs/artist/provider.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/artist.dart';
@@ -15,6 +16,22 @@ class ArtistTabPage extends StatelessWidget {
         child: Consumer<ArtistTabProvider>(builder: (context, provider, child) {
           provider.loadData();
           var controller = createLoadMoreController(() => provider.loadMore());
+          _onFilterButtonClick(){
+            showModalBottomSheet(
+                context: context,
+                builder: (ctx) {
+                  return ArtistFilterView(
+                    filter: provider.artistFilter,
+                    onChange: (filter) {
+                      provider.artistFilter = filter;
+                      if (controller.positions.isNotEmpty){
+                        controller.jumpTo(0);
+                      }
+                      provider.loadData(force: true);
+                    },
+                  );
+                });
+          }
           return Scaffold(
             backgroundColor: Colors.black,
             appBar: AppBar(
@@ -24,6 +41,9 @@ class ArtistTabPage extends StatelessWidget {
               ),
               backgroundColor: Colors.transparent,
               elevation: 0,
+              actions: [
+                IconButton(icon: Icon(Icons.sort), onPressed: _onFilterButtonClick)
+              ],
             ),
             body: Container(
               child: RefreshIndicator(

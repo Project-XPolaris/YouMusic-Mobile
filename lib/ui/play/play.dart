@@ -40,8 +40,8 @@ class _PlayPageState extends State<PlayPage> {
             renderContent() {
               if (displayMode == "Cover") {
                 return Container(
-                  width: 360,
-                  height: 360,
+                  width: 320,
+                  height: 320,
                   child: Image.network(current.audio.audio.metas.image.path),
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
@@ -52,8 +52,8 @@ class _PlayPageState extends State<PlayPage> {
               if (displayMode == "Lyrics") {
                 if (provider.lyricsManager == null) {
                   return Container(
-                    width: 360,
-                    height: 360,
+                    width: 320,
+                    height: 320,
                     child: Center(),
                   );
                 }
@@ -123,7 +123,7 @@ class _PlayPageState extends State<PlayPage> {
             return Builder(
               builder: (buildContext) {
                 return Padding(
-                  padding: EdgeInsets.only(top: 16, left: 36, right: 36),
+                  padding: EdgeInsets.only(top: 0, left: 36, right: 36),
                   child: Column(
                     children: [
                       Row(
