@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youmusic_mobile/api/client.dart';
 import 'package:youmusic_mobile/ui/home/home.dart';
 import 'package:youmusic_mobile/utils/login_history.dart';
+import 'package:youplusauthplugin/youplusauthplugin.dart';
 
 import '../../config.dart';
 
@@ -15,28 +16,62 @@ class InitPage extends StatefulWidget {
 }
 
 class _InitPageState extends State<InitPage> {
+  Youplusauthplugin plugin = new Youplusauthplugin();
   String inputUrl = "";
   String inputUsername = "";
   String inputPassword = "";
   String loginMode = "history";
 
-  Future<bool> _init() async {
-    await LoginHistoryManager().refreshHistory();
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
-    _onFinishClick() async {
-      var uri = Uri.parse(inputUrl);
+    _onAuthComplete(String username, String token) async {
+      ApplicationConfig().token = token;
+      LoginHistoryManager().add(LoginHistory(
+          apiUrl: ApplicationConfig().serviceUrl,
+          username: username,
+          token: token));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+
+    Future<bool> _init() async {
+      await LoginHistoryManager().refreshHistory();
+      plugin.registerAuthCallback((username, token) {
+        _onAuthComplete(username, token);
+      });
+      return true;
+    }
+
+    bool _applyUrl() {
+      if (inputUrl.isEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("please input service url")));
+        return false;
+      }
+      var uri;
+      try {
+        uri = Uri.parse(inputUrl);
+      } on FormatException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("input service url invalidate")));
+        return false;
+      }
       if (!uri.hasScheme) {
-        inputUrl  = "http://" + inputUrl;
+        inputUrl = "http://" + inputUrl;
       }
       if (!uri.hasPort) {
         inputUrl += ":3000";
       }
+      ApplicationConfig().serviceUrl = inputUrl;
+      return true;
+    }
+
+    _onFinishClick() async {
+      if (!_applyUrl()) {
+        return;
+      }
       SharedPreferences sharedPreferences =
-      await SharedPreferences.getInstance();
+          await SharedPreferences.getInstance();
       sharedPreferences.setString("apiUrl", inputUrl);
       await ApplicationConfig().loadConfig();
       var info = await ApiClient().fetchInfo();
@@ -44,7 +79,8 @@ class _InitPageState extends State<InitPage> {
         // without login
         ApplicationConfig().token = "";
         ApplicationConfig().username = "public";
-        LoginHistoryManager().add(LoginHistory(apiUrl: inputUrl, username: "public", token: ""));
+        LoginHistoryManager()
+            .add(LoginHistory(apiUrl: inputUrl, username: "public", token: ""));
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
         return;
@@ -71,13 +107,6 @@ class _InitPageState extends State<InitPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _onFinishClick();
-        },
-        backgroundColor: Colors.pink,
-        child: Icon(Icons.chevron_right),
       ),
       body: FutureBuilder(
           future: _init(),
@@ -140,7 +169,8 @@ class _InitPageState extends State<InitPage> {
                       //         ))
                       //   ],
                       // ),
-                      Expanded(child: DefaultTabController(
+                      Expanded(
+                          child: DefaultTabController(
                         length: 2,
                         child: Column(
                           children: [
@@ -158,12 +188,13 @@ class _InitPageState extends State<InitPage> {
                                 ],
                               ),
                             ),
-                            Expanded(child: TabBarView(
+                            Expanded(
+                                child: TabBarView(
                               physics: BouncingScrollPhysics(),
                               children: [
                                 ListView(
                                   children:
-                                  LoginHistoryManager().list.map((history) {
+                                      LoginHistoryManager().list.map((history) {
                                     return Container(
                                       margin: EdgeInsets.only(bottom: 8),
                                       child: ListTile(
@@ -180,39 +211,51 @@ class _InitPageState extends State<InitPage> {
                                         },
                                         leading: CircleAvatar(
                                           backgroundColor: Colors.pink,
-                                          child: Icon(Icons.person,color: Colors.white,),
+                                          child: Icon(
+                                            Icons.person,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                        title: Text(history.username,style: TextStyle(color: Colors.white),),
-                                        subtitle: Text(history.apiUrl,style: TextStyle(color: Colors.white70),),
-
+                                        title: Text(
+                                          history.username,
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        subtitle: Text(
+                                          history.apiUrl,
+                                          style:
+                                              TextStyle(color: Colors.white70),
+                                        ),
                                       ),
                                     );
                                   }).toList(),
                                 ),
                                 ListView(
                                   children: [
-                                    TextField(
-                                      style: TextStyle(color: Colors.white),
-                                      cursorColor: Colors.white,
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 16),
+                                      child: TextField(
+                                        style: TextStyle(color: Colors.white),
+                                        cursorColor: Colors.pink,
+                                        decoration: InputDecoration(
                                           focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
+                                            borderSide: BorderSide(
+                                                color: Colors.pink, width: 1.0),
+                                          ),
                                           enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          focusColor: Colors.white,
-                                          hintStyle:
-                                          TextStyle(color: Colors.white),
-                                          hintText: 'Service URL'),
-                                      onChanged: (text) {
-                                        setState(() {
-                                          inputUrl = text;
-                                        });
-                                      },
+                                            borderSide: BorderSide(
+                                                color: Colors.white24,
+                                                width: 1.0),
+                                          ),
+                                          labelText: "URL",
+                                          labelStyle:
+                                              TextStyle(color: Colors.white54),
+                                        ),
+                                        onChanged: (text) {
+                                          setState(() {
+                                            inputUrl = text;
+                                          });
+                                        },
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 16),
@@ -220,19 +263,19 @@ class _InitPageState extends State<InitPage> {
                                         style: TextStyle(color: Colors.white),
                                         cursorColor: Colors.white,
                                         decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            focusColor: Colors.white,
-                                            hintStyle:
-                                            TextStyle(color: Colors.white),
-                                            hintText: 'Username'),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.pink, width: 1.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white24,
+                                                width: 1.0),
+                                          ),
+                                          labelText: "Username",
+                                          labelStyle:
+                                              TextStyle(color: Colors.white54),
+                                        ),
                                         onChanged: (text) {
                                           setState(() {
                                             inputUsername = text;
@@ -249,23 +292,54 @@ class _InitPageState extends State<InitPage> {
                                         obscureText: true,
                                         cursorColor: Colors.white,
                                         decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            focusColor: Colors.white,
-                                            hintStyle:
-                                            TextStyle(color: Colors.white),
-                                            hintText: 'Password'),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.pink, width: 1.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white24,
+                                                width: 1.0),
+                                          ),
+                                          labelText: "Password",
+                                          labelStyle:
+                                              TextStyle(color: Colors.white54),
+                                        ),
                                         onChanged: (text) {
                                           setState(() {
                                             inputPassword = text;
                                           });
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.only(top: 16),
+                                      child: ElevatedButton(
+                                        child: Text(
+                                          "Login",
+                                          style: TextStyle(),
+                                        ),
+                                        onPressed: () {
+                                          _onFinishClick();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.pink,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 16),
+                                      child: TextButton(
+                                        child: Text(
+                                          "Login with YouPlus",
+                                          style: TextStyle(color: Colors.pink),
+                                        ),
+                                        onPressed: () {
+                                          if (!_applyUrl()) {
+                                            return;
+                                          }
+                                          plugin.openYouPlus();
                                         },
                                       ),
                                     ),
