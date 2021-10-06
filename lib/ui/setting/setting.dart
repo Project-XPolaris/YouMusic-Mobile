@@ -9,10 +9,8 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  String _apiUrl = "";
 
   Future<bool> _loadData() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
     return true;
   }
 

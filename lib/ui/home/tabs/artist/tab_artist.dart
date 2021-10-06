@@ -24,7 +24,7 @@ class ArtistTabPage extends StatelessWidget {
                     filter: provider.artistFilter,
                     onChange: (filter) {
                       provider.artistFilter = filter;
-                      if (controller.positions.isNotEmpty){
+                      if (controller.offset > 0){
                         controller.jumpTo(0);
                       }
                       provider.loadData(force: true);

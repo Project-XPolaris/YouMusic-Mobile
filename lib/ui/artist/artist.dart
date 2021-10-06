@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:youmusic_mobile/api/entites.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album-list/album_list.dart';
 import 'package:youmusic_mobile/ui/artist/provider.dart';
@@ -9,12 +10,14 @@ import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
+import 'package:collection/collection.dart';
 
 class ArtistPage extends StatefulWidget {
   final int id;
 
   const ArtistPage({Key? key, required this.id}) : super(key: key);
-  static launch(BuildContext context,int? artistId) {
+
+  static launch(BuildContext context, int? artistId) {
     var id = artistId;
     if (id == null) {
       return;
@@ -23,10 +26,11 @@ class ArtistPage extends StatefulWidget {
       context,
       MaterialPageRoute(
           builder: (context) => ArtistPage(
-            id: id,
-          )),
+                id: id,
+              )),
     );
   }
+
   @override
   _ArtistPageState createState() => _ArtistPageState(id);
 }
@@ -45,6 +49,20 @@ class _ArtistPageState extends State<ArtistPage> {
           provider.loadData();
           return Consumer<PlayProvider>(
               builder: (context, playProvider, child) {
+            String? getPersonAvatar() {
+              var url = provider.artist?.getAvatarUrl();
+              if (url != null) {
+                return url;
+              }
+              Album? album = provider.albumLoader.list
+                  .firstWhereOrNull((album) => album.getCoverUrl() != null);
+              if (album != null) {
+                return album.getCoverUrl();
+              }
+              return null;
+            }
+            var coverUrl = getPersonAvatar();
+            print(coverUrl);
             return Scaffold(
               body: NestedScrollView(
                 headerSliverBuilder:
@@ -60,22 +78,36 @@ class _ArtistPageState extends State<ArtistPage> {
                           collapseMode: CollapseMode.pin,
                           centerTitle: true,
                           stretchModes: [StretchMode.zoomBackground],
-                          title: Text(provider.artist?.name ?? "Unknown",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                              )),
+                          title: Container(
+                            padding: EdgeInsets.only(left: 16, right: 16),
+                            child: Text(provider.artist?.name ?? "Unknown",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                )),
+                          ),
                           background: Stack(
                             children: [
                               Container(
                                 width: double.infinity,
                                 child: AspectRatio(
                                   aspectRatio: 1,
-                                  child: Image.network(
-                                    provider.artist?.getAvatarUrl() ?? "",
-                                    fit: BoxFit.cover,
-                                    scale: 2,
-                                  ),
+                                  child: coverUrl != null
+                                      ? Image.network(
+                                          coverUrl,
+                                          fit: BoxFit.cover,
+                                          scale: 2,
+                                        )
+                                      : Container(
+                                          color: Colors.pink,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.person,
+                                              color: Colors.white,
+                                              size: 120,
+                                            ),
+                                          ),
+                                        ),
                                 ),
                               ),
                               Container(
@@ -143,23 +175,25 @@ class _ArtistPageState extends State<ArtistPage> {
                               padding:
                                   const EdgeInsets.only(top: 16, bottom: 16),
                               child: Column(
-                                children: (provider.musicLoader.list)
-                                    .map((music) {
-                                      var musicCover = music.getCoverUrl();
+                                children:
+                                    (provider.musicLoader.list).map((music) {
+                                  var musicCover = music.getCoverUrl();
                                   return ListTile(
                                       leading: AspectRatio(
                                         aspectRatio: 1,
-                                        child: musicCover != null ? Image.network(
-                                          musicCover,
-                                          fit: BoxFit.cover,
-                                          width: 64,
-                                          height: 64,
-                                        ):Container(
-                                          color: Colors.pink,
-                                          child: Center(
-                                            child: Icon(Icons.music_note),
-                                          ),
-                                        ),
+                                        child: musicCover != null
+                                            ? Image.network(
+                                                musicCover,
+                                                fit: BoxFit.cover,
+                                                width: 64,
+                                                height: 64,
+                                              )
+                                            : Container(
+                                                color: Colors.pink,
+                                                child: Center(
+                                                  child: Icon(Icons.music_note),
+                                                ),
+                                              ),
                                       ),
                                       title: Text(
                                         music.title ?? "Unknown",
@@ -210,7 +244,8 @@ class _ArtistPageState extends State<ArtistPage> {
                                     style: TextStyle(color: Colors.white60),
                                   ),
                                   onTap: () {
-                                    var artistId = provider.artist?.id?.toString();
+                                    var artistId =
+                                        provider.artist?.id?.toString();
                                     if (artistId == null) {
                                       return;
                                     }
@@ -247,8 +282,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                               if (id == null) {
                                                 return;
                                               }
-                                              playProvider
-                                                  .playAlbum(id);
+                                              playProvider.playAlbum(id);
                                             },
                                             onLongPress: (album) {
                                               HapticFeedback.selectionClick();

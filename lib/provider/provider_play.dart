@@ -192,8 +192,8 @@ class PlayProvider extends ChangeNotifier {
     var response = await ApiClient().fetchMusicList({"ids": ids.join(",")});
     List<Audio> audios = _createAudioListFromMusicList(response.data);
     _addToPlaylist(audios);
-    String? playId = sharedPreferences.getString("${ApplicationConfig().username}_playId");
-    var index = audios.indexWhere((element) => element.metas.id == playId);
+    // String? playId = sharedPreferences.getString("${ApplicationConfig().username}_playId");
+    // var index = audios.indexWhere((element) => element.metas.id == playId);
     // if (index != -1) {
     //   assetsAudioPlayer.playlistPlayAtIndex(index);
     // }

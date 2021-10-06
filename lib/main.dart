@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:youmusic_mobile/index.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/init/init.dart';
-
-import 'ui/home/home.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -55,7 +52,7 @@ class MyAppState extends State<MyApp> {
             theme: ThemeData(
               // This is the theme of your application.
               appBarTheme: AppBarTheme(
-                brightness: Brightness.dark
+                systemOverlayStyle: SystemUiOverlayStyle.light
               ),
               // Try running your application with "flutter run". You'll see the
               // application has a blue toolbar. Then, without quitting the app, try

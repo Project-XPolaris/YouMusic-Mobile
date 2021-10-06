@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:youmusic_mobile/api/entites.dart';
-import 'package:youmusic_mobile/config.dart';
 
 class AlbumItem extends StatelessWidget {
   final Album album;

@@ -24,7 +24,7 @@ class AlbumTabPage extends StatelessWidget {
                     filter: provider.albumFilter,
                     onChange: (filter) {
                       provider.albumFilter = filter;
-                      if (controller.positions.isNotEmpty){
+                      if (controller.offset > 0){
                         controller.jumpTo(0);
                       }
                       provider.loadData(force: true);

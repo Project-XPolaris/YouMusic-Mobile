@@ -13,7 +13,7 @@ class PlayBar extends StatelessWidget {
       provider.loadHistory();
       return Container(
         height: 72,
-        color: Color(0xFF2B2B2B),
+        color: Color(0xFF151515),
         child: Padding(
           padding: const EdgeInsets.only(right: 16),
           child: buildMusicView(context, provider),
@@ -70,7 +70,7 @@ class PlayBar extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    color: Color(0xFF2B2B2B),
+                    color: Color(0xFF151515),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 8, left: 8),
                       child: Column(

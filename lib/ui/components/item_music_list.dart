@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:youmusic_mobile/api/entites.dart';
-import 'package:youmusic_mobile/config.dart';
 
 class MusicListItem extends StatelessWidget {
   final Music music;

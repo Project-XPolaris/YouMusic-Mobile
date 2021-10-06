@@ -55,7 +55,7 @@ class _InitPageState extends State<InitPage> {
       var uri;
       try {
         uri = Uri.parse(inputUrl);
-      } on FormatException catch (e) {
+      } on FormatException catch (_) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("input service url invalidate")));
         return false;
@@ -90,12 +90,12 @@ class _InitPageState extends State<InitPage> {
         return;
       }
       // login with account
-      String? infoUrl = info.authUrl;
-      if (infoUrl == null) {
+      String? authUrl = info.authUrl;
+      if (authUrl == null) {
         return;
       }
       Dio dio = new Dio();
-      var response = await dio.post(inputUrl, data: {
+      var response = await dio.post(authUrl, data: {
         "username": inputUsername,
         "password": inputPassword,
       });

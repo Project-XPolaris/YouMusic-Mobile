@@ -66,7 +66,7 @@ class Album {
   }
 
   getArtist(String defaultValue){
-    if (artist == null || artist.length == 0){
+    if (artist.length == 0){
       return defaultValue;
     }
     return artist.map((e) => e.name).join("/");
