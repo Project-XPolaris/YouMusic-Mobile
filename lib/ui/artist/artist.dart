@@ -13,8 +13,20 @@ import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 class ArtistPage extends StatefulWidget {
   final int id;
 
-  const ArtistPage({Key key, this.id}) : super(key: key);
-
+  const ArtistPage({Key? key, required this.id}) : super(key: key);
+  static launch(BuildContext context,int? artistId) {
+    var id = artistId;
+    if (id == null) {
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ArtistPage(
+            id: id,
+          )),
+    );
+  }
   @override
   _ArtistPageState createState() => _ArtistPageState(id);
 }
@@ -109,13 +121,17 @@ class _ArtistPageState extends State<ArtistPage> {
                                     style: TextStyle(color: Colors.white60),
                                   ),
                                   onTap: () {
+                                    var artistId =
+                                        provider.artist?.id?.toString();
+                                    if (artistId == null) {
+                                      return;
+                                    }
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => MusicListPage(
                                                 extraFilter: {
-                                                  "artist": provider.artist.id
-                                                      .toString()
+                                                  "artist": artistId
                                                 },
                                               )),
                                     );
@@ -127,20 +143,26 @@ class _ArtistPageState extends State<ArtistPage> {
                               padding:
                                   const EdgeInsets.only(top: 16, bottom: 16),
                               child: Column(
-                                children: (provider.musicLoader.list ?? [])
+                                children: (provider.musicLoader.list)
                                     .map((music) {
+                                      var musicCover = music.getCoverUrl();
                                   return ListTile(
                                       leading: AspectRatio(
                                         aspectRatio: 1,
-                                        child: Image.network(
-                                          music.getCoverUrl(),
+                                        child: musicCover != null ? Image.network(
+                                          musicCover,
                                           fit: BoxFit.cover,
                                           width: 64,
                                           height: 64,
+                                        ):Container(
+                                          color: Colors.pink,
+                                          child: Center(
+                                            child: Icon(Icons.music_note),
+                                          ),
                                         ),
                                       ),
                                       title: Text(
-                                        music.title,
+                                        music.title ?? "Unknown",
                                         style: TextStyle(color: Colors.white),
                                         softWrap: false,
                                       ),
@@ -188,13 +210,16 @@ class _ArtistPageState extends State<ArtistPage> {
                                     style: TextStyle(color: Colors.white60),
                                   ),
                                   onTap: () {
+                                    var artistId = provider.artist?.id?.toString();
+                                    if (artistId == null) {
+                                      return;
+                                    }
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => AlbumListPage(
                                                 extraFilter: {
-                                                  "artist": provider.artist.id
-                                                      .toString()
+                                                  "artist": artistId
                                                 },
                                               )),
                                     );
@@ -218,8 +243,12 @@ class _ArtistPageState extends State<ArtistPage> {
                                             .map((album) {
                                           return AlbumItem(
                                             onTap: (contextAlbum) {
+                                              var id = contextAlbum.id;
+                                              if (id == null) {
+                                                return;
+                                              }
                                               playProvider
-                                                  .playAlbum(contextAlbum.id);
+                                                  .playAlbum(id);
                                             },
                                             onLongPress: (album) {
                                               HapticFeedback.selectionClick();

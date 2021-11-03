@@ -13,7 +13,7 @@ class ArtistTabProvider extends ChangeNotifier{
 
   _getExtraParam() {
     return {
-      "order":ArtistOrderMapping[artistFilter.order]
+      "order":ArtistOrderMapping[artistFilter.order] ?? "id desc"
     };
   }
   loadData({force = false}) async {

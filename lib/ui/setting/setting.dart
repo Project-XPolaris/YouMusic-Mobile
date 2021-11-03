@@ -46,8 +46,8 @@ class _SettingPageState extends State<SettingPage> {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text("restart app to set new url"),
                     ));
-                    MyAppState myAppState = context.findRootAncestorStateOfType<MyAppState>();
-                    myAppState.reloadApp();
+                    MyAppState? myAppState = context.findRootAncestorStateOfType<MyAppState>();
+                    myAppState?.reloadApp();
                   },
                 )
               ],

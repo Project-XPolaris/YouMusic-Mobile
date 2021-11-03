@@ -10,44 +10,32 @@ import 'package:youmusic_mobile/ui/meta-navigation/view.dart';
 class AlbumMetaInfo extends StatelessWidget {
   final Album album;
 
-  const AlbumMetaInfo({Key key, this.album}) : super(key: key);
+  const AlbumMetaInfo({Key? key, required this.album}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<PlayProvider>(builder: (context, provider, child) {
       return MetaNavigation(
         cover: album.getCoverUrl(),
-        title: album.name,
+        title: album.name ?? "",
         title2: album.getArtist("Unknown"),
         title3: "Album",
         items: [
           MetaItem(
-            title: album.name,
+            title: album.name ?? "",
             icon: Icons.album,
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AlbumPage(
-                          id: album.id,
-                        )),
-              );
+              AlbumPage.launch(context,album.id);
             },
           ),
           ...album.artist.map((artist) {
             return MetaItem(
-              title: artist.name,
+              title: artist.name ?? "",
               icon: Icons.person,
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ArtistPage(
-                            id: artist.id,
-                          )),
-                );
+                ArtistPage.launch(context, artist.id);
               },
             );
           }),
@@ -56,14 +44,22 @@ class AlbumMetaInfo extends StatelessWidget {
               icon: Icons.play_arrow,
               onTap: () {
                 Navigator.pop(context);
-                provider.playAlbum(album.id);
+                var albumId = album.id;
+                if (albumId == null) {
+                  return;
+                }
+                provider.playAlbum(albumId);
               }),
           MetaItem(
               title: "Add to playlist",
               icon: Icons.playlist_add,
               onTap: () {
                 Navigator.pop(context);
-                provider.addAlbumToPlaylist(album.id);
+                var albumId = album.id;
+                if (albumId == null) {
+                  return;
+                }
+                provider.addAlbumToPlaylist(albumId);
               })
         ],
       );

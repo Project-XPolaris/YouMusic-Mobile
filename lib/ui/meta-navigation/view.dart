@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:youmusic_mobile/config.dart';
 
 class MetaNavigation extends StatelessWidget {
   final List<Widget> items;
-  final String cover;
+  final String? cover;
   final String title;
   final String title2;
   final String title3;
-  const MetaNavigation({Key key, this.items, this.cover, this.title, this.title2, this.title3}) : super(key: key);
+  const MetaNavigation({Key? key, this.items = const [], this.cover, this.title = "", this.title2 = "", this.title3 = ""}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var coverUrl = cover;
     return Container(
       color: Colors.black,
       child: Padding(
@@ -21,7 +21,7 @@ class MetaNavigation extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.network(cover,fit: BoxFit.cover, width: 64,height: 64,),
+                  coverUrl != null ? Image.network(coverUrl,fit: BoxFit.cover, width: 64,height: 64,):Container(),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0),
                     child: Container(
@@ -30,7 +30,7 @@ class MetaNavigation extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            title ?? "",
+                            title,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
@@ -39,13 +39,13 @@ class MetaNavigation extends StatelessWidget {
                             overflow: TextOverflow.fade,
                           ),
                           Text(
-                            title2 ?? "",
+                            title2,
                             style: TextStyle(color: Colors.white70, fontSize: 14),
                             softWrap: false,
                             overflow: TextOverflow.fade,
                           ),
                           Text(
-                            title3 ?? "",
+                            title3,
                             style: TextStyle(color: Colors.white70, fontSize: 14),
                             softWrap: false,
                             overflow: TextOverflow.fade,
@@ -74,19 +74,15 @@ class MetaNavigation extends StatelessWidget {
 
 class MetaItem extends StatelessWidget {
   const MetaItem({
-    Key key, this.title, this.icon, this.onTap,
+    Key? key, required this.title, this.icon, this.onTap,
   }) : super(key: key);
   final String title;
-  final IconData icon;
-  final Function onTap;
+  final IconData? icon;
+  final Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        if (onTap != null){
-          onTap();
-        }
-      },
+      onTap: onTap,
       child: Container(
         height: 48,
         child: Row(

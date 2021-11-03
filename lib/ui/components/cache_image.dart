@@ -3,11 +3,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CacheImage extends StatelessWidget {
-  final String url;
+  final String? url;
   final IconData failedIcon;
-  CacheImage({this.url,this.failedIcon});
+  CacheImage({this.url,required this.failedIcon});
   @override
   Widget build(BuildContext context) {
+    var url = this.url;
     if (url != null) {
       return CachedNetworkImage(
         imageUrl: url,

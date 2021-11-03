@@ -15,7 +15,7 @@ class AlbumTabProvider extends ChangeNotifier {
 
   _getExtraParam() {
     return {
-      "order":AlbumOrderMapping[albumFilter.order]
+      "order":AlbumOrderMapping[albumFilter.order] ?? "id desc"
     };
   }
 

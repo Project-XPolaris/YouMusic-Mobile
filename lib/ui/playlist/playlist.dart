@@ -10,8 +10,8 @@ class PlaylistModal extends StatelessWidget {
     return Consumer<PlayProvider>(builder: (context, provider, child) {
       return StreamBuilder(
           stream: provider.assetsAudioPlayer.current,
-          builder: (context,asyncSnapshot){
-            Playing current = asyncSnapshot.data;
+          builder: (context, asyncSnapshot) {
+            Playing? current = asyncSnapshot.data as Playing?;
             return Container(
               color: Colors.black,
               height: 720,
@@ -28,7 +28,8 @@ class PlaylistModal extends StatelessWidget {
                           child: Container(
                             child: Text(
                               "Playlist",
-                              style: TextStyle(color: Colors.pink, fontSize: 20),
+                              style:
+                                  TextStyle(color: Colors.pink, fontSize: 20),
                             ),
                           ),
                         ),
@@ -36,7 +37,8 @@ class PlaylistModal extends StatelessWidget {
                       StreamBuilder(
                           stream: provider.assetsAudioPlayer.loopMode,
                           builder: (context, asyncSnapshot) {
-                            LoopMode loopMode = asyncSnapshot.data;
+                            LoopMode? loopMode =
+                                asyncSnapshot.data as LoopMode?;
                             return Padding(
                               padding: EdgeInsets.only(right: 16),
                               child: IconButton(
@@ -56,30 +58,49 @@ class PlaylistModal extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16, right: 16),
                       child: ListView.builder(
-                        itemCount: provider.assetsAudioPlayer.playlist.audios.length,
-                        itemBuilder: (context,index){
-                          Audio audio = provider.assetsAudioPlayer.playlist.audios[index];
+                        itemCount: provider
+                                .assetsAudioPlayer.playlist?.audios.length ??
+                            0,
+                        itemBuilder: (context, index) {
+                          Audio? audio = provider
+                              .assetsAudioPlayer.playlist?.audios[index];
                           int currentIndex = 0;
                           if (current != null) {
                             currentIndex = current.index;
                           }
+                          var coverUrl = audio?.metas.image?.path;
                           return Dismissible(
                             key: UniqueKey(),
-                            onDismissed: (data){
-                              provider.removeFromPlayList(index, audio.metas.id);
+                            onDismissed: (data) {
+                              var id = audio?.metas.id;
+                              if (id != null) {
+                                provider.removeFromPlayList(index, id);
+                              }
                             },
                             child: Container(
-                              color: currentIndex == index?Colors.pink:null,
+                              color: currentIndex == index ? Colors.pink : null,
                               child: ListTile(
-                                title: Text(audio.metas.title,style: TextStyle(color: Colors.white),softWrap: false,),
-                                subtitle: Text(audio.metas.album,style: TextStyle(color: Colors.white54,fontSize: 12)),
-                                leading: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Image.network(audio.metas.image.path,fit: BoxFit.cover,),
+                                title: Text(
+                                  audio?.metas.title ?? "",
+                                  style: TextStyle(color: Colors.white),
+                                  softWrap: false,
                                 ),
+                                subtitle: Text(audio?.metas.album ?? "Unknown",
+                                    style: TextStyle(
+                                        color: Colors.white54, fontSize: 12)),
+                                leading: coverUrl != null
+                                    ? AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Image.network(
+                                          coverUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : Container(),
                                 dense: true,
-                                onTap: (){
-                                  provider.assetsAudioPlayer.playlistPlayAtIndex(index);
+                                onTap: () {
+                                  provider.assetsAudioPlayer
+                                      .playlistPlayAtIndex(index);
                                 },
                               ),
                             ),

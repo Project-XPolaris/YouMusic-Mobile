@@ -8,8 +8,14 @@ class ApiClient {
   factory ApiClient() {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest:(RequestOptions options, RequestInterceptorHandler handler) async {
-        options.baseUrl = ApplicationConfig().serviceUrl;
-        String token = ApplicationConfig().token;
+        var serviceUrl = ApplicationConfig().serviceUrl;
+        if (serviceUrl == null) {
+          handler.reject(DioError(requestOptions: options,error: "base api url is null"));
+          return;
+        }
+
+        options.baseUrl = serviceUrl;
+        String? token = ApplicationConfig().token;
         if (token != null && token.isNotEmpty) {
           options.headers = {
             "Authorization": "Bearer $token"

@@ -66,7 +66,7 @@ class AllTabPage extends StatelessWidget {
                               child: CacheImage(url:music.getCoverUrl(),failedIcon: Icons.music_note,),
                             ),
                           ),
-                          title: Text(music.title,style: TextStyle(color: Colors.white),),
+                          title: Text(music.title ?? "Unknown",style: TextStyle(color: Colors.white),),
                           subtitle: Text(music.getArtistString("unknown"),style: TextStyle(color: Colors.white70)),
                           onTap: () {
                             playProvider.playMusic(music,autoPlay: true);

@@ -63,11 +63,15 @@ class AlbumTabPage extends StatelessWidget {
                       return AlbumItem(
                         album: e,
                         onTap: (album) {
+                          int? albumId = album.id;
+                          if (albumId == null) {
+                            return;
+                          }
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => AlbumPage(
-                                      id: album.id,
+                                      id: albumId,
                                     )),
                           );
                         },

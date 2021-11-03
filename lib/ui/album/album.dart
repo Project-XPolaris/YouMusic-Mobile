@@ -10,7 +10,21 @@ import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 class AlbumPage extends StatelessWidget {
   final int id;
 
-  const AlbumPage({Key key, this.id}) : super(key: key);
+  const AlbumPage({Key? key, required this.id}) : super(key: key);
+
+  static launch(BuildContext context,int? albumId) {
+    var id = albumId;
+    if (id == null) {
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => AlbumPage(
+            id: id,
+          )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +33,7 @@ class AlbumPage extends StatelessWidget {
         child: Consumer<AlbumProvider>(builder: (context, provider, child) {
           return Consumer<PlayProvider>(
               builder: (context, playProvider, child) {
+            var albumCoverUrl = provider.album?.getCoverUrl();
             return Scaffold(
               backgroundColor: Colors.black,
               appBar: AppBar(
@@ -37,12 +52,12 @@ class AlbumPage extends StatelessWidget {
                               left: 64, right: 64, top: 16),
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: provider.album != null
+                            child: albumCoverUrl != null
                                 ? Container(
                                     width: 120,
                                     height: 120,
                                     child: Image.network(
-                                      provider.album.getCoverUrl(),
+                                      albumCoverUrl,
                                       width: 120,
                                       fit: BoxFit.cover,
                                     ))
@@ -90,7 +105,10 @@ class AlbumPage extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
-                                  playProvider.playAlbum(provider.album.id);
+                                  var albumId = provider.album?.id;
+                                  if (albumId != null) {
+                                    playProvider.playAlbum(albumId);
+                                  }
                                 },
                               )
                             ],
@@ -100,7 +118,7 @@ class AlbumPage extends StatelessWidget {
                           return ListTile(
                               minVerticalPadding: 16,
                               title: Text(
-                                music.title,
+                                music.title ?? "No title",
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),

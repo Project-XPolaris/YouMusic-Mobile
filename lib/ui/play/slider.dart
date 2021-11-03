@@ -21,9 +21,9 @@ class _PlaySliderState extends State<PlaySlider> {
               if (asyncSnapshot.hasData){
 
               }
-              Duration currentPlayPosition = asyncSnapshot.data ?? Duration();
+              Duration currentPlayPosition = asyncSnapshot.data as Duration? ?? Duration.zero;
               Duration totalDuration = provider
-                  .assetsAudioPlayer.current.value.audio.audio.metas.extra["duration"];
+                  .assetsAudioPlayer.current.value?.audio.audio.metas.extra?["duration"] ?? Duration.zero;
               return SliderTheme(
                 data: SliderThemeData(
                   thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),

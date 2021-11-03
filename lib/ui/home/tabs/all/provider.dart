@@ -12,7 +12,7 @@ class MusicTabProvider extends ChangeNotifier{
   MusicFilter musicFilter = new MusicFilter(order: "id desc");
   _getExtraParam() {
     return {
-      "order":MusicOrderMapping[musicFilter.order]
+      "order":MusicOrderMapping[musicFilter.order] ?? "id desc"
     };
   }
   loadData({force = false}) async {

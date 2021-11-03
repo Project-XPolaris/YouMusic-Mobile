@@ -2,7 +2,6 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:youmusic_mobile/config.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/play/play.dart';
 import 'package:youmusic_mobile/ui/playlist/playlist.dart';
@@ -27,7 +26,7 @@ class PlayBar extends StatelessWidget {
     return StreamBuilder(
         stream: playProvider.assetsAudioPlayer.current,
         builder: (context, asyncSnapshot) {
-          Playing current = asyncSnapshot.data;
+          Playing? current = asyncSnapshot.data as Playing?;
           if (current == null) {
             return Container(
               child: Center(
@@ -39,6 +38,7 @@ class PlayBar extends StatelessWidget {
             );
           }
           playProvider.onCurrentChange(current);
+          var coverUrl = current.audio.audio.metas.image?.path;
           return Row(
             children: [
               GestureDetector(
@@ -51,20 +51,21 @@ class PlayBar extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Container(
-                    child: Image.network(
-                      current.audio.audio.metas.image.path,
+                    child: coverUrl != null ? Image.network(
+                      coverUrl,
                       fit: BoxFit.cover,
-                    ),
+                    ):Container(),
                   ),
                 ),
               ),
               Expanded(
                 child: GestureDetector(
                   onHorizontalDragEnd: (d) {
-                    if (d.primaryVelocity < 0) {
+                    var delta = d.primaryVelocity ?? 0;
+                    if ( delta < 0) {
                       playProvider.assetsAudioPlayer.next();
                     }
-                    if (d.primaryVelocity > 0) {
+                    if (delta > 0) {
                       playProvider.assetsAudioPlayer.previous();
                     }
                   },
@@ -77,13 +78,13 @@ class PlayBar extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              current.audio.audio.metas.title,
+                              current.audio.audio.metas.title ?? "Unknown",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                               softWrap: false,
                             ),
                             Text(
-                              current.audio.audio.metas.artist,
+                              current.audio.audio.metas.artist ?? "Unknown",
                               style: TextStyle(color: Colors.white70),
                               softWrap: false,
                             )
@@ -95,12 +96,12 @@ class PlayBar extends StatelessWidget {
               StreamBuilder(
                   stream: playProvider.assetsAudioPlayer.isPlaying,
                   builder: (context, asyncSnapshot) {
-                    final bool isPlaying = asyncSnapshot.data;
-                    return Container(
+                    final bool? isPlaying = asyncSnapshot.data as bool?;
+                    return isPlaying != null?Container(
                       child: Center(
                         child: IconButton(
                           icon: Icon(
-                            (isPlaying ?? false)
+                            isPlaying
                                 ? Icons.pause
                                 : Icons.play_arrow,
                             size: 28,
@@ -111,7 +112,7 @@ class PlayBar extends StatelessWidget {
                           },
                         ),
                       ),
-                    );
+                    ):Container();
                   }),
               IconButton(
                 icon: Icon(Icons.playlist_play, color: Colors.white),

@@ -25,9 +25,13 @@ class _InitPageState extends State<InitPage> {
   @override
   Widget build(BuildContext context) {
     _onAuthComplete(String username, String token) async {
+      var serviceUrl = ApplicationConfig().serviceUrl;
+      if (serviceUrl == null) {
+        return;
+      }
       ApplicationConfig().token = token;
       LoginHistoryManager().add(LoginHistory(
-          apiUrl: ApplicationConfig().serviceUrl,
+          apiUrl: serviceUrl,
           username: username,
           token: token));
       Navigator.pushReplacement(
@@ -86,8 +90,12 @@ class _InitPageState extends State<InitPage> {
         return;
       }
       // login with account
+      String? infoUrl = info.authUrl;
+      if (infoUrl == null) {
+        return;
+      }
       Dio dio = new Dio();
-      var response = await dio.post(info.authUrl, data: {
+      var response = await dio.post(inputUrl, data: {
         "username": inputUsername,
         "password": inputPassword,
       });
@@ -217,7 +225,7 @@ class _InitPageState extends State<InitPage> {
                                           ),
                                         ),
                                         title: Text(
-                                          history.username,
+                                          history.username ?? "Public",
                                           style: TextStyle(color: Colors.white),
                                         ),
                                         subtitle: Text(

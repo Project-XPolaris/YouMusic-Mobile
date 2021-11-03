@@ -5,7 +5,7 @@ class MusicListProvider extends ChangeNotifier{
   final Map<String,String> extraFilter;
   MusicLoader loader = MusicLoader();
 
-  MusicListProvider({this.extraFilter});
+  MusicListProvider({required this.extraFilter});
   loadData() async {
     if (await loader.loadData(extraFilter:extraFilter)){
       notifyListeners();

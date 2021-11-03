@@ -18,18 +18,18 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.3.2+2
+  provider: 6.0.1
   dio: ^4.0.0
   audio_service: ^0.17.0
   assets_audio_player: ^3.0.3+2
   shared_preferences: ^2.0.5
   cached_network_image: ^3.0.0
-  scrollable_positioned_list: ^0.1.10
+  scrollable_positioned_list: 0.2.2
   youplusauthplugin:
     git: https://github.com/Project-XPolaris/YouPlusAuthPlugin.git
 

@@ -4,7 +4,7 @@ import 'package:youmusic_mobile/api/loader/album_loader.dart';
 class AlbumListProvider extends ChangeNotifier{
   final Map<String,String> extraFilter;
   AlbumLoader loader = AlbumLoader();
-  AlbumListProvider({this.extraFilter});
+  AlbumListProvider({required this.extraFilter});
   loadData() async {
     if (await loader.loadData(extraFilter:extraFilter)){
       notifyListeners();

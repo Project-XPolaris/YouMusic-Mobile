@@ -11,7 +11,7 @@ import 'package:youmusic_mobile/utils/listview.dart';
 class ArtistListPage extends StatelessWidget {
   final Map<String, String> extraFilter;
   final String title;
-  const ArtistListPage({Key key, this.extraFilter,this.title = "Artist List"}) : super(key: key);
+  const ArtistListPage({Key? key, this.extraFilter = const {},this.title = "Artist List"}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +33,21 @@ class ArtistListPage extends StatelessWidget {
                 child: ListView(
                   controller: _controller,
                   children:provider.loader.list.map((artist) {
+                    var artistCoverUrl = artist.getAvatarUrl();
                     return ListTile(
-                      title: Text(artist.name,style: TextStyle(color: Colors.white),),
-                      subtitle: Text(artist.name,style: TextStyle(color: Colors.white54,fontSize: 12)),
+                      title: Text(artist.name ?? "",style: TextStyle(color: Colors.white),),
                       leading: AspectRatio(
                         aspectRatio: 1,
-                        child: Image.network(artist.getAvatarUrl(),fit: BoxFit.cover,),
+                        child: artistCoverUrl != null ? Image.network(artistCoverUrl,fit: BoxFit.cover,):Container(),
                       ),
                       onTap: () {
+                        var artistId = artist.id;
+                        if (artistId == null) {
+                          return;
+                        }
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ArtistPage(id: artist.id,)),
+                          MaterialPageRoute(builder: (context) => ArtistPage(id: artistId)),
                         );
                       },
                       onLongPress: () {

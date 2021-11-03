@@ -6,13 +6,13 @@ const OrderFilterKeys = [
 
 class AlbumFilter {
   String order;
-  AlbumFilter({this.order});
+  AlbumFilter({required this.order});
 }
 
 class AlbumFilterView extends StatefulWidget {
   final AlbumFilter filter;
   final Function(AlbumFilter filter) onChange;
-  AlbumFilterView({this.filter,this.onChange});
+  AlbumFilterView({required this.filter,required this.onChange});
 
   @override
   _AlbumFilterViewState createState() => _AlbumFilterViewState(order: filter.order);
@@ -20,7 +20,7 @@ class AlbumFilterView extends StatefulWidget {
 
 class _AlbumFilterViewState extends State<AlbumFilterView> {
   String order;
-  _AlbumFilterViewState({this.order});
+  _AlbumFilterViewState({required this.order});
   @override
   Widget build(BuildContext context) {
     print(widget.filter.order);

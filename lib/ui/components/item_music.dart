@@ -4,24 +4,21 @@ import 'package:youmusic_mobile/api/entites.dart';
 
 class MusicItem extends StatelessWidget {
   final Music music;
-  final Function(Music) onTap;
-  final Function(Music) onLongPress;
+  final Function(Music)? onTap;
+  final Function(Music)? onLongPress;
 
-  const MusicItem({Key key, this.music, this.onTap, this.onLongPress})
+  const MusicItem({Key? key, required this.music, this.onTap, this.onLongPress})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String? cover = music.getCoverUrl();
     return GestureDetector(
       onTap: () {
-        if (onTap != null) {
-          onTap(music);
-        }
+        onTap?.call(music);
       },
       onLongPress: () {
-        if (onLongPress != null) {
-          onLongPress(music);
-        }
+        onLongPress?.call(music);
       },
       child: Container(
         width: 110,
@@ -36,9 +33,9 @@ class MusicItem extends StatelessWidget {
                       color: Colors.white70,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  child: music.getCoverUrl() != null
+                  child: cover != null
                       ? CachedNetworkImage(
-                          imageUrl: music.getCoverUrl(),
+                          imageUrl: cover,
                           imageBuilder: (context, imageProvider) => Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
@@ -61,8 +58,7 @@ class MusicItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                )
-            ),
+                )),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(4),
@@ -73,7 +69,7 @@ class MusicItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        music.title,
+                        music.title ?? "Unknown",
                         style: TextStyle(color: Colors.white),
                         softWrap: false,
                       ),

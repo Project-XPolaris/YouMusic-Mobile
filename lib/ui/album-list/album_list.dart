@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album-list/provider.dart';
 import 'package:youmusic_mobile/ui/album/album.dart';
-import 'package:youmusic_mobile/ui/components/item_album_list.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
@@ -12,7 +11,7 @@ import 'package:youmusic_mobile/utils/listview.dart';
 class AlbumListPage extends StatelessWidget {
   final Map<String, String> extraFilter;
   final String title;
-  const AlbumListPage({Key key, this.extraFilter,this.title = "Album List"}) : super(key: key);
+  const AlbumListPage({Key? key, this.extraFilter = const {},this.title = "Album List"}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +33,22 @@ class AlbumListPage extends StatelessWidget {
                 child: ListView(
                   controller: _controller,
                   children:provider.loader.list.map((album) {
+                    var coverUrl = album.getCoverUrl();
                     return ListTile(
-                      title: Text(album.name,style: TextStyle(color: Colors.white),),
+                      title: Text(album.name ?? "Unknown",style: TextStyle(color: Colors.white),),
                       subtitle: Text(album.getArtist("Unknown"),style: TextStyle(color: Colors.white54,fontSize: 12)),
                       leading: AspectRatio(
                         aspectRatio: 1,
-                        child: Image.network(album.getCoverUrl(),fit: BoxFit.cover,),
+                        child: coverUrl != null ? Image.network(coverUrl,fit: BoxFit.cover,) : Container(),
                       ),
                       onTap: () {
+                        var id = album.id;
+                        if (id == null) {
+                          return;
+                        }
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AlbumPage(id: album.id,)),
+                          MaterialPageRoute(builder: (context) => AlbumPage(id: id,)),
                         );
                       },
                       onLongPress: () {

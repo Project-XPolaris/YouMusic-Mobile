@@ -5,9 +5,9 @@ import 'package:youmusic_mobile/config.dart';
 
 class AlbumItem extends StatelessWidget {
   final Album album;
-  final Function(Album) onTap;
-  final Function(Album) onLongPress;
-  const AlbumItem({Key key, this.album, this.onTap, this.onLongPress}) : super(key: key);
+  final Function(Album)? onTap;
+  final Function(Album)? onLongPress;
+  const AlbumItem({Key? key, required this.album, this.onTap, this.onLongPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +15,7 @@ class AlbumItem extends StatelessWidget {
     if (album.artist.isNotEmpty) {
       artist = album.artist.map((e) => e.name).join("/");
     }
+    var coverUrl = album.getCoverUrl();
     return Container(
       width: 110,
       height: 200,
@@ -22,14 +23,10 @@ class AlbumItem extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: (){
-              if (onTap != null){
-                onTap(album);
-              }
+                onTap?.call(album);
             },
             onLongPress: (){
-              if (onLongPress != null){
-                onLongPress(album);
-              }
+                onLongPress?.call(album);
             },
             child: AspectRatio(
                 aspectRatio: 1,
@@ -39,8 +36,8 @@ class AlbumItem extends StatelessWidget {
                       color: Colors.white70,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  child: album.cover != null ?CachedNetworkImage(
-                    imageUrl: album.getCoverUrl(),
+                  child: coverUrl != null ?CachedNetworkImage(
+                    imageUrl: coverUrl,
                     imageBuilder: (context, imageProvider) => Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -71,7 +68,7 @@ class AlbumItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      album.name,
+                      album.name ?? "Unknown",
                       style: TextStyle(color: Colors.white),
                       softWrap: false,
                     ),

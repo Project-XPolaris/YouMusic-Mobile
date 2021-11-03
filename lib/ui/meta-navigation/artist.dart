@@ -8,20 +8,17 @@ import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 class ArtistMetaInfo extends StatelessWidget {
   final Artist artist;
 
-  const ArtistMetaInfo({Key key, this.artist}) : super(key: key);
+  const ArtistMetaInfo({Key? key, required this.artist}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MetaNavigation(
       cover: artist.getAvatarUrl(),
-      title: artist.name,
+      title: artist.name ?? "Unknown",
       title2: "Artist",
       items: [
-        MetaItem(title: artist.name,icon: Icons.person,onTap: (){
+        MetaItem(title: artist.name ?? "Unknown",icon: Icons.person,onTap: (){
           Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ArtistPage(id: artist.id,)),
-          );
+          ArtistPage.launch(context, artist.id);
         },),
         MetaItem(title: "All music",icon: Icons.music_note,onTap: (){
           Navigator.pop(context);

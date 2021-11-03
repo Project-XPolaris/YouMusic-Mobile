@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginHistory {
-  String apiUrl;
-  String username;
-  String token;
+  String apiUrl  = "";
+  String? username;
+  String? token;
 
-  LoginHistory({this.apiUrl, this.username, this.token});
+  LoginHistory({required this.apiUrl, this.username, this.token});
 
   LoginHistory.fromJson(Map<String, dynamic> json) {
-    apiUrl = json['apiUrl'];
-    username = json['username'];
-    token = json['token'];
+    apiUrl = json['apiUrl'] ?? "";
+    username = json['username'] ?? "";
+    token = json['token'] ?? "";
   }
   Map<String, dynamic> toJson() =>
       {
@@ -25,14 +25,14 @@ class LoginHistory {
 class LoginHistoryManager {
   List<LoginHistory> list = [];
   static final LoginHistoryManager _singleton = LoginHistoryManager._internal();
-  String serviceUrl;
-  String token;
+  String? serviceUrl;
+  String? token;
   factory LoginHistoryManager() {
     return _singleton;
   }
   refreshHistory() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String raw = sharedPreferences.getString("loginHistory");
+    String? raw = sharedPreferences.getString("loginHistory");
     if (raw == null) {
       return;
     }

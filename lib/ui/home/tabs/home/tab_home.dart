@@ -73,11 +73,15 @@ class HomeTabPage extends StatelessWidget {
                                   child: AlbumItem(
                                     album: e,
                                     onTap: (album) {
+                                      int? albumId = e.id;
+                                      if (albumId == null) {
+                                        return;
+                                      }
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => AlbumPage(
-                                                  id: e.id,
+                                                  id: albumId,
                                                 )),
                                       );
                                     },
@@ -102,12 +106,16 @@ class HomeTabPage extends StatelessWidget {
                                     child: ArtistItem(
                                         artist: e,
                                         onTap: (music) {
+                                          int? artistId = e.id;
+                                          if (artistId == null) {
+                                            return;
+                                          }
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ArtistPage(
-                                                      id: e.id,
+                                                      id: artistId,
                                                     )),
                                           );
                                         },

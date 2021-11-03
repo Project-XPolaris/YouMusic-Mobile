@@ -33,21 +33,41 @@ class _PlayPageState extends State<PlayPage> {
         body: StreamBuilder(
           stream: provider.assetsAudioPlayer.current,
           builder: (context, asyncSnapshot) {
-            Playing current = asyncSnapshot.data;
-            if (current.audio.audio.metas.id != provider.lyricId) {
-              provider.loadLyrics(current.audio.audio.metas.id);
+            Playing? current = asyncSnapshot.data as Playing?;
+            var currentPlayId = current?.audio.audio.metas.id;
+            var currentCoverUrl = current?.audio.audio.metas.image?.path;
+            if (currentPlayId != null && currentPlayId != provider.lyricId) {
+              provider.loadLyrics(currentPlayId);
             }
             renderContent() {
               if (displayMode == "Cover") {
-                return Container(
-                  width: 320,
-                  height: 320,
-                  child: Image.network(current.audio.audio.metas.image.path),
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                );
+                return currentCoverUrl != null
+                    ? Container(
+                        width: 320,
+                        height: 320,
+                        child: Image.network(currentCoverUrl),
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16.0))),
+                      )
+                    : Container(
+                        width: 320,
+                        height: 320,
+                        child: Center(
+                          child: Icon(
+                            Icons.music_note,
+                            color: Colors.white,
+                          ),
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Colors.pink,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16.0))),
+                      );
               }
               if (displayMode == "Lyrics") {
                 if (provider.lyricsManager == null) {
@@ -65,18 +85,29 @@ class _PlayPageState extends State<PlayPage> {
                   child: StreamBuilder(
                       stream: provider.assetsAudioPlayer.currentPosition,
                       builder: (context, asyncSnapshot) {
+                        LyricsManager? lyricsManager = provider.lyricsManager;
+                        if (lyricsManager == null) {
+                          return Center(
+                            child: Text(
+                              "No lyrics",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        }
                         int lyricCur = -1;
                         if (asyncSnapshot.hasData) {
-                          final Duration duration = asyncSnapshot.data;
-                          int curInMil = duration.inMilliseconds;
-                          lyricCur = provider.lyricsManager.getIndex(curInMil);
+                          final Duration? duration =
+                              asyncSnapshot.data as Duration?;
+                          if (duration != null) {
+                            int curInMil = duration.inMilliseconds;
+                            lyricCur = lyricsManager.getIndex(curInMil);
+                          }
                         }
                         List<Widget> lines = [];
                         for (int idx = 0;
-                            idx < provider.lyricsManager.lines.length;
+                            idx < lyricsManager.lines.length;
                             idx++) {
-                          LyricsLine lyricsLine =
-                              provider.lyricsManager.lines[idx];
+                          LyricsLine lyricsLine = lyricsManager.lines[idx];
                           lines.add(
                             Container(
                               margin: EdgeInsets.only(top: 8, bottom: 8),
@@ -91,22 +122,18 @@ class _PlayPageState extends State<PlayPage> {
                             ),
                           );
                         }
-                        try {
-                          if (_scrollController != null) {
-                            int scrollCur = lyricCur;
-                            if (scrollCur - 2 >= 0) {
-                              scrollCur -= 2;
-                            }
-                            _scrollController.scrollTo(
-                                index: scrollCur,
-                                duration: Duration(milliseconds: 500));
-                          }
-                        } catch (e) {}
+                        int scrollCur = lyricCur;
+                        if (scrollCur - 2 >= 0) {
+                          scrollCur -= 2;
+                        }
+                        _scrollController.scrollTo(
+                            index: scrollCur,
+                            duration: Duration(milliseconds: 500));
 
                         return ScrollablePositionedList.builder(
                           physics: NeverScrollableScrollPhysics(),
                           itemScrollController: _scrollController,
-                          itemCount: provider.lyricsManager.lines.length,
+                          itemCount: lyricsManager.lines.length,
                           itemBuilder: (context, index) {
                             return lines[index];
                           },
@@ -170,7 +197,8 @@ class _PlayPageState extends State<PlayPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    current.audio.audio.metas.title,
+                                    current?.audio.audio.metas.title ??
+                                        "Unknown",
                                     style: TextStyle(
                                       color: Colors.pinkAccent,
                                       fontSize: 28,
@@ -183,7 +211,7 @@ class _PlayPageState extends State<PlayPage> {
                             Container(
                               height: 32,
                               child: Text(
-                                current.audio.audio.metas.artist,
+                                current?.audio.audio.metas.artist ?? "",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -194,7 +222,7 @@ class _PlayPageState extends State<PlayPage> {
                             Container(
                               height: 32,
                               child: Text(
-                                current.audio.audio.metas.album,
+                                current?.audio.audio.metas.album ?? "",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -220,10 +248,11 @@ class _PlayPageState extends State<PlayPage> {
                                       stream: provider
                                           .assetsAudioPlayer.currentPosition,
                                       builder: (context, asyncSnapshot) {
-                                        final Duration duration =
-                                            asyncSnapshot.data;
+                                        final Duration? duration =
+                                            asyncSnapshot.data as Duration?;
                                         return Text(
-                                          formatDuration(duration),
+                                          formatDuration(
+                                              duration ?? Duration.zero),
                                           style: TextStyle(color: Colors.white),
                                         );
                                       }),
@@ -231,11 +260,12 @@ class _PlayPageState extends State<PlayPage> {
                                       stream:
                                           provider.assetsAudioPlayer.current,
                                       builder: (context, asyncSnapshot) {
-                                        final Playing playing =
-                                            asyncSnapshot.data;
+                                        final Playing? playing =
+                                            asyncSnapshot.data as Playing?;
                                         return Text(
-                                          formatDuration(playing.audio.audio
-                                              .metas.extra["duration"]),
+                                          formatDuration(playing?.audio.audio
+                                                  .metas.extra?["duration"] ??
+                                              Duration.zero),
                                           style: TextStyle(color: Colors.white),
                                         );
                                       }),
@@ -253,7 +283,7 @@ class _PlayPageState extends State<PlayPage> {
                               StreamBuilder(
                                   stream: provider.assetsAudioPlayer.loopMode,
                                   builder: (context, asyncSnapshot) {
-                                    LoopMode loopMode = asyncSnapshot.data;
+                                    LoopMode? loopMode = asyncSnapshot.data as LoopMode?;
                                     return IconButton(
                                       icon: Icon(getLoopIcon(loopMode),
                                           color: Colors.white),
@@ -277,7 +307,7 @@ class _PlayPageState extends State<PlayPage> {
                                 child: StreamBuilder(
                                   stream: provider.assetsAudioPlayer.isPlaying,
                                   builder: (context, asyncSnapshot) {
-                                    final bool isPlaying = asyncSnapshot.data;
+                                    final bool isPlaying = asyncSnapshot.data as bool? ?? false;
                                     return Container(
                                       child: IconButton(
                                         icon: Icon(

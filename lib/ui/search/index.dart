@@ -20,7 +20,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String searchKey;
+  String searchKey = "";
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
         child: Consumer<SearchProvider>(builder: (context, provider, child) {
           return Consumer<PlayProvider>(
               builder: (context, playProvider, child) {
-            List<Widget> renderResultRow({Widget header, content, bool empty}) {
+            List<Widget> renderResultRow({header, content, empty}) {
               if (empty) {
                 return [];
               }
@@ -139,7 +139,7 @@ class _SearchPageState extends State<SearchPage> {
                           child: ListTile(
                             contentPadding: EdgeInsets.all(0),
                             title: Text(
-                              music.title,
+                              music.title ?? "Unknown",
                               style: TextStyle(color: Colors.white),
                             ),
                             subtitle: Text(
@@ -212,30 +212,37 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                         content: provider.albumLoader.list.map((album) {
+                          var coverUrl = album.getCoverUrl();
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: ListTile(
                               contentPadding: EdgeInsets.all(0),
                               title: Text(
-                                album.name,
+                                album.name ?? "Unknown",
                                 style: TextStyle(color: Colors.white),
                               ),
                               subtitle: Text(
-                                album?.getArtist("unknown"),
+                                album.getArtist("unknown"),
                                 style: TextStyle(color: Colors.white70),
                               ),
-                              leading: Image.network(
-                                album.getCoverUrl(),
-                                width: 64,
-                              ),
+                              leading: coverUrl != null
+                                  ? Image.network(
+                                      coverUrl,
+                                      width: 64,
+                                    )
+                                  : Container(
+                                      width: 64,
+                                      height: 64,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.album,
+                                          color: Colors.white,
+                                          size: 48,
+                                        ),
+                                      ),
+                                    ),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AlbumPage(
-                                            id: album.id,
-                                          )),
-                                );
+                                AlbumPage.launch(context, album.id);
                               },
                               onLongPress: () {
                                 HapticFeedback.selectionClick();
@@ -284,17 +291,18 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                         content: provider.artistLoader.list.map((artist) {
+                          var coverUrl =  artist.getAvatarUrl();
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: ListTile(
                               contentPadding: EdgeInsets.all(0),
                               title: Text(
-                                artist.name,
+                                artist.name ?? "",
                                 style: TextStyle(color: Colors.white),
                               ),
-                              leading: artist.getAvatarUrl() != null
+                              leading: coverUrl != null
                                   ? Image.network(
-                                      artist.getAvatarUrl(),
+                                      coverUrl,
                                       width: 64,
                                     )
                                   : Container(
@@ -309,13 +317,7 @@ class _SearchPageState extends State<SearchPage> {
                                       ),
                                     ),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ArtistPage(
-                                            id: artist.id,
-                                          )),
-                                );
+                                ArtistPage.launch(context, artist.id);
                               },
                               onLongPress: () {
                                 HapticFeedback.selectionClick();
