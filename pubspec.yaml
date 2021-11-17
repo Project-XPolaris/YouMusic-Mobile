@@ -26,7 +26,7 @@ dependencies:
   provider: 6.0.1
   dio: ^4.0.0
   audio_service: ^0.17.0
-  assets_audio_player: ^3.0.3+2
+  assets_audio_player: ^3.0.3+6
   shared_preferences: ^2.0.5
   cached_network_image: ^3.0.0
   scrollable_positioned_list: 0.2.2

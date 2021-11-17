@@ -85,7 +85,9 @@ class PlayProvider extends ChangeNotifier {
             image: coverUrl != null
                 ? MetasImage.network(coverUrl)
                 : null, //can be MetasImage.network
-          ));
+          ),
+        cached: false
+      );
       return audio;
     }).toList();
     return audios;
