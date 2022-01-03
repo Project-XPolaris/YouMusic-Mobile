@@ -1,8 +1,5 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
@@ -70,76 +67,73 @@ class _PlayPageState extends State<PlayPage> {
                       );
               }
               if (displayMode == "Lyrics") {
-                if (provider.lyricsManager == null) {
+                LyricsManager? lyricsManager = provider.lyricsManager;
+                if (lyricsManager == null) {
                   return Container(
                     width: 320,
                     height: 320,
-                    child: Center(),
+                    child: Center(
+                      child: Text(
+                        "No lyrics",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   );
                 }
+                List<Widget> lines = [];
+                for (int idx = 0; idx < lyricsManager.lines.length; idx++) {
+                  LyricsLine lyricsLine = lyricsManager.lines[idx];
+                  lines.add(
+                    Container(
+                      margin: EdgeInsets.only(top: 8, bottom: 8),
+                      child: StreamBuilder(
+                          stream: provider.assetsAudioPlayer.currentPosition,
+                          builder: (context, asyncSnapshot) {
+                            int lyricCur = -1;
+                            if (asyncSnapshot.hasData) {
+                              final Duration? duration =
+                                  asyncSnapshot.data as Duration?;
+                              if (duration != null) {
+                                int curInMil = duration.inMilliseconds;
+                                lyricCur = lyricsManager.getIndex(curInMil);
+                              }
+                            }
+                            lyricsManager.getIndex(lyricCur);
+                            return Text(
+                              lyricsLine.text,
+                              style: TextStyle(
+                                  color: lyricCur == idx
+                                      ? Colors.pink
+                                      : Colors.white,
+                                  fontSize: 22),
+                            );
+                          }),
+                    ),
+                  );
+                }
+                provider.assetsAudioPlayer.currentPosition.listen((duration) {
+                  int lyricCur = -1;
+                  int curInMil = duration.inMilliseconds;
+                  lyricCur = lyricsManager.getIndex(curInMil);
+                  lyricsManager.getIndex(lyricCur);
+                  int scrollCur = lyricCur;
+                  if (scrollCur - 2 >= 0) {
+                    scrollCur -= 2;
+                  }
+                  _scrollController.scrollTo(
+                      index: lyricCur, duration: Duration(milliseconds: 500));
+                });
                 // fine position
-
                 return Container(
-                  width: 360,
-                  height: 360,
-                  child: StreamBuilder(
-                      stream: provider.assetsAudioPlayer.currentPosition,
-                      builder: (context, asyncSnapshot) {
-                        LyricsManager? lyricsManager = provider.lyricsManager;
-                        if (lyricsManager == null) {
-                          return Center(
-                            child: Text(
-                              "No lyrics",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }
-                        int lyricCur = -1;
-                        if (asyncSnapshot.hasData) {
-                          final Duration? duration =
-                              asyncSnapshot.data as Duration?;
-                          if (duration != null) {
-                            int curInMil = duration.inMilliseconds;
-                            lyricCur = lyricsManager.getIndex(curInMil);
-                          }
-                        }
-                        List<Widget> lines = [];
-                        for (int idx = 0;
-                            idx < lyricsManager.lines.length;
-                            idx++) {
-                          LyricsLine lyricsLine = lyricsManager.lines[idx];
-                          lines.add(
-                            Container(
-                              margin: EdgeInsets.only(top: 8, bottom: 8),
-                              child: Text(
-                                lyricsLine.text,
-                                style: TextStyle(
-                                    color: lyricCur == idx
-                                        ? Colors.pink
-                                        : Colors.white,
-                                    fontSize: 22),
-                              ),
-                            ),
-                          );
-                        }
-                        int scrollCur = lyricCur;
-                        if (scrollCur - 2 >= 0) {
-                          scrollCur -= 2;
-                        }
-                        _scrollController.scrollTo(
-                            index: scrollCur,
-                            duration: Duration(milliseconds: 500));
-
-                        return ScrollablePositionedList.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemScrollController: _scrollController,
-                          itemCount: lyricsManager.lines.length,
-                          itemBuilder: (context, index) {
-                            return lines[index];
-                          },
-                        );
-                      }),
-                );
+                    width: 360,
+                    height: 360,
+                    child: ScrollablePositionedList.builder(
+                      itemScrollController: _scrollController,
+                      itemCount: lines.length,
+                      itemBuilder: (context, index) {
+                        return lines[index];
+                      },
+                    ));
               }
               return Container(
                 width: 360,
@@ -283,7 +277,8 @@ class _PlayPageState extends State<PlayPage> {
                               StreamBuilder(
                                   stream: provider.assetsAudioPlayer.loopMode,
                                   builder: (context, asyncSnapshot) {
-                                    LoopMode? loopMode = asyncSnapshot.data as LoopMode?;
+                                    LoopMode? loopMode =
+                                        asyncSnapshot.data as LoopMode?;
                                     return IconButton(
                                       icon: Icon(getLoopIcon(loopMode),
                                           color: Colors.white),
@@ -307,7 +302,8 @@ class _PlayPageState extends State<PlayPage> {
                                 child: StreamBuilder(
                                   stream: provider.assetsAudioPlayer.isPlaying,
                                   builder: (context, asyncSnapshot) {
-                                    final bool isPlaying = asyncSnapshot.data as bool? ?? false;
+                                    final bool isPlaying =
+                                        asyncSnapshot.data as bool? ?? false;
                                     return Container(
                                       child: IconButton(
                                         icon: Icon(

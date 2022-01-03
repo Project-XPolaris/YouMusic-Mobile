@@ -66,6 +66,10 @@ class MyAppState extends State<MyApp> {
               // closer together (more dense) than on mobile platforms.
               visualDensity: VisualDensity.adaptivePlatformDensity,
               primaryColor: Colors.pink,
+              tabBarTheme: TabBarTheme(
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white54,
+              )
             ),
             home: InitPage(),
           );

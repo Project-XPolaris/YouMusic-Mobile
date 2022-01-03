@@ -25,13 +25,14 @@ dependencies:
     sdk: flutter
   provider: 6.0.1
   dio: ^4.0.0
-  audio_service: ^0.17.0
   assets_audio_player: ^3.0.3+6
   shared_preferences: ^2.0.5
   cached_network_image: ^3.0.0
   scrollable_positioned_list: 0.2.2
   youplusauthplugin:
     git: https://github.com/Project-XPolaris/YouPlusAuthPlugin.git
+  youui:
+    git: https://github.com/Project-XPolaris/YouUI
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,7 +41,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: ^0.9.2
   flutter_launcher_name:
     git:
       url: https://github.com/ride4sun/flutter_launcher_name

@@ -23,7 +23,6 @@ class _AlbumFilterViewState extends State<AlbumFilterView> {
   _AlbumFilterViewState({required this.order});
   @override
   Widget build(BuildContext context) {
-    print(widget.filter.order);
     return Container(
       color: Colors.black,
       child: Column(

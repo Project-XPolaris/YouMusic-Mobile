@@ -86,8 +86,7 @@ class PlayProvider extends ChangeNotifier {
                 ? MetasImage.network(coverUrl)
                 : null, //can be MetasImage.network
           ),
-        cached: false
-      );
+          cached: false);
       return audio;
     }).toList();
     return audios;
@@ -177,7 +176,8 @@ class PlayProvider extends ChangeNotifier {
     sharedPreferences.setStringList(
         "${ApplicationConfig().username}_savePlayList", ids);
     var index = assetsAudioPlayer.current.value?.audio.audio.metas.id ?? "0";
-    sharedPreferences.setString("${ApplicationConfig().username}_playId",index);
+    sharedPreferences.setString(
+        "${ApplicationConfig().username}_playId", index);
   }
 
   loadHistory() async {

@@ -62,7 +62,6 @@ class _ArtistPageState extends State<ArtistPage> {
               return null;
             }
             var coverUrl = getPersonAvatar();
-            print(coverUrl);
             return Scaffold(
               body: NestedScrollView(
                 headerSliverBuilder:
