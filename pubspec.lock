@@ -206,7 +206,7 @@ packages:
       name: js
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.6.4"
+    version: "0.6.3"
   matcher:
     dependency: transitive
     description:
@@ -248,7 +248,7 @@ packages:
       name: path
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.0"
   path_provider:
     dependency: transitive
     description:
@@ -477,7 +477,7 @@ packages:
       name: test_api
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.9"
+    version: "0.4.8"
   typed_data:
     dependency: transitive
     description:
@@ -539,10 +539,12 @@ packages:
   youui:
     dependency: "direct main"
     description:
-      path: "/Users/duzhengheng/StudioProjects/youui"
-      relative: false
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: f9bb9bf3b33d690c8f0ffb43a99448849f406e31
+      url: "https://github.com/Project-XPolaris/YouUI.git"
+    source: git
     version: "0.0.1"
 sdks:
-  dart: ">=2.16.0-100.0.dev <3.0.0"
+  dart: ">=2.15.0 <3.0.0"
   flutter: ">=2.8.0"
