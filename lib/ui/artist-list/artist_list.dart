@@ -23,9 +23,8 @@ class ArtistListPage extends StatelessWidget {
             provider.loadData();
             var _controller = createLoadMoreController(provider.loadMore);
             return Scaffold(
-              backgroundColor: Colors.black,
               appBar: AppBar(
-                title: Text(title, style: TextStyle(color: Colors.white),),
+                title: Text(title),
                 backgroundColor: Colors.transparent,
               ),
               body: Padding(
@@ -34,30 +33,39 @@ class ArtistListPage extends StatelessWidget {
                   controller: _controller,
                   children:provider.loader.list.map((artist) {
                     var artistCoverUrl = artist.getAvatarUrl();
-                    return ListTile(
-                      title: Text(artist.name ?? "",style: TextStyle(color: Colors.white),),
-                      leading: AspectRatio(
-                        aspectRatio: 1,
-                        child: artistCoverUrl != null ? Image.network(artistCoverUrl,fit: BoxFit.cover,):Container(),
+                    return Container(
+                      padding: EdgeInsets.only(bottom: 8),
+                      child: ListTile(
+                        title: Text(artist.name ?? ""),
+                        leading: AspectRatio(
+                          aspectRatio: 1,
+                          child: artistCoverUrl != null ? Image.network(artistCoverUrl,fit: BoxFit.cover,):CircleAvatar(
+                            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                            child:Icon(
+                              Icons.person,
+                              color: Theme.of(context).colorScheme.onSecondaryContainer
+                            )
+                          ),
+                        ),
+                        onTap: () {
+                          var artistId = artist.id;
+                          if (artistId == null) {
+                            return;
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ArtistPage(id: artistId)),
+                          );
+                        },
+                        onLongPress: () {
+                          HapticFeedback.selectionClick();
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) => ArtistMetaInfo(
+                                artist: artist,
+                              ));
+                        },
                       ),
-                      onTap: () {
-                        var artistId = artist.id;
-                        if (artistId == null) {
-                          return;
-                        }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ArtistPage(id: artistId)),
-                        );
-                      },
-                      onLongPress: () {
-                        HapticFeedback.selectionClick();
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) => ArtistMetaInfo(
-                              artist: artist,
-                            ));
-                      },
                     );
                   }).toList(),
                 ),

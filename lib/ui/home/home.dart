@@ -16,7 +16,6 @@ class HomePage extends StatelessWidget {
         child: Consumer<HomeProvider>(
           builder: (context, provider, child) {
             return Scaffold(
-              backgroundColor: Colors.black,
               // drawer: Drawer(
               //   child: Container(
               //     color: Colors.black,
@@ -36,7 +35,6 @@ class HomePage extends StatelessWidget {
               //   ),
               // ),
               body: Scaffold(
-                backgroundColor: Colors.black87,
                 body: IndexedStack(
                   index: provider.activeTab,
                   children: <Widget>[
@@ -51,31 +49,27 @@ class HomePage extends StatelessWidget {
               bottomNavigationBar: Container(
                 child: Padding(
                   padding: EdgeInsets.only(),
-                  child: BottomNavigationBar(
-                    currentIndex: provider.activeTab,
-                    type: BottomNavigationBarType.fixed,
-                    backgroundColor: Colors.black,
-                    unselectedItemColor: Colors.grey[600],
-                    onTap: provider.setActiveTab,
-                    items: const <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
+                  child: NavigationBar(
+                    selectedIndex: provider.activeTab,
+                    onDestinationSelected: provider.setActiveTab,
+                    destinations: const <NavigationDestination>[
+                      NavigationDestination(
                         icon: Icon(Icons.home),
                         label: 'Home',
                       ),
-                      BottomNavigationBarItem(
+                      NavigationDestination(
                         icon: Icon(Icons.album),
                         label: 'Album',
                       ),
-                      BottomNavigationBarItem(
+                      NavigationDestination(
                         icon: Icon(Icons.person),
                         label: 'Artist',
                       ),
-                      BottomNavigationBarItem(
+                      NavigationDestination(
                         icon: Icon(Icons.music_note),
                         label: 'All',
                       ),
                     ],
-                    selectedItemColor: Colors.pink,
                   ),
                 ),
               ),

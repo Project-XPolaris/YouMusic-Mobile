@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/components/cache_image.dart';
 import 'package:youmusic_mobile/ui/components/music-filter.dart';
+import 'package:youmusic_mobile/ui/components/music-list.dart';
 import 'package:youmusic_mobile/ui/home/tabs/all/provider.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
@@ -36,11 +37,9 @@ class AllTabPage extends StatelessWidget {
                   });
             }
             return Scaffold(
-              backgroundColor: Colors.black,
               appBar: AppBar(
                 title: Text(
                   "YouMusic",
-                  style: TextStyle(color: Colors.pink),
                 ),
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -55,32 +54,12 @@ class AllTabPage extends StatelessWidget {
                   },
                   child: Padding(
                     padding: EdgeInsets.only(left: 16, right: 16),
-                    child: ListView(
+                    child: MusicList(
                       controller: controller,
-                      children: provider.loader.list.map((music) {
-                        return ListTile(
-                          leading: Container(
-                            width: 64,
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: CacheImage(url:music.getCoverUrl(),failedIcon: Icons.music_note,),
-                            ),
-                          ),
-                          title: Text(music.title ?? "Unknown",style: TextStyle(color: Colors.white),),
-                          subtitle: Text(music.getArtistString("unknown"),style: TextStyle(color: Colors.white70)),
-                          onTap: () {
-                            playProvider.playMusic(music,autoPlay: true);
-                          },
-                          onLongPress: () {
-                            HapticFeedback.selectionClick();
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) => MusicMetaInfo(
-                                  music: music,
-                                ));
-                          },
-                        );
-                      }).toList(),
+                      list: provider.loader.list,
+                      onTap: (e) {
+                        playProvider.playMusic(e,autoPlay: true);
+                      },
                     ),
                   ),
                 ),

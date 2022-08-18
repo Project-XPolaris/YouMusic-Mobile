@@ -14,13 +14,13 @@ class SearchBox extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16),
             child: Text(
               "Search...",
-              style: TextStyle(color: Colors.white60, fontSize: 16),
+              style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer, fontSize: 16),
             ),
           ),
         ],
       ),
       decoration: BoxDecoration(
-          color: Colors.white30,
+          color: Theme.of(context).colorScheme.secondaryContainer,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.all(Radius.circular(16))),
     );

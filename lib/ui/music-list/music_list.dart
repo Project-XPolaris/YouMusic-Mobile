@@ -23,13 +23,17 @@ class MusicListPage extends StatelessWidget {
             provider.loadData();
             var _controller = createLoadMoreController(provider.loadMore);
             return Scaffold(
-              backgroundColor: Colors.black,
               appBar: AppBar(
                 title: Text(
                   title,
-                  style: TextStyle(color: Colors.white),
                 ),
                 backgroundColor: Colors.transparent,
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_rounded),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               ),
               body: Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
@@ -40,23 +44,19 @@ class MusicListPage extends StatelessWidget {
                     return ListTile(
                       title: Text(
                         music.title ?? "" + " - " + music.getArtistString(""),
-                        style: TextStyle(color: Colors.white),
                       ),
                       subtitle: Text(music.getAlbumName("Unknown"),
                           style:
-                              TextStyle(color: Colors.white54, fontSize: 12)),
+                              TextStyle(fontSize: 12)),
                       leading: AspectRatio(
                         aspectRatio: 1,
-                        child: cover != null? CachedNetworkImage(
+                        child: cover != null? Image.network(
+                            cover,
                           fit: BoxFit.cover,
-                          imageUrl: cover,
-                          progressIndicatorBuilder: (context, url, downloadProgress) =>
-                              CircularProgressIndicator(value: downloadProgress.progress),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
                         ):Container(
                           child: Center(
                             child: Icon(
-                              Icons.music_note,
+                              Icons.music_note_rounded,
                               size: 48,
                             ),
                           ),

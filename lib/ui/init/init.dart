@@ -14,22 +14,18 @@ class InitPage extends StatefulWidget {
 class _InitPageState extends State<InitPage> {
   @override
   Widget build(BuildContext context) {
-    return LoginLayout(
-      onLoginSuccess: (loginHistory) {
-        ApplicationConfig().token = loginHistory.token;
-        ApplicationConfig().serviceUrl = loginHistory.apiUrl;
-        ApplicationConfig().username = loginHistory.username;
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
-      },
-      title: "YouMusic",
-      subtitle: "ProjectXPolaris",
-      backgroundColor: Colors.black,
-      mainColor: Colors.pink,
-      titleColor: Colors.pink,
-      defaultPort: "3000",
-      textColor: Colors.white,
-      subtitleColor: Colors.white,
+    return Center(
+      child: LoginLayout(
+        onLoginSuccess: (loginAccount) {
+          ApplicationConfig().serviceUrl = loginAccount.apiUrl;
+          ApplicationConfig().token = loginAccount.token;
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        },
+        title: "YouMusic",
+        subtitle: "ProjectXPolaris",
+      ),
     );
   }
 }

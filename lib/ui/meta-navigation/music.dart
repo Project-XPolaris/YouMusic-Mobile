@@ -24,11 +24,7 @@ class MusicMetaInfo extends StatelessWidget {
       var albumId = music.album?.id;
       if (albumId != null){
         items.add(MetaItem(title: music.getAlbumName(""),icon: Icons.album,onTap:(){
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AlbumPage(id: albumId,)),
-          );
+         AlbumPage.launch(context, albumId,cover: music.album?.getCoverUrl(),blurHash: music.album?.blurHash);
         }));
       }
       items.addAll(music.artist.map((artist) {

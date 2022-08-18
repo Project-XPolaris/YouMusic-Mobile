@@ -30,7 +30,7 @@ class MusicItem extends StatelessWidget {
                 child: Container(
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: Theme.of(context).colorScheme.secondary,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
                   child: cover != null
@@ -55,6 +55,7 @@ class MusicItem extends StatelessWidget {
                             child: Icon(
                               Icons.music_note,
                               size: 48,
+                              color: Theme.of(context).colorScheme.onSecondary,
                             ),
                           ),
                         ),
@@ -70,12 +71,10 @@ class MusicItem extends StatelessWidget {
                     children: [
                       Text(
                         music.title ?? "Unknown",
-                        style: TextStyle(color: Colors.white),
                         softWrap: false,
                       ),
                       Text(
                         music.getArtistString("Unknown"),
-                        style: TextStyle(color: Colors.white54),
                         softWrap: false,
                       )
                     ],

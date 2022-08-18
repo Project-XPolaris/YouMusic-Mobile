@@ -24,7 +24,7 @@ class AlbumTabPage extends StatelessWidget {
                     filter: provider.albumFilter,
                     onChange: (filter) {
                       provider.albumFilter = filter;
-                      if (controller.offset > 0){
+                      if (controller.hasClients && controller.offset > 0){
                         controller.jumpTo(0);
                       }
                       provider.loadData(force: true);
@@ -33,11 +33,9 @@ class AlbumTabPage extends StatelessWidget {
                 });
           }
           return Scaffold(
-            backgroundColor: Colors.black,
             appBar: AppBar(
               title: Text(
                 "YouMusic",
-                style: TextStyle(color: Colors.pink),
               ),
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -63,17 +61,7 @@ class AlbumTabPage extends StatelessWidget {
                       return AlbumItem(
                         album: e,
                         onTap: (album) {
-                          int? albumId = album.id;
-                          if (albumId == null) {
-                            return;
-                          }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AlbumPage(
-                                      id: albumId,
-                                    )),
-                          );
+                          AlbumPage.launch(context, album.id, cover: album.getCoverUrl(),blurHash: album.blurHash);
                         },
                         onLongPress: (album) {
                           HapticFeedback.selectionClick();

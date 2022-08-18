@@ -62,6 +62,17 @@ class ApiClient {
     return artist;
   }
 
+  Future<ListResponseWrap<Tag>> fetchTagList(Map<String,String> params) async {
+    var response = await _dio.get("/tag",queryParameters: params);
+    ListResponseWrap<Tag> responseBody = ListResponseWrap.fromJson(response.data, (data) => Tag.fromJson(data));
+    return responseBody;
+  }
+  Future<Tag> fetchTagById(String id) async {
+    var response = await _dio.get("/tag/$id");
+    Tag tag = Tag.fromJson(response.data);
+    return tag;
+  }
+
   Future<ServiceInfo> fetchInfo() async {
     var response = await _dio.get("/app/info");
     return ServiceInfo.fromJson(response.data);

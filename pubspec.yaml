@@ -29,10 +29,9 @@ dependencies:
   shared_preferences: ^2.0.5
   cached_network_image: ^3.0.0
   scrollable_positioned_list: 0.2.2
-  youplusauthplugin:
-    git: https://github.com/Project-XPolaris/YouPlusAuthPlugin.git
   youui:
     git: https://github.com/Project-XPolaris/YouUI.git
+  flutter_blurhash: ^0.7.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

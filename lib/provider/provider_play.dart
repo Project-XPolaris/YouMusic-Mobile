@@ -80,7 +80,8 @@ class PlayProvider extends ChangeNotifier {
             artist: music.getArtistString("Unknown"),
             album: music.getAlbumName("Unknown"),
             extra: {
-              "duration": Duration(seconds: (music.duration ?? 0).toInt())
+              "duration": Duration(seconds: (music.duration ?? 0).toInt()),
+              "blurHash": music.album?.blurHash,
             },
             image: coverUrl != null
                 ? MetasImage.network(coverUrl)

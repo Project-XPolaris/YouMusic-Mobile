@@ -25,7 +25,7 @@ class AlbumMetaInfo extends StatelessWidget {
             icon: Icons.album,
             onTap: () {
               Navigator.pop(context);
-              AlbumPage.launch(context,album.id);
+              AlbumPage.launch(context,album.id,cover: album.getCoverUrl(),blurHash: album.blurHash);
             },
           ),
           ...album.artist.map((artist) {

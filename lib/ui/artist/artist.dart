@@ -72,7 +72,6 @@ class _ArtistPageState extends State<ArtistPage> {
                       floating: false,
                       pinned: true,
                       elevation: 0,
-                      backgroundColor: Colors.black,
                       flexibleSpace: FlexibleSpaceBar(
                           collapseMode: CollapseMode.pin,
                           centerTitle: true,
@@ -81,7 +80,7 @@ class _ArtistPageState extends State<ArtistPage> {
                             padding: EdgeInsets.only(left: 16, right: 16),
                             child: Text(provider.artist?.name ?? "Unknown",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.onBackground,
                                   fontSize: 16.0,
                                 )),
                           ),
@@ -98,11 +97,11 @@ class _ArtistPageState extends State<ArtistPage> {
                                           scale: 2,
                                         )
                                       : Container(
-                                          color: Colors.pink,
+                                          color: Theme.of(context).colorScheme.primary,
                                           child: Center(
                                             child: Icon(
                                               Icons.person,
-                                              color: Colors.white,
+                                              color: Theme.of(context).colorScheme.onPrimary,
                                               size: 120,
                                             ),
                                           ),
@@ -116,18 +115,23 @@ class _ArtistPageState extends State<ArtistPage> {
                                     end: Alignment.bottomCenter,
                                     colors: [
                                       Colors.transparent,
-                                      Colors.black
+                                      Theme.of(context).colorScheme.background
                                     ], // red to yellow
                                   ),
                                 ),
                               )
                             ],
                           )),
+                      leading: IconButton(
+                        icon: Icon(Icons.arrow_back_rounded),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                   ];
                 },
                 body: Container(
-                  color: Colors.black,
                   child: Padding(
                     padding:
                         const EdgeInsets.only(top: 32, left: 16, right: 16),
@@ -141,7 +145,6 @@ class _ArtistPageState extends State<ArtistPage> {
                                   child: Text(
                                     "Music",
                                     style: TextStyle(
-                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
                                   ),
@@ -149,7 +152,6 @@ class _ArtistPageState extends State<ArtistPage> {
                                 GestureDetector(
                                   child: Text(
                                     "查看更多",
-                                    style: TextStyle(color: Colors.white60),
                                   ),
                                   onTap: () {
                                     var artistId =
@@ -188,7 +190,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                                 height: 64,
                                               )
                                             : Container(
-                                                color: Colors.pink,
+                                                color: Theme.of(context).colorScheme.primary,
                                                 child: Center(
                                                   child: Icon(Icons.music_note),
                                                 ),
@@ -196,13 +198,12 @@ class _ArtistPageState extends State<ArtistPage> {
                                       ),
                                       title: Text(
                                         music.title ?? "Unknown",
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(),
                                         softWrap: false,
                                       ),
                                       subtitle: Text(
                                         music.getAlbumName("Unknown"),
                                         style: TextStyle(
-                                          color: Colors.white54,
                                           fontSize: 12,
                                         ),
                                         softWrap: false,
@@ -232,7 +233,6 @@ class _ArtistPageState extends State<ArtistPage> {
                                   child: Text(
                                     "Album",
                                     style: TextStyle(
-                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
                                   ),
@@ -240,7 +240,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                 GestureDetector(
                                   child: Text(
                                     "查看更多",
-                                    style: TextStyle(color: Colors.white60),
+                                    style: TextStyle(),
                                   ),
                                   onTap: () {
                                     var artistId =

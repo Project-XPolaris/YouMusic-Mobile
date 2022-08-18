@@ -6,10 +6,9 @@
 
 YouMusic mobile app for easy access YouMusic service
 ## previews
-<img src="others/pv1.jpg" height=360/>
-<img src="others/pv2.jpg" height=360/>
-<img src="others/pv3.jpg" height=360/>
-<img src="others/pv4.jpg" height=360/>
+<img src="others/home.png" height=360/>
+<img src="others/album.png" height=360/>
+<img src="others/playing.png" height=360/>
 
 ## requirements
 1. [YouMusic service](https://github.com/Project-XPolaris/YouMusic)

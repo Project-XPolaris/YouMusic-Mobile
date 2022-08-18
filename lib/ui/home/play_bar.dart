@@ -2,6 +2,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
+import 'package:youmusic_mobile/ui/components/maq.dart';
 import 'package:youmusic_mobile/ui/play/play.dart';
 import 'package:youmusic_mobile/ui/playlist/playlist.dart';
 
@@ -12,7 +13,6 @@ class PlayBar extends StatelessWidget {
       provider.loadHistory();
       return Container(
         height: 72,
-        color: Color(0xFF151515),
         child: Padding(
           padding: const EdgeInsets.only(right: 16),
           child: buildMusicView(context, provider),
@@ -31,7 +31,6 @@ class PlayBar extends StatelessWidget {
               child: Center(
                 child: Text(
                   "Nothing to play",
-                  style: TextStyle(color: Colors.white),
                 ),
               ),
             );
@@ -50,10 +49,12 @@ class PlayBar extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Container(
-                    child: coverUrl != null ? Image.network(
-                      coverUrl,
-                      fit: BoxFit.cover,
-                    ):Container(),
+                    child: coverUrl != null
+                        ? Image.network(
+                            coverUrl,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(),
                   ),
                 ),
               ),
@@ -61,7 +62,7 @@ class PlayBar extends StatelessWidget {
                 child: GestureDetector(
                   onHorizontalDragEnd: (d) {
                     var delta = d.primaryVelocity ?? 0;
-                    if ( delta < 0) {
+                    if (delta < 0) {
                       playProvider.assetsAudioPlayer.next();
                     }
                     if (delta > 0) {
@@ -69,23 +70,24 @@ class PlayBar extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    color: Color(0xFF151515),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 8, left: 8),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              current.audio.audio.metas.title ?? "Unknown",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                              softWrap: false,
+                            MarqueeWidget(
+                              child: Text(
+                                current.audio.audio.metas.title ?? "Unknown",
+                                style: TextStyle(fontSize: 16),
+                                softWrap: false,
+                              ),
                             ),
-                            Text(
-                              current.audio.audio.metas.artist ?? "Unknown",
-                              style: TextStyle(color: Colors.white70),
-                              softWrap: false,
+                            MarqueeWidget(
+                              child: Text(
+                                current.audio.audio.metas.artist ?? "Unknown",
+                                softWrap: false,
+                              ),
                             )
                           ]),
                     ),
@@ -96,25 +98,26 @@ class PlayBar extends StatelessWidget {
                   stream: playProvider.assetsAudioPlayer.isPlaying,
                   builder: (context, asyncSnapshot) {
                     final bool? isPlaying = asyncSnapshot.data as bool?;
-                    return isPlaying != null?Container(
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(
-                            isPlaying
-                                ? Icons.pause
-                                : Icons.play_arrow,
-                            size: 28,
-                            color: Colors.white,
-                          ),
-                          onPressed: () async {
-                            playProvider.assetsAudioPlayer.playOrPause();
-                          },
-                        ),
-                      ),
-                    ):Container();
+                    return isPlaying != null
+                        ? Container(
+                            child: Center(
+                              child: IconButton(
+                                icon: Icon(
+                                  isPlaying
+                                      ? Icons.pause_rounded
+                                      : Icons.play_arrow_rounded,
+                                  size: 28,
+                                ),
+                                onPressed: () async {
+                                  playProvider.assetsAudioPlayer.playOrPause();
+                                },
+                              ),
+                            ),
+                          )
+                        : Container();
                   }),
               IconButton(
-                icon: Icon(Icons.playlist_play, color: Colors.white),
+                icon: Icon(Icons.playlist_play_rounded),
                 iconSize: 28,
                 onPressed: () {
                   showModalBottomSheet(

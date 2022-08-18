@@ -8,6 +8,8 @@ import 'package:youmusic_mobile/ui/home/tabs/artist/provider.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/artist.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
 
+import '../../../../api/entites.dart';
+
 class ArtistTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class ArtistTabPage extends StatelessWidget {
         child: Consumer<ArtistTabProvider>(builder: (context, provider, child) {
           provider.loadData();
           var controller = createLoadMoreController(() => provider.loadMore());
-          _onFilterButtonClick(){
+          _onFilterButtonClick() {
             showModalBottomSheet(
                 context: context,
                 builder: (ctx) {
@@ -24,7 +26,7 @@ class ArtistTabPage extends StatelessWidget {
                     filter: provider.artistFilter,
                     onChange: (filter) {
                       provider.artistFilter = filter;
-                      if (controller.offset > 0){
+                      if (controller.offset > 0) {
                         controller.jumpTo(0);
                       }
                       provider.loadData(force: true);
@@ -32,17 +34,17 @@ class ArtistTabPage extends StatelessWidget {
                   );
                 });
           }
+
           return Scaffold(
-            backgroundColor: Colors.black,
             appBar: AppBar(
               title: Text(
                 "YouMusic",
-                style: TextStyle(color: Colors.pink),
               ),
               backgroundColor: Colors.transparent,
               elevation: 0,
               actions: [
-                IconButton(icon: Icon(Icons.sort), onPressed: _onFilterButtonClick)
+                IconButton(
+                    icon: Icon(Icons.sort), onPressed: _onFilterButtonClick)
               ],
             ),
             body: Container(
@@ -51,40 +53,39 @@ class ArtistTabPage extends StatelessWidget {
                   await provider.loadData(force: true);
                 },
                 child: Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16),
-                  child: GridView.count(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    controller: controller,
-                    childAspectRatio: 9 / 13,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    children: provider.loader.list.map((e) {
-                      return ArtistItem(
-                          artist: e,
-                          onTap: (artist) {
-                            var artistId = e.id;
-                            if (artistId == null) {
-                              return;
-                            }
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ArtistPage(
-                                        id: artistId,
-                                      )),
-                            );
+                  padding: EdgeInsets.only(),
+                  child: ListView.builder(
+                      controller: controller,
+                      itemBuilder: (context, index) {
+                        final Artist artist = provider.loader.list[index];
+                        return ListTile(
+                          title: Text(artist.displayName),
+                          leading: CircleAvatar(
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
+                            child: Icon(
+                              Icons.person_rounded,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                            ),
+                          ),
+                          onTap: () {
+                            ArtistPage.launch(context, artist.id);
                           },
-                          onLongPress: (artist) {
+                          onLongPress: () {
                             HapticFeedback.selectionClick();
                             showModalBottomSheet(
                                 context: context,
                                 builder: (context) => ArtistMetaInfo(
                                       artist: artist,
                                     ));
-                          });
-                    }).toList(),
-                  ),
+                          },
+                        );
+                      },
+                      itemCount: provider.loader.list.length,
+                      padding: EdgeInsets.all(0)),
                 ),
               ),
             ),

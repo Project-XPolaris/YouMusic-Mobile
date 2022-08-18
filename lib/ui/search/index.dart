@@ -40,8 +40,8 @@ class _SearchPageState extends State<SearchPage> {
             }
 
             return Scaffold(
-              backgroundColor: Colors.transparent,
               appBar: AppBar(
+                elevation: 0,
                 backgroundColor: Colors.transparent,
                 title: Container(
                   height: 48,
@@ -52,14 +52,13 @@ class _SearchPageState extends State<SearchPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: TextField(
-                            cursorColor: Colors.pink,
+                            cursorColor: Theme.of(context).colorScheme.primary,
                             decoration: InputDecoration(
                               hintText: "Search...",
                               border: InputBorder.none,
-                              hintStyle: TextStyle(color: Colors.white60),
+                              hintStyle: TextStyle(),
                             ),
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: 16,
                             ),
                             onChanged: (text) {
@@ -76,8 +75,8 @@ class _SearchPageState extends State<SearchPage> {
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           icon: Icon(
-                            Icons.search,
-                            color: Colors.pink,
+                            Icons.search_rounded,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           onPressed: () {
                             FocusScope.of(context).requestFocus(FocusNode());
@@ -88,9 +87,18 @@ class _SearchPageState extends State<SearchPage> {
                     ],
                   ),
                   decoration: BoxDecoration(
-                      color: Colors.white30,
+                      color: Theme.of(context).colorScheme.secondaryContainer,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(32))),
+                ),
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_rounded,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
               body: Padding(
@@ -110,7 +118,6 @@ class _SearchPageState extends State<SearchPage> {
                             children: [
                               Text(
                                 "Music",
-                                style: TextStyle(color: Colors.white70),
                               ),
                               TextButton(
                                   onPressed: () {
@@ -127,7 +134,6 @@ class _SearchPageState extends State<SearchPage> {
                                   },
                                   child: Text(
                                     "More",
-                                    style: TextStyle(color: Colors.pink),
                                   ))
                             ],
                           ),
@@ -140,11 +146,9 @@ class _SearchPageState extends State<SearchPage> {
                             contentPadding: EdgeInsets.all(0),
                             title: Text(
                               music.title ?? "Unknown",
-                              style: TextStyle(color: Colors.white),
                             ),
                             subtitle: Text(
                               music.album?.name ?? "unknown",
-                              style: TextStyle(color: Colors.white70),
                             ),
                             leading: CachedNetworkImage(
                               imageUrl: music.album?.getCoverUrl() ?? "",
@@ -152,11 +156,10 @@ class _SearchPageState extends State<SearchPage> {
                                   (context, url, downloadProgress) =>
                                       Container(),
                               errorWidget: (context, url, error) => Container(
-                                color: Colors.pinkAccent,
+                                color: Theme.of(context).colorScheme.primary,
                                 child: Center(
                                   child: Icon(
-                                    Icons.music_note,
-                                    color: Colors.white,
+                                    Icons.music_note_rounded,
                                   ),
                                 ),
                               ),
@@ -188,7 +191,6 @@ class _SearchPageState extends State<SearchPage> {
                               children: [
                                 Text(
                                   "Album",
-                                  style: TextStyle(color: Colors.white70),
                                 ),
                                 TextButton(
                                     onPressed: () {
@@ -205,7 +207,6 @@ class _SearchPageState extends State<SearchPage> {
                                     },
                                     child: Text(
                                       "More",
-                                      style: TextStyle(color: Colors.pink),
                                     ))
                               ],
                             ),
@@ -219,11 +220,9 @@ class _SearchPageState extends State<SearchPage> {
                               contentPadding: EdgeInsets.all(0),
                               title: Text(
                                 album.name ?? "Unknown",
-                                style: TextStyle(color: Colors.white),
                               ),
                               subtitle: Text(
                                 album.getArtist("unknown"),
-                                style: TextStyle(color: Colors.white70),
                               ),
                               leading: coverUrl != null
                                   ? Image.network(
@@ -235,14 +234,13 @@ class _SearchPageState extends State<SearchPage> {
                                       height: 64,
                                       child: Center(
                                         child: Icon(
-                                          Icons.album,
-                                          color: Colors.white,
+                                          Icons.album_rounded,
                                           size: 48,
                                         ),
                                       ),
                                     ),
                               onTap: () {
-                                AlbumPage.launch(context, album.id);
+                                AlbumPage.launch(context, album.id,cover: coverUrl,blurHash: album.blurHash);
                               },
                               onLongPress: () {
                                 HapticFeedback.selectionClick();
@@ -266,7 +264,6 @@ class _SearchPageState extends State<SearchPage> {
                               children: [
                                 Text(
                                   "Artist",
-                                  style: TextStyle(color: Colors.white70),
                                 ),
                                 TextButton(
                                     onPressed: () {
@@ -284,7 +281,6 @@ class _SearchPageState extends State<SearchPage> {
                                     },
                                     child: Text(
                                       "More",
-                                      style: TextStyle(color: Colors.pink),
                                     ))
                               ],
                             ),
@@ -298,7 +294,6 @@ class _SearchPageState extends State<SearchPage> {
                               contentPadding: EdgeInsets.all(0),
                               title: Text(
                                 artist.name ?? "",
-                                style: TextStyle(color: Colors.white),
                               ),
                               leading: coverUrl != null
                                   ? Image.network(
@@ -306,13 +301,11 @@ class _SearchPageState extends State<SearchPage> {
                                       width: 64,
                                     )
                                   : Container(
-                                      color: Colors.pink,
                                       width: 64,
                                       height: 64,
                                       child: Center(
                                         child: Icon(
-                                          Icons.person,
-                                          color: Colors.white,
+                                          Icons.person_rounded,
                                         ),
                                       ),
                                     ),

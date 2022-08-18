@@ -7,16 +7,21 @@ const AlbumOrderMapping = {
   "id desc": "-id",
   "name asc": "name",
   "name desc": "-name",
+  "random": "random"
 };
 
 class AlbumTabProvider extends ChangeNotifier {
   AlbumLoader loader = AlbumLoader();
-  AlbumFilter albumFilter = new AlbumFilter(order:"id desc");
+  AlbumFilter albumFilter = new AlbumFilter(order: "id desc");
 
-  _getExtraParam() {
-    return {
-      "order":AlbumOrderMapping[albumFilter.order] ?? "id desc"
-    };
+  Map<String,String> _getExtraParam() {
+    Map<String,String> extraParam = {};
+    if (albumFilter.order == "random") {
+      extraParam["random"] = "1";
+    }else{
+      extraParam["order"] = AlbumOrderMapping[albumFilter.order] ?? "id desc";
+    }
+    return extraParam;
   }
 
   loadData({force = false}) async {
@@ -26,7 +31,7 @@ class AlbumTabProvider extends ChangeNotifier {
   }
 
   loadMore() async {
-    if (await loader.loadMore(extraFilter:_getExtraParam())) {
+    if (await loader.loadMore(extraFilter: _getExtraParam())) {
       notifyListeners();
     }
   }

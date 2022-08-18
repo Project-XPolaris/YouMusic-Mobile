@@ -25,6 +25,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   UniqueKey refreshToken = UniqueKey();
 
+
   Future<bool> getSP() async {
     var pref = await SharedPreferences.getInstance();
     var apiUrl = pref.getString("apiUrl");
@@ -50,28 +51,17 @@ class MyAppState extends State<MyApp> {
             title: 'YouMusic',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              // This is the theme of your application.
-              appBarTheme: AppBarTheme(
-                systemOverlayStyle: SystemUiOverlayStyle.light
-              ),
-              // Try running your application with "flutter run". You'll see the
-              // application has a blue toolbar. Then, without quitting the app, try
-              // changing the primarySwatch below to Colors.green and then invoke
-              // "hot reload" (press "r" in the console where you ran "flutter run",
-              // or simply save your changes to "hot reload" in a Flutter IDE).
-              // Notice that the counter didn't reset back to zero; the application
-              // is not restarted.
-              // This makes the visual density adapt to the platform that you run
-              // the app on. For desktop platforms, the controls will be smaller and
-              // closer together (more dense) than on mobile platforms.
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              primaryColor: Colors.pink,
-              tabBarTheme: TabBarTheme(
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.white54,
-              )
+              useMaterial3: true,
+              colorSchemeSeed: Colors.pink,
+              brightness: Brightness.light,
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              colorSchemeSeed: Colors.pink,
+              brightness: Brightness.dark,
             ),
             home: InitPage(),
+            themeMode: ThemeMode.system,
           );
         }
         return Container();

@@ -13,7 +13,6 @@ class PlaylistModal extends StatelessWidget {
           builder: (context, asyncSnapshot) {
             Playing? current = asyncSnapshot.data as Playing?;
             return Container(
-              color: Colors.black,
               height: 720,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -29,7 +28,7 @@ class PlaylistModal extends StatelessWidget {
                             child: Text(
                               "Playlist",
                               style:
-                                  TextStyle(color: Colors.pink, fontSize: 20),
+                                  TextStyle(fontSize: 20),
                             ),
                           ),
                         ),
@@ -44,7 +43,6 @@ class PlaylistModal extends StatelessWidget {
                               child: IconButton(
                                 icon: Icon(
                                   getLoopIcon(loopMode),
-                                  color: Colors.white,
                                 ),
                                 onPressed: () {
                                   provider.assetsAudioPlayer.toggleLoop();
@@ -78,16 +76,15 @@ class PlaylistModal extends StatelessWidget {
                               }
                             },
                             child: Container(
-                              color: currentIndex == index ? Colors.pink : null,
+                              color: currentIndex == index ? Theme.of(context).colorScheme.secondaryContainer : null,
                               child: ListTile(
                                 title: Text(
                                   audio?.metas.title ?? "",
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(),
                                   softWrap: false,
                                 ),
                                 subtitle: Text(audio?.metas.album ?? "Unknown",
-                                    style: TextStyle(
-                                        color: Colors.white54, fontSize: 12)),
+                                    style: TextStyle(fontSize: 12)),
                                 leading: coverUrl != null
                                     ? AspectRatio(
                                         aspectRatio: 1,

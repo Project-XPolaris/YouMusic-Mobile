@@ -23,9 +23,8 @@ class AlbumListPage extends StatelessWidget {
             provider.loadData();
             var _controller = createLoadMoreController(provider.loadMore);
             return Scaffold(
-              backgroundColor: Colors.black,
               appBar: AppBar(
-                title: Text(title, style: TextStyle(color: Colors.white),),
+                title: Text(title),
                 backgroundColor: Colors.transparent,
               ),
               body: Padding(
@@ -35,21 +34,20 @@ class AlbumListPage extends StatelessWidget {
                   children:provider.loader.list.map((album) {
                     var coverUrl = album.getCoverUrl();
                     return ListTile(
-                      title: Text(album.name ?? "Unknown",style: TextStyle(color: Colors.white),),
-                      subtitle: Text(album.getArtist("Unknown"),style: TextStyle(color: Colors.white54,fontSize: 12)),
+                      title: Text(album.name ?? "Unknown",style: TextStyle(),),
+                      subtitle: Text(album.getArtist("Unknown"),style: TextStyle(fontSize: 12)),
                       leading: AspectRatio(
                         aspectRatio: 1,
-                        child: coverUrl != null ? Image.network(coverUrl,fit: BoxFit.cover,) : Container(),
+                        child: coverUrl != null ? Image.network(coverUrl,fit: BoxFit.cover,) : CircleAvatar(
+                            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                            child:Icon(
+                                Icons.album,
+                                color: Theme.of(context).colorScheme.onSecondaryContainer
+                            )
+                        ),
                       ),
                       onTap: () {
-                        var id = album.id;
-                        if (id == null) {
-                          return;
-                        }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AlbumPage(id: id,)),
-                        );
+                        AlbumPage.launch(context, album.id,cover: coverUrl,blurHash: album.blurHash);
                       },
                       onLongPress: () {
                         HapticFeedback.selectionClick();

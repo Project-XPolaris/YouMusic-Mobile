@@ -32,7 +32,6 @@ class AlbumItem extends StatelessWidget {
                 child: Container(
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
-                      color: Colors.white70,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
                   child: coverUrl != null ?CachedNetworkImage(
@@ -68,12 +67,10 @@ class AlbumItem extends StatelessWidget {
                   children: [
                     Text(
                       album.name ?? "Unknown",
-                      style: TextStyle(color: Colors.white),
                       softWrap: false,
                     ),
                     Text(
                       artist,
-                      style: TextStyle(color: Colors.white54),
                       softWrap: false,
                     )
                   ],

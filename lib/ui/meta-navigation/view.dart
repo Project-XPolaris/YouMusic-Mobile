@@ -11,7 +11,6 @@ class MetaNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     var coverUrl = cover;
     return Container(
-      color: Colors.black,
       child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
         child: Column(
@@ -32,7 +31,6 @@ class MetaNavigation extends StatelessWidget {
                           Text(
                             title,
                             style: TextStyle(
-                                color: Colors.white,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16),
                             softWrap: false,
@@ -40,13 +38,13 @@ class MetaNavigation extends StatelessWidget {
                           ),
                           Text(
                             title2,
-                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                            style: TextStyle(fontSize: 14),
                             softWrap: false,
                             overflow: TextOverflow.fade,
                           ),
                           Text(
                             title3,
-                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                            style: TextStyle(fontSize: 14),
                             softWrap: false,
                             overflow: TextOverflow.fade,
                           )
@@ -93,7 +91,6 @@ class MetaItem extends StatelessWidget {
               child: Center(
                 child: Icon(
                   icon,
-                  color: Colors.white,
                   size: 24,
                 ),
               ),
@@ -105,7 +102,7 @@ class MetaItem extends StatelessWidget {
                 width: 260,
                 child: Text(
                   title,
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(fontSize: 14),
                   softWrap: false,
                   overflow: TextOverflow.clip,
                 ),

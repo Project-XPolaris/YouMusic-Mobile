@@ -44,8 +44,8 @@ class _PlaySliderState extends State<PlaySlider> {
                       currentValue = -1;
                     });
                   },
-                  inactiveColor: Colors.pink[900],
-                  activeColor: Colors.pink,
+                  inactiveColor: Theme.of(context).colorScheme.primary.withAlpha(50),
+                  activeColor: Theme.of(context).colorScheme.primary,
                 ),
               );
             }),

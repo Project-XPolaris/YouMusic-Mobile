@@ -24,11 +24,9 @@ class HomeTabPage extends StatelessWidget {
           return Consumer<HomeTabProvider>(builder: (context, provider, child) {
             provider.loadData();
             return Scaffold(
-              backgroundColor: Colors.black,
               appBar: AppBar(
                 title: Text(
                   "YouMusic",
-                  style: TextStyle(color: Colors.pink),
                 ),
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -48,7 +46,7 @@ class HomeTabPage extends StatelessWidget {
                             child: Text(
                               "Hey there 👋",
                               style:
-                                  TextStyle(color: Colors.pink, fontSize: 32),
+                                  TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 32),
                             ),
                           ),
                           Padding(
@@ -72,17 +70,7 @@ class HomeTabPage extends StatelessWidget {
                                   child: AlbumItem(
                                     album: e,
                                     onTap: (album) {
-                                      int? albumId = e.id;
-                                      if (albumId == null) {
-                                        return;
-                                      }
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => AlbumPage(
-                                                  id: albumId,
-                                                )),
-                                      );
+                                      AlbumPage.launch(context, e.id,cover: e.getCoverUrl(),blurHash: e.blurHash);
                                     },
                                     onLongPress: (album) {
                                       HapticFeedback.selectionClick();
@@ -170,7 +158,7 @@ class HomeTabPage extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(fontSize: 20),
           textAlign: TextAlign.end,
         ),
         Padding(

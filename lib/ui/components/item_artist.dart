@@ -35,33 +35,21 @@ class ArtistItem extends StatelessWidget {
               child: Container(
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                    color: Colors.pink,
+                    color: Theme.of(context).colorScheme.secondaryContainer,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.all(Radius.circular(8.0))),
                 child: coverUrl == null
                     ? Container(
                         child: Center(
                           child: Icon(
-                            Icons.person,
+                            Icons.person_rounded,
                             size: 48,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onSecondaryContainer
                           ),
                         ),
                       )
-                    : CachedNetworkImage(
-                        imageUrl: coverUrl,
-                        imageBuilder: (context, imageProvider) => Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                Icon(Icons.music_note_rounded),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                    : Image.network(
+                        coverUrl,
                       ),
               ),
             ),
@@ -77,7 +65,6 @@ class ArtistItem extends StatelessWidget {
                   children: [
                     Text(
                       artist.name ?? "Unknown",
-                      style: TextStyle(color: Colors.white),
                       softWrap: false,
                     ),
                   ],
