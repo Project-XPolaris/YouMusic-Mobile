@@ -19,14 +19,17 @@ class TagTabMusic extends StatelessWidget {
     return Consumer<PlayProvider>(builder: (context, playProvider, child) {
       return Consumer<TagProvider>(builder: (context, provider, child) {
         var controller = createLoadMoreController(() => provider.loadMoreMusics());
-        return Padding(
-          padding: EdgeInsets.only(left: 16, right: 16),
-          child: MusicList(
-            controller: controller,
-            list: provider.musicLoader.list,
-            onTap: (e) {
-              playProvider.playMusic(e,autoPlay: true);
-            },
+        return RefreshIndicator(
+          onRefresh: () => provider.forceReloadMusic(),
+          child: Padding(
+            padding: EdgeInsets.only(left: 16, right: 16),
+            child: MusicList(
+              controller: controller,
+              list: provider.musicLoader.list,
+              onTap: (e) {
+                playProvider.playMusic(e,autoPlay: true);
+              },
+            ),
           ),
         );
       });

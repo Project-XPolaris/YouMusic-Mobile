@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/ui/tag/provider.dart';
 import 'package:youmusic_mobile/ui/tag/tab_music.dart';
 
+import '../components/album-filter.dart';
+import '../components/music-filter.dart';
 import '../home/play_bar.dart';
 import 'tab_album.dart';
 
@@ -27,10 +29,45 @@ class TagView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController();
+
     return ChangeNotifierProvider<TagProvider>(
         create: (_) => TagProvider(id),
         child: Consumer<TagProvider>(builder: (context, provider, child) {
           provider.loadData();
+          _onAlbumFilterButtonClick() {
+            showModalBottomSheet(
+                context: context,
+                builder: (ctx) {
+                  return AlbumFilterView(
+                    filter: provider.albumFilter,
+                    onChange: (filter) {
+                      provider.albumFilter = filter;
+                      // if (controller.hasClients && controller.offset > 0){
+                      //   controller.jumpTo(0);
+                      // }
+                      provider.forceReloadAlbum();
+                    },
+                  );
+                });
+          }
+
+          _onMusicFilterButtonClick(){
+            showModalBottomSheet(
+                context: context,
+                builder: (ctx) {
+                  return MusicFilterView(
+                    filter: provider.musicFilter,
+                    onChange: (filter) {
+                      provider.musicFilter = filter;
+                      // if (controller.offset > 0){
+                      //   controller.jumpTo(0);
+                      // }
+                      provider.forceReloadMusic();
+                    },
+                  );
+                });
+          }
+
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -74,6 +111,21 @@ class TagView extends StatelessWidget {
                           backgroundColor: provider.tabIdx == 1
                               ? Theme.of(context).colorScheme.primaryContainer
                               : Colors.transparent),
+                      Expanded(
+                          child: Container(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          icon: Icon(Icons.filter_alt_rounded),
+                          onPressed: () {
+                            if (provider.tabIdx == 0) {
+                              _onAlbumFilterButtonClick();
+                            }
+                            if (provider.tabIdx == 1) {
+                              _onMusicFilterButtonClick();
+                            }
+                          },
+                        ),
+                      ))
                     ],
                   ),
                 ),
@@ -85,7 +137,7 @@ class TagView extends StatelessWidget {
                     controller: controller,
                     children: <Widget>[
                       Container(
-                        child:TagTabAlbum(),
+                        child: TagTabAlbum(),
                       ),
                       Center(
                         child: TagTabMusic(),
@@ -96,11 +148,8 @@ class TagView extends StatelessWidget {
               ],
             )),
             bottomNavigationBar: Container(
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .background
-                    .withOpacity(0.3),
+                color:
+                    Theme.of(context).colorScheme.background.withOpacity(0.3),
                 child: PlayBar()),
           );
         }));

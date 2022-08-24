@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../api/loader/album_loader.dart';
+import '../home/tabs/album/provider.dart';
+
 const OrderFilterKeys = [
   "id asc",
   "id desc",
@@ -8,11 +11,7 @@ const OrderFilterKeys = [
   "random"
 ];
 
-class AlbumFilter {
-  String order;
 
-  AlbumFilter({required this.order});
-}
 
 class AlbumFilterView extends StatefulWidget {
   final AlbumFilter filter;

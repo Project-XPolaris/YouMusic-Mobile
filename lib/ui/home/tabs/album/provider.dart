@@ -2,13 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:youmusic_mobile/api/loader/album_loader.dart';
 import 'package:youmusic_mobile/ui/components/album-filter.dart';
 
-const AlbumOrderMapping = {
-  "id asc": "id",
-  "id desc": "-id",
-  "name asc": "name",
-  "name desc": "-name",
-  "random": "random"
-};
+
 
 class AlbumTabProvider extends ChangeNotifier {
   AlbumLoader loader = AlbumLoader();

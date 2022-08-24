@@ -246,8 +246,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                             children: [
                                               ...provider.tags.map((tag) {
                                                 return Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      8.0),
+                                                  padding: const EdgeInsets.only(right: 8,bottom: 0),
                                                   child: ActionChip(
                                                     onPressed: (){
                                                       TagView.launch(context, tag.id?.toString());

@@ -28,7 +28,7 @@ class AllTabPage extends StatelessWidget {
                       filter: provider.musicFilter,
                       onChange: (filter) {
                         provider.musicFilter = filter;
-                        if (controller.offset > 0){
+                        if (controller.hasClients && controller.offset > 0){
                           controller.jumpTo(0);
                         }
                         provider.loadData(force: true);
