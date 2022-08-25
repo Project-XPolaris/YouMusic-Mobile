@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
-import 'package:youmusic_mobile/ui/components/cache_image.dart';
+import 'package:youmusic_mobile/ui/all/provider.dart';
 import 'package:youmusic_mobile/ui/components/music-filter.dart';
 import 'package:youmusic_mobile/ui/components/music-list.dart';
-import 'package:youmusic_mobile/ui/home/tabs/all/provider.dart';
-import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
 
-class AllTabPage extends StatelessWidget {
+class AllPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<MusicTabProvider>(
-        create: (_) => MusicTabProvider(),
+    return ChangeNotifierProvider<AllMusicProvider>(
+        create: (_) => AllMusicProvider(),
         child: Consumer<PlayProvider>(builder: (context, playProvider, child) {
-          return Consumer<MusicTabProvider>(
+          return Consumer<AllMusicProvider>(
               builder: (context, provider, child) {
             var controller =
                 createLoadMoreController(() => provider.loadMore());
@@ -39,7 +36,7 @@ class AllTabPage extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  "YouMusic",
+                  "All Music",
                 ),
                 backgroundColor: Colors.transparent,
                 elevation: 0,

@@ -54,7 +54,7 @@ class AlbumTabPage extends StatelessWidget {
                     physics: AlwaysScrollableScrollPhysics(),
                     controller: controller,
                     childAspectRatio: 9 / 13,
-                    crossAxisCount: 3,
+                    crossAxisCount: MediaQuery.of(context).size.width ~/ 120,
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
                     children: provider.loader.list.map((e) {

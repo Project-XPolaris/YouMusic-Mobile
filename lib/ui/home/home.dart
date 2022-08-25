@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
+import 'package:youmusic_mobile/ui/home/tabs/category/view/category.dart';
 
 import '../provider.dart';
 import 'tabs/album/tab_album.dart';
-import 'tabs/all/tab_all.dart';
 import 'tabs/artist/tab_artist.dart';
 import 'tabs/home/tab_home.dart';
 
@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
                     HomeTabPage(),
                     AlbumTabPage(),
                     ArtistTabPage(),
-                    AllTabPage()
+                    CategoryTab()
                   ],
                 ),
                 bottomNavigationBar: PlayBar(),
@@ -66,8 +66,8 @@ class HomePage extends StatelessWidget {
                         label: 'Artist',
                       ),
                       NavigationDestination(
-                        icon: Icon(Icons.music_note),
-                        label: 'All',
+                        icon: Icon(Icons.category_rounded),
+                        label: 'Category',
                       ),
                     ],
                   ),

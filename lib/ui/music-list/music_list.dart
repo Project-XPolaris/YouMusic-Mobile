@@ -1,18 +1,29 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
-import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/ui/music-list/provider.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
+
+import '../components/music-filter.dart';
+import '../components/music-list.dart';
 
 class MusicListPage extends StatelessWidget {
   final Map<String, String> extraFilter;
   final String title;
   const MusicListPage({Key? key, this.extraFilter = const {},this.title = "Music List"}) : super(key: key);
+  static launch(BuildContext context, {Map<String, String> extraFilter =const  {},String title = "Music List"}) {
 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              MusicListPage(
+               extraFilter: extraFilter,
+                title: title,
+              )),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MusicListProvider>(
@@ -22,6 +33,22 @@ class MusicListPage extends StatelessWidget {
               builder: (context, playProvider, child) {
             provider.loadData();
             var _controller = createLoadMoreController(provider.loadMore);
+            _onFilterButtonClick(){
+              showModalBottomSheet(
+                  context: context,
+                  builder: (ctx) {
+                    return MusicFilterView(
+                      filter: provider.filter,
+                      onChange: (filter) {
+                        provider.filter = filter;
+                        if (_controller.hasClients && _controller.offset > 0){
+                          _controller.jumpTo(0);
+                        }
+                        provider.loadData(force: true);
+                      },
+                    );
+                  });
+            }
             return Scaffold(
               appBar: AppBar(
                 title: Text(
@@ -34,47 +61,18 @@ class MusicListPage extends StatelessWidget {
                     Navigator.pop(context);
                   },
                 ),
+                actions: [
+                  IconButton(onPressed: _onFilterButtonClick, icon: Icon(Icons.filter_alt_rounded))
+                ],
               ),
               body: Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
-                child: ListView(
+                child: MusicList(
                   controller: _controller,
-                  children: provider.loader.list.map((music) {
-                    var cover = music.getCoverUrl();
-                    return ListTile(
-                      title: Text(
-                        music.title ?? "" + " - " + music.getArtistString(""),
-                      ),
-                      subtitle: Text(music.getAlbumName("Unknown"),
-                          style:
-                              TextStyle(fontSize: 12)),
-                      leading: AspectRatio(
-                        aspectRatio: 1,
-                        child: cover != null? Image.network(
-                            cover,
-                          fit: BoxFit.cover,
-                        ):Container(
-                          child: Center(
-                            child: Icon(
-                              Icons.music_note_rounded,
-                              size: 48,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        playProvider.playMusic(music,autoPlay: true);
-                      },
-                      onLongPress: () {
-                        HapticFeedback.selectionClick();
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) => MusicMetaInfo(
-                                  music: music,
-                                ));
-                      },
-                    );
-                  }).toList(),
+                  list: provider.loader.list,
+                  onTap: (e) {
+                    playProvider.playMusic(e,autoPlay: true);
+                  },
                 ),
               ),
               bottomNavigationBar: PlayBar(),

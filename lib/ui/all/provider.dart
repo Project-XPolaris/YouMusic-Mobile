@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:youmusic_mobile/api/loader/music_loader.dart';
 import 'package:youmusic_mobile/ui/components/music-filter.dart';
 
-class MusicTabProvider extends ChangeNotifier{
+class AllMusicProvider extends ChangeNotifier{
   MusicLoader loader = MusicLoader();
   MusicFilter musicFilter = new MusicFilter(order: "id desc");
   _getExtraParam() {

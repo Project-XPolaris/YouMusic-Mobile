@@ -50,10 +50,10 @@ class _MusicFilterViewState extends State<MusicFilterView> {
                       label: Text(
                         key,
                         style: TextStyle(
-                          color: order == key ? Colors.white : Colors.black,
+                          color: order == key ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onSecondaryContainer,
                         ),
                       ),
-                      checkmarkColor: order == key ? Colors.white : Colors.black,
+                      checkmarkColor: order == key ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onSecondaryContainer,
                       onSelected: (selected) {
                         widget.filter.order = key;
                         widget.onChange(widget.filter);
@@ -62,8 +62,8 @@ class _MusicFilterViewState extends State<MusicFilterView> {
                         });
                       },
                       selected: order == key,
-                      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                      selectedColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                      selectedColor: Theme.of(context).colorScheme.secondary,
                     ),
                   );
                 })

@@ -161,7 +161,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                   child: ListView(
                                     controller: _scrollController,
                                     children: [
-                                      Padding(
+                                      Container(
                                         padding: const EdgeInsets.only(
                                             left: 64, right: 64, top: 16),
                                         child: ClipRRect(
@@ -170,41 +170,43 @@ class _AlbumPageState extends State<AlbumPage> {
                                           child: Card(
                                             color: Colors.transparent,
                                             elevation: 5,
-                                            child: AspectRatio(
-                                              aspectRatio: 1,
-                                              child: (albumCoverUrl ??
-                                                  widget.initCover) !=
-                                                  null
-                                                  ? Container(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                                  child: BlurHash(
-                                                    hash: widget.blurHash ?? "",
-                                                    image: albumCoverUrl ?? "",
-                                                    imageFit: BoxFit.cover,
+                                            child: Container(
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: (albumCoverUrl ??
+                                                    widget.initCover) !=
+                                                    null
+                                                    ? Container(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                    child: BlurHash(
+                                                      hash: widget.blurHash ?? "",
+                                                      image: albumCoverUrl ?? "",
+                                                      imageFit: BoxFit.cover,
+                                                    ),
                                                   ),
-                                                ),
-                                              )
-                                                  : Container(
-                                                  child: Icon(
-                                                    Icons.music_note_rounded,
-                                                    size: 64,
-                                                    color: Theme
-                                                        .of(context)
-                                                        .colorScheme
-                                                        .primary,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.rectangle,
+                                                )
+                                                    : Container(
+                                                    child: Icon(
+                                                      Icons.music_note_rounded,
+                                                      size: 64,
                                                       color: Theme
                                                           .of(context)
                                                           .colorScheme
-                                                          .onPrimary,
-                                                      borderRadius: BorderRadius
-                                                          .all(
-                                                          Radius.circular(
-                                                              8.0)))),
+                                                          .primary,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.rectangle,
+                                                        color: Theme
+                                                            .of(context)
+                                                            .colorScheme
+                                                            .onPrimary,
+                                                        borderRadius: BorderRadius
+                                                            .all(
+                                                            Radius.circular(
+                                                                8.0)))),
+                                              ),
                                             ),
                                           ),
                                         ),

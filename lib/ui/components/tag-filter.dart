@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../../api/loader/album_loader.dart';
-import '../home/tabs/album/provider.dart';
+import '../../api/loader/tag_loader.dart';
 
-const OrderFilterKeys = [
-  "id asc",
-  "id desc",
-  "name asc",
-  "name desc",
-  "random"
+const TagFilterKeys = [
+  "id asc", "id desc", "name asc", "name desc","random"
 ];
 
 
-
-class AlbumFilterView extends StatefulWidget {
-  final AlbumFilter filter;
-  final Function(AlbumFilter filter) onChange;
-
-  AlbumFilterView({required this.filter, required this.onChange});
-
+class TagFilterView extends StatefulWidget {
+  final TagFilter filter;
+  final Function(TagFilter filter) onChange;
+  TagFilterView({required this.filter,required this.onChange});
   @override
-  _AlbumFilterViewState createState() =>
-      _AlbumFilterViewState(order: filter.order);
+  _TagFilterViewState createState() => _TagFilterViewState(order: filter.order);
 }
 
-class _AlbumFilterViewState extends State<AlbumFilterView> {
+class _TagFilterViewState extends State<TagFilterView> {
   String order;
-
-  _AlbumFilterViewState({required this.order});
-
+  _TagFilterViewState({required this.order});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,23 +36,20 @@ class _AlbumFilterViewState extends State<AlbumFilterView> {
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(16),
-            child: Text(
-              "Order",
-              style: TextStyle(),
-            ),
+            child: Text("Order", style: TextStyle(),),
           ),
           Container(
             padding: EdgeInsets.only(left: 16,right: 16),
             child: Wrap(
               children: [
-                ...OrderFilterKeys.map((key) {
+                ...TagFilterKeys.map((key) {
                   return Padding(
                     padding: EdgeInsets.only(right: 8,bottom: 4),
                     child: FilterChip(
                       label: Text(
                         key,
                         style: TextStyle(
-                            color: order == key ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onSecondaryContainer,
+                          color: order == key ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onSecondaryContainer,
                         ),
                       ),
                       checkmarkColor: order == key ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onSecondaryContainer,
