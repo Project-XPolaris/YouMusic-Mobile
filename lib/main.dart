@@ -40,9 +40,9 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white
-    ));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //     statusBarColor: Colors.white
+    // ));
     return FutureBuilder(
       future: getSP(),
       builder: (BuildContext context, AsyncSnapshot<bool> data) {

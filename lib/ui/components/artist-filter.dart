@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../api/loader/artist_loader.dart';
+
 const OrderFilterKeys = [
-  "id asc", "id desc", "name asc", "name desc"
+  "id asc", "id desc", "name asc", "name desc","random"
 ];
 
-class ArtistFilter {
-  String order;
-  ArtistFilter({required this.order});
-}
+
 
 class ArtistFilterView extends StatefulWidget {
   final ArtistFilter filter;

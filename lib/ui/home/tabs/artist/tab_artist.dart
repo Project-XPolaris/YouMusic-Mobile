@@ -26,7 +26,7 @@ class ArtistTabPage extends StatelessWidget {
                     filter: provider.artistFilter,
                     onChange: (filter) {
                       provider.artistFilter = filter;
-                      if (controller.offset > 0) {
+                      if (controller.hasClients && controller.offset > 0) {
                         controller.jumpTo(0);
                       }
                       provider.loadData(force: true);
@@ -56,6 +56,7 @@ class ArtistTabPage extends StatelessWidget {
                   padding: EdgeInsets.only(),
                   child: ListView.builder(
                       controller: controller,
+                      physics: AlwaysScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final Artist artist = provider.loader.list[index];
                         return ListTile(
