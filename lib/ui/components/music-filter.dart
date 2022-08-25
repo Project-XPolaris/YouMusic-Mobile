@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../api/loader/music_loader.dart';
 
 const OrderFilterKeys = [
-  "id asc", "id desc", "title asc", "title desc"
+  "id asc", "id desc", "title asc", "title desc","random"
 ];
 
 

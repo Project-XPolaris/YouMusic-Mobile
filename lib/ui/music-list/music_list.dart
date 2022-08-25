@@ -67,12 +67,17 @@ class MusicListPage extends StatelessWidget {
               ),
               body: Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
-                child: MusicList(
-                  controller: _controller,
-                  list: provider.loader.list,
-                  onTap: (e) {
-                    playProvider.playMusic(e,autoPlay: true);
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await provider.loadData(force: true);
                   },
+                  child: MusicList(
+                    controller: _controller,
+                    list: provider.loader.list,
+                    onTap: (e) {
+                      playProvider.playMusic(e,autoPlay: true);
+                    },
+                  ),
                 ),
               ),
               bottomNavigationBar: PlayBar(),
