@@ -49,7 +49,7 @@ class TagListView extends StatelessWidget {
           }
           return Scaffold(
             appBar: AppBar(
-              title: Text('Tag List'),
+              title: Text(title),
               leading: IconButton(
                 icon: Icon(Icons.arrow_back_rounded),
                 onPressed: () {

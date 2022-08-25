@@ -53,7 +53,7 @@ class ArtistTabPage extends StatelessWidget {
                   await provider.loadData(force: true);
                 },
                 child: Padding(
-                  padding: EdgeInsets.only(),
+                  padding: EdgeInsets.only(left: 16,right: 16),
                   child: ListView.builder(
                       controller: controller,
                       physics: AlwaysScrollableScrollPhysics(),
@@ -83,10 +83,12 @@ class ArtistTabPage extends StatelessWidget {
                                       artist: artist,
                                     ));
                           },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8))
                         );
                       },
                       itemCount: provider.loader.list.length,
-                      padding: EdgeInsets.all(0)),
+                  ),
                 ),
               ),
             ),
