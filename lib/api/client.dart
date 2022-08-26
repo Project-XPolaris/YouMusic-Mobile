@@ -72,6 +72,11 @@ class ApiClient {
     Tag tag = Tag.fromJson(response.data);
     return tag;
   }
+  Future<ListResponseWrap<Genre>> fetchGenreList(Map<String,String> params) async {
+    var response = await _dio.get("/genre",queryParameters: params);
+    ListResponseWrap<Genre> responseBody = ListResponseWrap.fromJson(response.data, (data) => Genre.fromJson(data));
+    return responseBody;
+  }
 
   Future<ServiceInfo> fetchInfo() async {
     var response = await _dio.get("/app/info");

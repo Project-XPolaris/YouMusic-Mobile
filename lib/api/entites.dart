@@ -136,7 +136,19 @@ class Tag {
 
   String get displayName => name ?? "Unknown";
 }
+class Genre {
+  int? id;
+  String? name;
 
+  Genre({this.id, this.name});
+
+  Genre.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  String get displayName => name ?? "Unknown";
+}
 class ServiceInfo {
   String? authUrl;
   String? name;

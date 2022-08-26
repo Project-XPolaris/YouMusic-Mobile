@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:youmusic_mobile/ui/genre-list/view/genre-list.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 
 import '../../../../tag-list/view/tag-list.dart';
+
+
 
 class CategoryTab extends StatelessWidget {
   const CategoryTab({Key? key}) : super(key: key);
@@ -34,6 +37,18 @@ class CategoryTab extends StatelessWidget {
               leading: Icon(Icons.bookmark_rounded),
               onTap: () {
                 TagListView.launch(
+                  context,
+                  extraFilter: {},
+                );
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+            ),
+            ListTile(
+              title: Text("Genre"),
+              leading: Icon(Icons.mood_rounded),
+              onTap: () {
+                GenreListView.launch(
                   context,
                   extraFilter: {},
                 );
