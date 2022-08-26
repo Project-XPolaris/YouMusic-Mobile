@@ -6,11 +6,14 @@ import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album-list/album_list.dart';
 import 'package:youmusic_mobile/ui/artist/provider.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
+import 'package:youmusic_mobile/ui/components/music-list-item.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 import 'package:collection/collection.dart';
+
+import '../components/item_music_list.dart';
 
 class ArtistPage extends StatefulWidget {
   final int id;
@@ -178,41 +181,13 @@ class _ArtistPageState extends State<ArtistPage> {
                               child: Column(
                                 children:
                                     (provider.musicLoader.list).map((music) {
-                                  var musicCover = music.getCoverUrl();
-                                  return ListTile(
-                                      leading: AspectRatio(
-                                        aspectRatio: 1,
-                                        child: musicCover != null
-                                            ? Image.network(
-                                                musicCover,
-                                                fit: BoxFit.cover,
-                                                width: 64,
-                                                height: 64,
-                                              )
-                                            : Container(
-                                                color: Theme.of(context).colorScheme.primary,
-                                                child: Center(
-                                                  child: Icon(Icons.music_note),
-                                                ),
-                                              ),
-                                      ),
-                                      title: Text(
-                                        music.title ?? "Unknown",
-                                        style: TextStyle(),
-                                        softWrap: false,
-                                      ),
-                                      subtitle: Text(
-                                        music.getAlbumName("Unknown"),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                        softWrap: false,
-                                      ),
-                                      onTap: () {
+                                  return MusicListTileItem(
+                                      music: music,
+                                      onTap: (music) {
                                         playProvider.playMusic(music,
                                             autoPlay: true);
                                       },
-                                      onLongPress: () {
+                                      onLongPress: (music) {
                                         HapticFeedback.selectionClick();
                                         showModalBottomSheet(
                                             context: context,
@@ -255,6 +230,8 @@ class _ArtistPageState extends State<ArtistPage> {
                                                 extraFilter: {
                                                   "artist": artistId
                                                 },
+                                            title: provider.artist?.name ?? "unknown",
+
                                               )),
                                     );
                                   },

@@ -16,6 +16,13 @@ class Music {
       this.artist = const [],
       this.duration});
 
+  String get displayTitle {
+    if (title == null) {
+      return path!.split("/").last;
+    }
+    return title!;
+  }
+
   Music.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     path = json['path'];
