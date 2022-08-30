@@ -32,7 +32,7 @@ abstract class ApiDataLoader<T> {
 
     var response = await fetchData(params);
     list = response.data;
-    hasMore = list.length < (response.count ?? 0);
+    hasMore = page * pageSize < (response.count ?? 0);
     isLoading = false;
     return true;
   }
@@ -47,7 +47,7 @@ abstract class ApiDataLoader<T> {
     params.addAll(extraFilter);
     var response = await fetchData(params);
     list.addAll(response.data);
-    hasMore = list.length < (response.count ?? 0);
+    hasMore = page * pageSize < (response.count ?? 0);
     isLoading = false;
     return true;
   }

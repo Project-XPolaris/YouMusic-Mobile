@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/api/entites.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album/album.dart';
-import 'package:youmusic_mobile/ui/artist/artist.dart';
+import 'package:youmusic_mobile/ui/artist/view/artist.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/view.dart';
 
 class MusicMetaInfo extends StatelessWidget {

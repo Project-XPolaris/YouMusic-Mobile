@@ -5,6 +5,7 @@ import '../../../api/entites.dart';
 import '../../../utils/listview.dart';
 import '../../components/genre-filter.dart';
 import '../../genre/view/view.dart';
+import '../../home/play_bar.dart';
 import '../bloc/genre_list_bloc.dart';
 
 
@@ -84,7 +85,7 @@ class GenreListView extends StatelessWidget {
                             title: Text(genre.displayName),
                             leading: Icon(Icons.mood_rounded),
                             onTap: (){
-                              GenreView.launch(context, genre.id?.toString());
+                              GenreView.launch(context, genre.id?.toString(),title: genre.displayName);
                             },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8))
@@ -94,6 +95,7 @@ class GenreListView extends StatelessWidget {
                     ),
                   ),
                 )),
+            bottomNavigationBar: PlayBar(),
           );
         },
       ),

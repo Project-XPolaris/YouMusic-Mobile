@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:youmusic_mobile/event.dart';
+import 'package:youmusic_mobile/event/artist.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album-list/provider.dart';
 import 'package:youmusic_mobile/ui/album/album.dart';
@@ -16,6 +18,17 @@ class AlbumListPage extends StatelessWidget {
   const AlbumListPage(
       {Key? key, this.extraFilter = const {}, this.title = "Album List"})
       : super(key: key);
+
+  static launch(BuildContext context, {Map<String, String> extraFilter = const {},
+      String? title}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AlbumListPage(
+                  extraFilter: extraFilter,
+                  title: title ?? "Album List",
+                )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +64,12 @@ class AlbumListPage extends StatelessWidget {
                     showModalBottomSheet(
                         context: context,
                         builder: (context) => AlbumMetaInfo(
-                          album: album,
-                        ));
+                              album: album,
+                            ));
                   },
                 ),
               ),
               bottomNavigationBar: PlayBar(),
-
             );
           });
         }));

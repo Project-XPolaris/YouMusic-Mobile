@@ -11,10 +11,12 @@ import 'tab_album.dart';
 
 class GenreView extends StatelessWidget {
   final String id;
+  final String title;
 
-  const GenreView({Key? key, required this.id}) : super(key: key);
+  const GenreView({Key? key, required this.id, this.title = "Genre"})
+      : super(key: key);
 
-  static launch(BuildContext context, String? genreId) {
+  static launch(BuildContext context, String? genreId, {String? title}) {
     var id = genreId;
     if (id == null) {
       return;
@@ -24,13 +26,13 @@ class GenreView extends StatelessWidget {
         MaterialPageRoute(
             builder: (context) => GenreView(
                   id: id,
+                  title: title ?? "Genre",
                 )));
   }
 
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController();
-
 
     return BlocProvider(
       create: (context) => GenreBloc(genreId: id)
@@ -45,7 +47,9 @@ class GenreView extends StatelessWidget {
                   return AlbumFilterView(
                     filter: state.albumFilter,
                     onChange: (filter) {
-                      context.read<GenreBloc>().add(UpdateAlbumFilterEvent(updatedFilter: filter));
+                      context
+                          .read<GenreBloc>()
+                          .add(UpdateAlbumFilterEvent(updatedFilter: filter));
                     },
                   );
                 });
@@ -58,7 +62,9 @@ class GenreView extends StatelessWidget {
                   return MusicFilterView(
                     filter: state.musicFilter,
                     onChange: (filter) {
-                      context.read<GenreBloc>().add(UpdateMusicFilterEvent(updatedFilter: filter));
+                      context
+                          .read<GenreBloc>()
+                          .add(UpdateMusicFilterEvent(updatedFilter: filter));
                       // if (controller.offset > 0){
                       //   controller.jumpTo(0);
                       // }
@@ -66,13 +72,14 @@ class GenreView extends StatelessWidget {
                   );
                 });
           }
+
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
                   icon: Icon(Icons.arrow_back_rounded),
                   onPressed: () => Navigator.pop(context)),
               title: Text(
-                "Genre",
+                title,
               ),
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -89,7 +96,9 @@ class GenreView extends StatelessWidget {
                         child: ActionChip(
                             label: Text("Albums"),
                             onPressed: () {
-                              context.read<GenreBloc>().add(TabIndexChangeEvent(index: 0));
+                              context
+                                  .read<GenreBloc>()
+                                  .add(TabIndexChangeEvent(index: 0));
                               controller.animateToPage(0,
                                   duration: Duration(milliseconds: 200),
                                   curve: Curves.easeInOut);
@@ -101,7 +110,9 @@ class GenreView extends StatelessWidget {
                       ActionChip(
                           label: Text("Music"),
                           onPressed: () {
-                            context.read<GenreBloc>().add(TabIndexChangeEvent(index: 1));
+                            context
+                                .read<GenreBloc>()
+                                .add(TabIndexChangeEvent(index: 1));
                             controller.animateToPage(1,
                                 duration: Duration(milliseconds: 200),
                                 curve: Curves.easeInOut);
@@ -130,7 +141,9 @@ class GenreView extends StatelessWidget {
                 Expanded(
                   child: PageView(
                     onPageChanged: (idx) {
-                      context.read<GenreBloc>().add(TabIndexChangeEvent(index: idx));
+                      context
+                          .read<GenreBloc>()
+                          .add(TabIndexChangeEvent(index: idx));
                     },
                     controller: controller,
                     children: <Widget>[

@@ -22,7 +22,7 @@ class ArtistFilter {
     if (order == "random") {
       param["random"] = "1";
     }else{
-      param["order"] = ArtistOrderMapping[order] ?? "id desc";
+      param["order"] = ArtistOrderMapping[order] ?? "-id";
     }
     if (extra != null) {
       param.addAll(extra);

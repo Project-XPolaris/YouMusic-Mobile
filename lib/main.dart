@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youmusic_mobile/event.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/init/init.dart';
 
 void main() {
+  EventBusManager.instance.eventBus;
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<PlayProvider>(

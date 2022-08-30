@@ -6,6 +6,7 @@ import 'package:youmusic_mobile/ui/tag/view.dart';
 import '../../../api/entites.dart';
 import '../../../utils/listview.dart';
 import '../../components/tag-filter.dart';
+import '../../home/play_bar.dart';
 
 class TagListView extends StatelessWidget {
   final Map<String, String> extraFilter;
@@ -93,6 +94,7 @@ class TagListView extends StatelessWidget {
                     ),
                   ),
                 )),
+            bottomNavigationBar: PlayBar(),
           );
         },
       ),

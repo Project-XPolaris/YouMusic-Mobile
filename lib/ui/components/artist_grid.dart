@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:youmusic_mobile/ui/artist/artist.dart';
+import 'package:youmusic_mobile/ui/artist/view/artist.dart';
 
 import '../../api/entites.dart';
 import '../meta-navigation/artist.dart';

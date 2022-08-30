@@ -15,4 +15,5 @@ class AlbumListProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
+
 }

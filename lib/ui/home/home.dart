@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/home/tabs/category/view/category.dart';
+import 'package:youmusic_mobile/ui/home/tabs/my/view/view.dart';
 
-import '../provider.dart';
+import 'provider.dart';
 import 'tabs/album/tab_album.dart';
-import 'tabs/artist/tab_artist.dart';
 import 'tabs/home/tab_home.dart';
 
 class HomePage extends StatelessWidget {
@@ -40,8 +40,8 @@ class HomePage extends StatelessWidget {
                   children: <Widget>[
                     HomeTabPage(),
                     AlbumTabPage(),
-                    ArtistTabPage(),
-                    CategoryTab()
+                    CategoryTab(),
+                    TabMy()
                   ],
                 ),
                 bottomNavigationBar: PlayBar(),
@@ -54,20 +54,20 @@ class HomePage extends StatelessWidget {
                     onDestinationSelected: provider.setActiveTab,
                     destinations: const <NavigationDestination>[
                       NavigationDestination(
-                        icon: Icon(Icons.home),
+                        icon: Icon(Icons.home_rounded),
                         label: 'Home',
                       ),
                       NavigationDestination(
-                        icon: Icon(Icons.album),
+                        icon: Icon(Icons.album_rounded),
                         label: 'Album',
-                      ),
-                      NavigationDestination(
-                        icon: Icon(Icons.person),
-                        label: 'Artist',
                       ),
                       NavigationDestination(
                         icon: Icon(Icons.category_rounded),
                         label: 'Category',
+                      ),
+                      NavigationDestination(
+                        icon: Icon(Icons.person_rounded),
+                        label: 'My',
                       ),
                     ],
                   ),

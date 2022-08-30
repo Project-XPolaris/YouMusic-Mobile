@@ -82,5 +82,15 @@ class ApiClient {
     var response = await _dio.get("/app/info");
     return ServiceInfo.fromJson(response.data);
   }
+  Future<BaseResponse> followArtist(int id) async {
+    var response = await _dio.post("/favorite/artist/${id}");
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
+  Future<BaseResponse> unFollowArtist(int id) async {
+    var response = await _dio.delete("/favorite/artist/${id}");
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
   ApiClient._internal();
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youmusic_mobile/ui/artist-list/artist_list.dart';
 import 'package:youmusic_mobile/ui/genre-list/view/genre-list.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 
@@ -32,6 +33,19 @@ class CategoryTab extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
             ),
+            ListTile(
+              title: Text("Artist"),
+              leading: Icon(Icons.person_rounded),
+              onTap: () {
+                ArtistListPage.launch(
+                  context,
+                  extraFilter: {},
+                );
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+            ),
+
             ListTile(
               title: Text("Tags"),
               leading: Icon(Icons.bookmark_rounded),

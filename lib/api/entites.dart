@@ -93,6 +93,12 @@ class Album {
     }
     return null;
   }
+  String? get coverUrl{
+    if (cover != null) {
+      return "${ApplicationConfig().serviceUrl}$cover";
+    }
+    return null;
+  }
 
   getArtist(String defaultValue) {
     if (artist.length == 0) {
@@ -181,5 +187,14 @@ class ListResponseWrap<T> {
         data.add(converter(v));
       });
     }
+  }
+}
+class BaseResponse {
+  bool success = false;
+
+  BaseResponse({this.success = false});
+
+  BaseResponse.fromJson(Map<String, dynamic> json) {
+    this.success = json['success'] ?? false;
   }
 }
