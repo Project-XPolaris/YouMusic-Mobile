@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:youmusic_mobile/ui/album/album.dart';
+import 'package:youmusic_mobile/ui/album/view/album.dart';
 import 'package:youmusic_mobile/ui/components/album-filter.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/home/tabs/album/provider.dart';

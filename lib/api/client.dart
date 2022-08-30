@@ -92,5 +92,15 @@ class ApiClient {
     BaseResponse result = BaseResponse.fromJson(response.data);
     return result;
   }
+  Future<BaseResponse> followAlbum(int id) async {
+    var response = await _dio.post("/favorite/album/${id}");
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
+  Future<BaseResponse> unFollowAlbum(int id) async {
+    var response = await _dio.delete("/favorite/album/${id}");
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
   ApiClient._internal();
 }

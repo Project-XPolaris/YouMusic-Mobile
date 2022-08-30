@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
-import 'package:youmusic_mobile/ui/album/album.dart';
+import 'package:youmusic_mobile/ui/album/view/album.dart';
 import 'package:youmusic_mobile/ui/artist/view/artist.dart';
 import 'package:youmusic_mobile/ui/components/item_album.dart';
 import 'package:youmusic_mobile/ui/components/item_artist.dart';

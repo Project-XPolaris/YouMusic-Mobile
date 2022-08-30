@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album-list/album_list.dart';
-import 'package:youmusic_mobile/ui/album/album.dart';
+import 'package:youmusic_mobile/ui/album/view/album.dart';
 import 'package:youmusic_mobile/ui/artist-list/artist_list.dart';
 import 'package:youmusic_mobile/ui/artist/view/artist.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';

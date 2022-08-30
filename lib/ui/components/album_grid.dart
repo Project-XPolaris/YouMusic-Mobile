@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../api/entites.dart';
-import '../album/album.dart';
+import '../album/view/album.dart';
 import 'item_album.dart';
 
 class AlbumGrid extends StatelessWidget {

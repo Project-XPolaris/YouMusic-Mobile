@@ -5,7 +5,7 @@ import 'package:youmusic_mobile/ui/components/music-list.dart';
 
 import '../../provider/provider_play.dart';
 import '../../utils/listview.dart';
-import '../album/album.dart';
+import '../album/view/album.dart';
 import '../components/item_album.dart';
 import '../meta-navigation/album.dart';
 import '../meta-navigation/music.dart';

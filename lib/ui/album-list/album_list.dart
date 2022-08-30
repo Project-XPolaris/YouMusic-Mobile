@@ -5,7 +5,7 @@ import 'package:youmusic_mobile/event.dart';
 import 'package:youmusic_mobile/event/artist.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/album-list/provider.dart';
-import 'package:youmusic_mobile/ui/album/album.dart';
+import 'package:youmusic_mobile/ui/album/view/album.dart';
 import 'package:youmusic_mobile/ui/components/album_grid.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
