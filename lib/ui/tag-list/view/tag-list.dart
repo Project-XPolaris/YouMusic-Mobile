@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:youmusic_mobile/ui/tag-list/bloc/tag_list_bloc.dart';
-import 'package:youmusic_mobile/ui/tag/view.dart';
 
 import '../../../api/entites.dart';
 import '../../../utils/listview.dart';
 import '../../components/tag-filter.dart';
 import '../../home/play_bar.dart';
+import '../../tag/view/view.dart';
 
 class TagListView extends StatelessWidget {
   final Map<String, String> extraFilter;
@@ -27,7 +27,7 @@ class TagListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-      TagListBloc()
+      TagListBloc(extraFilter: extraFilter)
         ..add(OnLoadEvent(force: false)),
       child: BlocBuilder<TagListBloc, TagListState>(
         builder: (context, state) {

@@ -9,9 +9,9 @@ import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
-import 'package:youmusic_mobile/ui/tag/view.dart';
 import 'package:youmusic_mobile/utils/color.dart';
 
+import '../../tag/view/view.dart';
 import '../bloc/album_bloc.dart';
 
 class AlbumPage extends StatefulWidget {

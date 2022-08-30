@@ -102,5 +102,15 @@ class ApiClient {
     BaseResponse result = BaseResponse.fromJson(response.data);
     return result;
   }
+  Future<BaseResponse> followTag(int id) async {
+    var response = await _dio.post("/favorite/tag/${id}");
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
+  Future<BaseResponse> unFollowTag(int id) async {
+    var response = await _dio.delete("/favorite/tag/${id}");
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
   ApiClient._internal();
 }

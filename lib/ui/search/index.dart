@@ -13,9 +13,9 @@ import 'package:youmusic_mobile/ui/meta-navigation/artist.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
 import 'package:youmusic_mobile/ui/search/provider.dart';
-import 'package:youmusic_mobile/ui/tag/view.dart';
 
 import '../tag-list/view/tag-list.dart';
+import '../tag/view/view.dart';
 
 
 class SearchPage extends StatefulWidget {
