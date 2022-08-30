@@ -50,6 +50,15 @@ class TabMy extends StatelessWidget {
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))
+                  ),
+                  ListTile(
+                      title: Text("Follow Genre"),
+                      leading: Icon(Icons.mood_rounded),
+                      onTap: (){
+                        TagListView.launch(context,extraFilter: {"follow":"1"},title: "My Genre");
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8))
                   )
                 ],
               ),

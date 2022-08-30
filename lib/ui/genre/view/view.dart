@@ -36,6 +36,7 @@ class GenreView extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => GenreBloc(genreId: id)
+        ..add(InitEvent())
         ..add(LoadMusicEvent(force: false))
         ..add(LoadAlbumEvent(force: false)),
       child: BlocBuilder<GenreBloc, GenreState>(
@@ -83,7 +84,19 @@ class GenreView extends StatelessWidget {
               ),
               backgroundColor: Colors.transparent,
               elevation: 0,
+              actions: [
+                IconButton(onPressed: (){
+                  if (state.isFollow) {
+                    BlocProvider.of<GenreBloc>(context)
+                        .add(UnFollowEvent());
+                  } else {
+                    BlocProvider.of<GenreBloc>(context)
+                        .add(FollowEvent());
+                  }
+                }, icon: Icon(state.isFollow ? Icons.favorite_rounded : Icons.favorite_border_rounded)),
+              ],
             ),
+
             body: Container(
                 child: Column(
               children: [

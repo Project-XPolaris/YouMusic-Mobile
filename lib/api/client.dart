@@ -112,5 +112,15 @@ class ApiClient {
     BaseResponse result = BaseResponse.fromJson(response.data);
     return result;
   }
+  Future<BaseResponse> followGenre(int id) async {
+    var response = await _dio.post("/favorite/genre/${id}");
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
+  Future<BaseResponse> unFollowGenre(int id) async {
+    var response = await _dio.delete("/favorite/genre/${id}");
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
   ApiClient._internal();
 }

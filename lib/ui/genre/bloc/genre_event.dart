@@ -5,7 +5,11 @@ class GenreEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
-
+class InitEvent extends GenreEvent {
+  InitEvent();
+  @override
+  List<Object?> get props => [];
+}
 class LoadAlbumEvent extends GenreEvent {
   final bool force;
   LoadAlbumEvent({this.force = false});
@@ -45,4 +49,14 @@ class TabIndexChangeEvent extends GenreEvent {
   TabIndexChangeEvent({required this.index});
   @override
   List<Object?> get props => [index];
+}
+class FollowEvent extends GenreEvent {
+  FollowEvent();
+  @override
+  List<Object?> get props => [];
+}
+class UnFollowEvent extends GenreEvent {
+  UnFollowEvent();
+  @override
+  List<Object?> get props => [];
 }

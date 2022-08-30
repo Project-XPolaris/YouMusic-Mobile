@@ -28,7 +28,7 @@ class GenreListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-      GenreListBloc()
+      GenreListBloc(extraFilter: extraFilter)
         ..add(OnLoadEvent(force: false)),
       child: BlocBuilder<GenreListBloc, GenreListState>(
         builder: (context, state) {

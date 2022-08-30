@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:youmusic_mobile/api/client.dart';
 import 'package:youmusic_mobile/api/loader/music_loader.dart';
 
 import '../../../api/entites.dart';
@@ -17,6 +18,10 @@ class GenreBloc extends Bloc<GenreEvent, GenreState> {
   MusicLoader _musicLoader = MusicLoader();
 
   GenreBloc({required this.genreId}) : super(GenreInitial()) {
+    on<InitEvent>((event, emit) async {
+        checkIsFollow(event, emit);
+      },
+    );
     on<LoadAlbumEvent>((event, emit) async {
       await _albumLoader.loadData(
           force: event.force, extraFilter: state.albumFilter.toParam(extra: {"genre":genreId.toString()}));
@@ -55,5 +60,22 @@ class GenreBloc extends Bloc<GenreEvent, GenreState> {
     on<TabIndexChangeEvent>((event, emit) async {
       emit(state.copyWith(index: event.index));
     });
+    on<FollowEvent>((event, emit) async {
+      await ApiClient().followGenre(int.parse(genreId));
+      emit(state.copyWith(isFollow: true));
+    });
+    on<UnFollowEvent>((event, emit) async {
+      await ApiClient().unFollowGenre(int.parse(genreId));
+      emit(state.copyWith(isFollow: false));
+    });
+  }
+  checkIsFollow(event, emit)async{
+    var result = await ApiClient().fetchGenreList({
+      "ids":genreId,
+      "follow":"1"
+    });
+    if(result.data.isNotEmpty){
+      emit(state.copyWith(isFollow: true));
+    }
   }
 }
