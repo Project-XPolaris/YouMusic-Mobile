@@ -77,7 +77,11 @@ class ApiClient {
     ListResponseWrap<Genre> responseBody = ListResponseWrap.fromJson(response.data, (data) => Genre.fromJson(data));
     return responseBody;
   }
-
+  Future<ListResponseWrap<Playlist>> fetchPlaylistList(Map<String,String> params) async {
+    var response = await _dio.get("/playlist",queryParameters: params);
+    ListResponseWrap<Playlist> responseBody = ListResponseWrap.fromJson(response.data, (data) => Playlist.fromJson(data));
+    return responseBody;
+  }
   Future<ServiceInfo> fetchInfo() async {
     var response = await _dio.get("/app/info");
     return ServiceInfo.fromJson(response.data);

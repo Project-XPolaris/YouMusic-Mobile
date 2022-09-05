@@ -8,7 +8,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/components/maq.dart';
 import 'package:youmusic_mobile/ui/play/slider.dart';
-import 'package:youmusic_mobile/ui/playlist/playlist.dart';
+import 'package:youmusic_mobile/ui/queue/playlist.dart';
 import 'package:youmusic_mobile/utils/icons.dart';
 import 'package:youmusic_mobile/utils/lyric.dart';
 import 'package:youmusic_mobile/utils/time.dart';

@@ -162,6 +162,19 @@ class Genre {
 
   String get displayName => name ?? "Unknown";
 }
+class Playlist {
+  int? id;
+  String? name;
+
+  Playlist({this.id, this.name});
+
+  Playlist.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  String get displayName => name ?? "Unknown";
+}
 class ServiceInfo {
   String? authUrl;
   String? name;

@@ -1,10 +1,11 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:youmusic_mobile/api/client.dart';
-import 'package:youmusic_mobile/api/entites.dart';
+import 'package:youmusic_mobile/api/entites.dart' as entity;
 import 'package:youmusic_mobile/config.dart';
 import 'package:youmusic_mobile/utils/lyric.dart';
+
+import '../api/client.dart';
 
 enum PlayStatus { Play, Pause }
 
@@ -69,7 +70,7 @@ class PlayProvider extends ChangeNotifier {
     // }
   }
 
-  _createAudioListFromMusicList(List<Music> musicList) {
+  _createAudioListFromMusicList(List<entity.Music> musicList) {
     var audios = musicList.map((music) {
       var coverUrl = music.getCoverUrl();
       var audio = Audio.network(
@@ -94,7 +95,7 @@ class PlayProvider extends ChangeNotifier {
   }
 
   addAlbumToPlaylist(int albumId) async {
-    ListResponseWrap<Music> response = await ApiClient()
+    entity.ListResponseWrap<entity.Music> response = await ApiClient()
         .fetchMusicList({"pageSize": "100", "album": albumId.toString()});
     List<Audio> audios = _createAudioListFromMusicList(response.data);
     var playlist = assetsAudioPlayer.playlist;
@@ -116,7 +117,7 @@ class PlayProvider extends ChangeNotifier {
   }
 
   playAlbum(int albumId) async {
-    ListResponseWrap<Music> response = await ApiClient()
+    entity.ListResponseWrap<entity.Music> response = await ApiClient()
         .fetchMusicList({"pageSize": "100", "album": albumId.toString()});
     List<Audio> audios = _createAudioListFromMusicList(response.data);
     assetsAudioPlayer.open(Playlist(audios: audios),
@@ -124,7 +125,7 @@ class PlayProvider extends ChangeNotifier {
     saveHistory();
   }
 
-  playMusic(Music music, {autoPlay: false}) {
+  playMusic(entity.Music music, {autoPlay: false}) {
     int index = assetsAudioPlayer.current.value?.playlist.currentIndex ?? 0;
     var playlist = assetsAudioPlayer.playlist;
     if (playlist != null) {
@@ -140,7 +141,7 @@ class PlayProvider extends ChangeNotifier {
     saveHistory();
   }
 
-  addMusicToPlayList(Music music) {
+  addMusicToPlayList(entity.Music music) {
     int playIndex = assetsAudioPlayer.current.value?.index ?? 0;
     var playlist = assetsAudioPlayer.playlist;
     if (playlist != null) {

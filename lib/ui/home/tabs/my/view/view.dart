@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:youmusic_mobile/api/entites.dart';
 import 'package:youmusic_mobile/ui/artist-list/artist_list.dart';
+import 'package:youmusic_mobile/ui/playlist-list/view/view.dart';
 import 'package:youmusic_mobile/ui/tag-list/view/tag-list.dart';
 
 import '../../../../album-list/album_list.dart';
@@ -24,6 +25,15 @@ class TabMy extends StatelessWidget {
               padding: EdgeInsets.only(left: 16,right: 16),
               child: ListView(
                 children: [
+                  ListTile(
+                      title: Text("Playlist"),
+                      leading: Icon(Icons.playlist_play),
+                      onTap: (){
+                        PlaylistListPage.launch(context);
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8))
+                  ),
                   ListTile(
                     title: Text("Follow Artist"),
                     leading: Icon(Icons.person_rounded),

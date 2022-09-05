@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:youmusic_mobile/provider/provider_play.dart';
 import 'package:youmusic_mobile/ui/components/maq.dart';
 import 'package:youmusic_mobile/ui/play/play.dart';
-import 'package:youmusic_mobile/ui/playlist/playlist.dart';
+
+import '../queue/playlist.dart';
 
 class PlayBar extends StatelessWidget {
   @override
