@@ -101,7 +101,10 @@ class _AlbumPageState extends State<AlbumPage> {
                                 builder: (context) => MusicMetaInfo(
                                       music: music,
                                     ));
-                          });
+                          },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                          );
                     }).toList();
                   }
 

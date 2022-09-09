@@ -126,5 +126,17 @@ class ApiClient {
     BaseResponse result = BaseResponse.fromJson(response.data);
     return result;
   }
+  Future<Playlist> createPlaylist(String name) async {
+    var response = await _dio.post("/playlist",data: {"name":name});
+    Playlist playlist = Playlist.fromJson(response.data);
+    return playlist;
+  }
+  Future<BaseResponse> addMusicToPlaylist(int playlistId,List<int> musicIds) async {
+    var response = await _dio.post("/playlist/${playlistId}/music",data: {
+      'musicIds':musicIds
+    });
+    BaseResponse result = BaseResponse.fromJson(response.data);
+    return result;
+  }
   ApiClient._internal();
 }

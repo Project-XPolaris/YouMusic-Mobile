@@ -26,6 +26,12 @@ class PlaylistListPage extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text("Playlist"),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back_rounded),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
             body: RefreshIndicator(
               onRefresh: () async {
