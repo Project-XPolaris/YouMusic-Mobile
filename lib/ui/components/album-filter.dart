@@ -62,11 +62,7 @@ class _AlbumFilterViewState extends State<AlbumFilterView> {
                     child: FilterChip(
                       label: Text(
                         key,
-                        style: TextStyle(
-                            color: order == key ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onSecondaryContainer,
-                        ),
                       ),
-                      checkmarkColor: order == key ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onSecondaryContainer,
                       onSelected: (selected) {
                         widget.filter.order = key;
                         widget.onChange(widget.filter);
@@ -75,8 +71,6 @@ class _AlbumFilterViewState extends State<AlbumFilterView> {
                         });
                       },
                       selected: order == key,
-                      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                      selectedColor: Theme.of(context).colorScheme.secondary,
                     ),
                   );
                 })

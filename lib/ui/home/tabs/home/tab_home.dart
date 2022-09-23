@@ -28,7 +28,6 @@ class HomeTabPage extends StatelessWidget {
                 title: Text(
                   "YouMusic",
                 ),
-                backgroundColor: Colors.transparent,
                 elevation: 0,
               ),
               body: Container(

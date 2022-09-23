@@ -27,8 +27,7 @@ class PlaylistModal extends StatelessWidget {
                           child: Container(
                             child: Text(
                               "Playlist",
-                              style:
-                                  TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: 20),
                             ),
                           ),
                         ),
@@ -76,7 +75,6 @@ class PlaylistModal extends StatelessWidget {
                               }
                             },
                             child: Container(
-                              color: currentIndex == index ? Theme.of(context).colorScheme.secondaryContainer : null,
                               child: ListTile(
                                 title: Text(
                                   audio?.metas.title ?? "",
@@ -99,7 +97,16 @@ class PlaylistModal extends StatelessWidget {
                                   provider.assetsAudioPlayer
                                       .playlistPlayAtIndex(index);
                                 },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
                               ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: currentIndex == index
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .secondaryContainer
+                                      : null),
                             ),
                           );
                         },

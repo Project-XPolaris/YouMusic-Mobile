@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
+import 'package:youmusic_mobile/ui/playlist/view/view.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
 
 import '../../../api/entites.dart';
 import '../bloc/playlist_list_bloc.dart';
 
 class PlaylistListPage extends StatelessWidget {
-  const PlaylistListPage({Key? key}) : super(key: key);
+  final Map<String, String> extraFilter;
+  const PlaylistListPage({Key? key,this.extraFilter = const{}}) : super(key: key);
 
   static launch(BuildContext context,
       {Map<String, String> extraFilter = const {}, String? title}) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => PlaylistListPage()));
+        context, MaterialPageRoute(builder: (context) => PlaylistListPage(extraFilter: extraFilter,)));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PlaylistListBloc()..add(new LoadEvent()),
+      create: (context) => PlaylistListBloc(extraFilter: extraFilter)..add(new LoadEvent()),
       child: BlocBuilder<PlaylistListBloc, PlaylistListState>(
         builder: (context, state) {
           ScrollController _controller = createLoadMoreController(
@@ -50,9 +53,7 @@ class PlaylistListPage extends StatelessWidget {
                     return ListTile(
                         title: Text(state.list[index].displayName),
                         onTap: () {
-                          MusicListPage.launch(context,
-                              extraFilter: {"playlist": playlist.id.toString()},
-                              title: playlist.displayName);
+                          PlaylistPage.launch(context, playlist);
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)));
@@ -60,6 +61,7 @@ class PlaylistListPage extends StatelessWidget {
                 ),
               ),
             ),
+            bottomNavigationBar: PlayBar(),
           );
         },
       ),

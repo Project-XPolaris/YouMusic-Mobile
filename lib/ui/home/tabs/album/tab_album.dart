@@ -37,7 +37,6 @@ class AlbumTabPage extends StatelessWidget {
               title: Text(
                 "YouMusic",
               ),
-              backgroundColor: Colors.transparent,
               elevation: 0,
               actions: [
                 IconButton(icon: Icon(Icons.sort), onPressed: _onFilterButtonClick)

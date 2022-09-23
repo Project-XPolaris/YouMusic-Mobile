@@ -12,14 +12,15 @@ part 'playlist_list_event.dart';
 part 'playlist_list_state.dart';
 
 class PlaylistListBloc extends Bloc<PlaylistListEvent, PlaylistListState> {
+  final Map<String,String> extraFilter;
   PlaylistLoader loader = new PlaylistLoader();
-  PlaylistListBloc() : super(PlaylistListInitial()) {
+  PlaylistListBloc({required this.extraFilter}) : super(PlaylistListInitial()) {
     on<LoadEvent>((event, emit) async {
-      await loader.loadData(force: event.force);
+      await loader.loadData(force: event.force,extraFilter: extraFilter);
       emit(state.copyWith(list: loader.list));
     });
     on<LoadMoreEvent>((event, emit) async {
-      await loader.loadMore();
+      await loader.loadMore(extraFilter: extraFilter);
       emit(state.copyWith(list: loader.list));
     });
   }

@@ -12,6 +12,7 @@ import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/artist.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/ui/music-list/music_list.dart';
+import 'package:youmusic_mobile/ui/playlist-list/view/view.dart';
 import 'package:youmusic_mobile/ui/search/provider.dart';
 
 import '../tag-list/view/tag-list.dart';
@@ -363,7 +364,62 @@ class _SearchPageState extends State<SearchPage> {
                               );
                             })),
                         ...renderResultRow(
-                            empty: provider.artistLoader.list.isEmpty,
+                            empty: provider.playlistLoader.list.isEmpty,
+                            header: Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 16, top: 16),
+                              child: Container(
+                                width: double.infinity,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Playlist",
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          PlaylistListPage.launch(context,
+                                              extraFilter: {
+                                                "name": searchKey
+                                              }, title: "Result in $searchKey");
+                                        },
+                                        child: Text(
+                                          "More",
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ),
+                            content: provider.playlistLoader.list.map((playlist) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.all(0),
+                                  title: Text(
+                                    playlist.displayName,
+                                  ),
+                                  leading: Container(
+                                    width: 64,
+                                    height: 64,
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.playlist_play_rounded,
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    MusicListPage.launch(context,extraFilter: {
+                                      "playlist": playlist.id.toString()
+                                    }, title: playlist.displayName);
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)),
+                                ),
+                              );
+                            })),
+                        ...renderResultRow(
+                            empty: provider.tagLoader.list.isEmpty,
                             header: Padding(
                               padding: const EdgeInsets.only(
                                   bottom: 16, top: 16),
