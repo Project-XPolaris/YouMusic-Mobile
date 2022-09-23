@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,7 +52,8 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AlbumBloc(id: this.widget.id)..add(AlbumInitialEvent()),
+      create: (context) =>
+          AlbumBloc(id: this.widget.id)..add(AlbumInitialEvent()),
       child: BlocBuilder<AlbumBloc, AlbumState>(
         builder: (context, state) {
           return Consumer<PlayProvider>(
@@ -75,36 +74,36 @@ class _AlbumPageState extends State<AlbumPage> {
                       var music = musics[idx];
                       var displayIdx = (idx + 1).toString();
                       return ListTile(
-                          minVerticalPadding: 16,
-                          minLeadingWidth: 12,
-                          leading: Container(
-                            width: 24,
-                            child: Text(
-                              displayIdx,
-                            ),
+                        minVerticalPadding: 16,
+                        minLeadingWidth: 12,
+                        leading: Container(
+                          width: 24,
+                          child: Text(
+                            displayIdx,
                           ),
-                          title: Text(
-                            music.title ?? "No title",
-                            style: TextStyle(),
-                          ),
-                          subtitle: Text(music.getArtistString("Unknown"),
-                              style: TextStyle(fontSize: 12)),
-                          onTap: () {
-                            music.album = state.album;
-                            playProvider.playMusic(music, autoPlay: true);
-                          },
-                          onLongPress: () {
-                            music.album = state.album;
-                            HapticFeedback.selectionClick();
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) => MusicMetaInfo(
-                                      music: music,
-                                    ));
-                          },
+                        ),
+                        title: Text(
+                          music.title ?? "No title",
+                          style: TextStyle(),
+                        ),
+                        subtitle: Text(music.getArtistString("Unknown"),
+                            style: TextStyle(fontSize: 12)),
+                        onTap: () {
+                          music.album = state.album;
+                          playProvider.playMusic(music, autoPlay: true);
+                        },
+                        onLongPress: () {
+                          music.album = state.album;
+                          HapticFeedback.selectionClick();
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) => MusicMetaInfo(
+                                    music: music,
+                                  ));
+                        },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
-                          );
+                      );
                     }).toList();
                   }
 
@@ -144,79 +143,81 @@ class _AlbumPageState extends State<AlbumPage> {
                                           album: album,
                                         ));
                               },
-                              icon: Icon(Icons.info_outline_rounded)
-                          ),
-                          IconButton(onPressed: (){
-                            if (state.album == null){
-                              return;
-                            }
-                            if (state.isFollow) {
-                              context.read<AlbumBloc>().add(UnFollowEvent());
-                            }else{
-                              context.read<AlbumBloc>().add(FollowEvent());
-                            }
-                          }, icon: Icon(state.isFollow ? Icons.favorite_rounded : Icons.favorite_border_rounded))
+                              icon: Icon(Icons.info_outline_rounded)),
+                          IconButton(
+                              onPressed: () {
+                                if (state.album == null) {
+                                  return;
+                                }
+                                if (state.isFollow) {
+                                  context
+                                      .read<AlbumBloc>()
+                                      .add(UnFollowEvent());
+                                } else {
+                                  context.read<AlbumBloc>().add(FollowEvent());
+                                }
+                              },
+                              icon: Icon(state.isFollow
+                                  ? Icons.favorite_rounded
+                                  : Icons.favorite_border_rounded))
                         ],
                         leading: IconButton(
                           icon: Icon(Icons.arrow_back_rounded),
                           onPressed: () => Navigator.pop(context),
                         ),
                       ),
-                      body: Padding(
+                      body: Container(
                         padding: const EdgeInsets.only(left: 16, right: 16),
                         child: NotificationListener(
                           child: ListView(
                             controller: _scrollController,
                             children: [
                               Container(
+                                width: 360,
+                                height: 360,
                                 padding: const EdgeInsets.only(
-                                    left: 64, right: 64, top: 16),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Card(
-                                    color: Colors.transparent,
-                                    elevation: 5,
-                                    child: Container(
-                                      child: AspectRatio(
-                                        aspectRatio: 1,
-                                        child: (albumCoverUrl ??
-                                            widget.initCover) !=
-                                            null
-                                            ? Container(
-                                          child: ClipRRect(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                8.0),
-                                            child: BlurHash(
-                                              hash: widget.blurHash ??
-                                                  "",
-                                              image:
-                                              albumCoverUrl ?? "",
-                                              imageFit: BoxFit.cover,
+                                    left: 32, right: 32, top: 16),
+                                child: Container(
+                                  child: (albumCoverUrl ?? widget.initCover) !=
+                                          null
+                                      ? Container(
+                                          child: Center(
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              child: Container(
+                                                child: Image.network(
+                                                  albumCoverUrl ?? "",
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         )
-                                            : Container(
-                                            child: Icon(
-                                              Icons.music_note_rounded,
-                                              size: 64,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                            ),
-                                            decoration: BoxDecoration(
-                                                shape:
-                                                BoxShape.rectangle,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary,
-                                                borderRadius:
-                                                BorderRadius.all(
-                                                    Radius.circular(
-                                                        8.0)))),
-                                      ),
-                                    ),
-                                  ),
+                                      : Center(
+                                          child: AspectRatio(
+                                            aspectRatio: 1,
+                                            child: Container(
+                                                width: 280,
+                                                height: 280,
+                                                child: Icon(
+                                                  Icons.album_rounded,
+                                                  size: 64,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.rectangle,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8.0)))),
+                                          ),
+                                        ),
                                 ),
                               ),
                               Padding(
@@ -224,16 +225,15 @@ class _AlbumPageState extends State<AlbumPage> {
                                 child: Text(
                                   state.album?.name ?? "unknown",
                                   style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontSize: 22),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8, bottom: 8),
+                                padding:
+                                    const EdgeInsets.only(top: 8, bottom: 8),
                                 child: Text(
                                   state.album?.getArtist("Unknown") ??
                                       "Unknown",
@@ -244,8 +244,8 @@ class _AlbumPageState extends State<AlbumPage> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8, bottom: 32),
+                                padding:
+                                    const EdgeInsets.only(top: 8, bottom: 32),
                                 child: Center(
                                   child: Wrap(
                                     children: [
@@ -255,12 +255,11 @@ class _AlbumPageState extends State<AlbumPage> {
                                               right: 8, bottom: 0),
                                           child: ActionChip(
                                             onPressed: () {
-                                              TagView.launch(context,
-                                                  tag.id?.toString());
+                                              TagView.launch(
+                                                  context, tag.id?.toString());
                                             },
                                             label: Text(tag.displayName),
-                                            backgroundColor:
-                                            Theme.of(context)
+                                            backgroundColor: Theme.of(context)
                                                 .colorScheme
                                                 .secondaryContainer,
                                             labelStyle: TextStyle(
@@ -274,7 +273,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                   ),
                                 ),
                               ),
-                              Padding(
+                              Container(
                                 padding: EdgeInsets.only(
                                     bottom: 16, left: 16, right: 16),
                                 child: Row(
