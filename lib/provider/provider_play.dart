@@ -83,6 +83,7 @@ class PlayProvider extends ChangeNotifier {
             extra: {
               "duration": Duration(seconds: (music.duration ?? 0).toInt()),
               "blurHash": music.album?.blurHash,
+              "color":music.album?.color
             },
             image: coverUrl != null
                 ? MetasImage.network(coverUrl)
