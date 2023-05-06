@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../api/entites.dart';
+import '../../utils/time.dart';
 
 class MusicListTileItem extends StatelessWidget {
   final Music music;
@@ -35,6 +36,10 @@ class MusicListTileItem extends StatelessWidget {
       onLongPress: () => onLongPress?.call(music),
       contentPadding: EdgeInsets.only(left: 8, right: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      trailing: Text(
+        formatDuration(Duration(seconds: music.duration?.toInt() ?? 0)),
+        style: TextStyle(fontSize: 12),
+      ),
     );
   }
 }

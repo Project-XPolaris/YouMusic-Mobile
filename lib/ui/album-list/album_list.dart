@@ -11,6 +11,8 @@ import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/utils/listview.dart';
 
+import '../components/album-filter.dart';
+
 class AlbumListPage extends StatelessWidget {
   final Map<String, String> extraFilter;
   final String title;
@@ -35,10 +37,27 @@ class AlbumListPage extends StatelessWidget {
     return ChangeNotifierProvider<AlbumListProvider>(
         create: (_) => AlbumListProvider(extraFilter: extraFilter),
         child: Consumer<AlbumListProvider>(builder: (context, provider, child) {
+
           return Consumer<PlayProvider>(
               builder: (context, playProvider, child) {
             provider.loadData();
             var _controller = createLoadMoreController(provider.loadMore);
+            _onFilterButtonClick(){
+              showModalBottomSheet(
+                  context: context,
+                  builder: (ctx) {
+                    return AlbumFilterView(
+                      filter: provider.albumFilter,
+                      onChange: (filter) {
+                        provider.albumFilter = filter;
+                        if (_controller.hasClients && _controller.offset > 0){
+                          _controller.jumpTo(0);
+                        }
+                        provider.loadData(force: true);
+                      },
+                    );
+                  });
+            }
             return Scaffold(
               appBar: AppBar(
                 leading: IconButton(
@@ -49,24 +68,32 @@ class AlbumListPage extends StatelessWidget {
                 ),
                 title: Text(title),
                 backgroundColor: Colors.transparent,
+                actions: [
+                  IconButton(icon: Icon(Icons.sort), onPressed: _onFilterButtonClick)
+                ],
               ),
               body: Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
-                child: AlbumGrid(
-                  controller: _controller,
-                  albums: provider.loader.list,
-                  onTap: (album) {
-                    AlbumPage.launch(context, album.id,
-                        cover: album.cover, blurHash: album.blurHash);
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await provider.loadData(force: true);
                   },
-                  onLongPress: (album) {
-                    HapticFeedback.selectionClick();
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) => AlbumMetaInfo(
-                              album: album,
-                            ));
-                  },
+                  child: AlbumGrid(
+                    controller: _controller,
+                    albums: provider.loader.list,
+                    onTap: (album) {
+                      AlbumPage.launch(context, album.id,
+                          cover: album.cover, blurHash: album.blurHash);
+                    },
+                    onLongPress: (album) {
+                      HapticFeedback.selectionClick();
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) => AlbumMetaInfo(
+                                album: album,
+                              ));
+                    },
+                  ),
                 ),
               ),
               bottomNavigationBar: PlayBar(),

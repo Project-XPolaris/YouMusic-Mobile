@@ -77,6 +77,7 @@ class _ArtistPageState extends State<ArtistPage> {
               }
               return null;
             }
+
             var coverUrl = getPersonAvatar();
             return Scaffold(
               body: NestedScrollView(
@@ -103,6 +104,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                 )),
                           ),
                           background: Stack(
+                            alignment: Alignment.center,
                             children: [
                               Container(
                                 width: double.infinity,
@@ -141,13 +143,26 @@ class _ArtistPageState extends State<ArtistPage> {
                                     ], // red to yellow
                                   ),
                                 ),
-                              )
+                              ),
+                              Positioned(
+                                  bottom: 0,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text("${state.albumList.length} Album, ${state.musicList.length} Music",
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground.withAlpha(150),
+                                          fontSize: 14.0,
+                                        )),
+                                  ))
                             ],
                           )),
                       leading: IconButton(
                         icon: Icon(Icons.arrow_back_rounded),
                         onPressed: () {
-                          Navigator.pop(context,{'isFollow':state.isFollow,'id':id});
+                          Navigator.pop(
+                              context, {'isFollow': state.isFollow, 'id': id});
                         },
                       ),
                       actions: [
@@ -239,8 +254,7 @@ class _ArtistPageState extends State<ArtistPage> {
                                         HapticFeedback.selectionClick();
                                         showModalBottomSheet(
                                             context: context,
-                                            builder: (context) =>
-                                                MusicMetaInfo(
+                                            builder: (context) => MusicMetaInfo(
                                                   music: music,
                                                 ));
                                       });
@@ -249,73 +263,76 @@ class _ArtistPageState extends State<ArtistPage> {
                             ),
                           ],
                         ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "Album",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
+                        Container(
+                          margin: EdgeInsets.only(top: 16),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "Album",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
                                   ),
-                                ),
-                                GestureDetector(
-                                  child: Text(
-                                    "More",
-                                    style: TextStyle(),
-                                  ),
-                                  onTap: () {
-                                    AlbumListPage.launch(context,
-                                        extraFilter: {
-                                          "artist": widget.id.toString()
-                                        },
-                                        title:
-                                            "Album by ${state.artist?.name}");
-                                  },
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 16, bottom: 16),
-                              child: Container(
-                                height: 160,
-                                child: state.albumList.length > 0
-                                    ? GridView.count(
-                                        childAspectRatio: 13 / 9,
-                                        scrollDirection: Axis.horizontal,
-                                        mainAxisSpacing: 8,
-                                        crossAxisSpacing: 8,
-                                        crossAxisCount: 1,
-                                        children:
-                                            state.albumList.map((album) {
-                                          return AlbumItem(
-                                            onTap: (contextAlbum) {
-                                              var id = contextAlbum.id;
-                                              if (id == null) {
-                                                return;
-                                              }
-                                              playProvider.playAlbum(id);
-                                            },
-                                            onLongPress: (album) {
-                                              HapticFeedback.selectionClick();
-                                              showModalBottomSheet(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AlbumMetaInfo(
-                                                        album: album,
-                                                      ));
-                                            },
-                                            album: album,
-                                          );
-                                        }).toList(),
-                                      )
-                                    : Container(),
+                                  GestureDetector(
+                                    child: Text(
+                                      "More",
+                                      style: TextStyle(),
+                                    ),
+                                    onTap: () {
+                                      AlbumListPage.launch(context,
+                                          extraFilter: {
+                                            "artist": widget.id.toString()
+                                          },
+                                          title:
+                                              "Album by ${state.artist?.name}");
+                                    },
+                                  )
+                                ],
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 16, bottom: 16),
+                                child: Container(
+                                  height: 160,
+                                  child: state.albumList.length > 0
+                                      ? GridView.count(
+                                          childAspectRatio: 13 / 9,
+                                          scrollDirection: Axis.horizontal,
+                                          mainAxisSpacing: 8,
+                                          crossAxisSpacing: 8,
+                                          crossAxisCount: 1,
+                                          children:
+                                              state.albumList.map((album) {
+                                            return AlbumItem(
+                                              onTap: (contextAlbum) {
+                                                var id = contextAlbum.id;
+                                                if (id == null) {
+                                                  return;
+                                                }
+                                                playProvider.playAlbum(id);
+                                              },
+                                              onLongPress: (album) {
+                                                HapticFeedback.selectionClick();
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlbumMetaInfo(
+                                                          album: album,
+                                                        ));
+                                              },
+                                              album: album,
+                                            );
+                                          }).toList(),
+                                        )
+                                      : Container(),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

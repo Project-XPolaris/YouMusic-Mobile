@@ -8,6 +8,7 @@ import 'package:youmusic_mobile/ui/home/play_bar.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/album.dart';
 import 'package:youmusic_mobile/ui/meta-navigation/music.dart';
 import 'package:youmusic_mobile/utils/color.dart';
+import 'package:youmusic_mobile/utils/time.dart';
 
 import '../../tag/view/view.dart';
 import '../bloc/album_bloc.dart';
@@ -76,12 +77,6 @@ class _AlbumPageState extends State<AlbumPage> {
                       return ListTile(
                         minVerticalPadding: 16,
                         minLeadingWidth: 12,
-                        leading: Container(
-                          width: 24,
-                          child: Text(
-                            displayIdx,
-                          ),
-                        ),
                         title: Text(
                           music.title ?? "No title",
                           style: TextStyle(),
@@ -103,6 +98,10 @@ class _AlbumPageState extends State<AlbumPage> {
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
+                        trailing: Text(
+                          formatDuration(Duration(seconds: music.duration?.toInt() ?? 0)),
+                          style: TextStyle(fontSize: 12),
+                        ),
                       );
                     }).toList();
                   }

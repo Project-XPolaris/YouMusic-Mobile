@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:youmusic_mobile/utils/time.dart';
 
 import '../../api/entites.dart';
 import '../meta-navigation/music.dart';
@@ -15,6 +16,7 @@ class MusicList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      physics: AlwaysScrollableScrollPhysics(),
       controller: controller,
       children: list.map((music) {
         return ListTile(
@@ -47,6 +49,10 @@ class MusicList extends StatelessWidget {
           },
           contentPadding: EdgeInsets.only(left: 8, right: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          trailing: Text(
+            formatDuration(Duration(seconds: music.duration?.toInt() ?? 0)),
+            style: TextStyle(fontSize: 12),
+          ),
         );
       }).toList(),
     );
